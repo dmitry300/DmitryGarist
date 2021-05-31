@@ -17,18 +17,10 @@ public class Task03LinearAlgorithmTest {
         };
     }
 
-    @DataProvider(name = "dataForGetFunctionNegative") //l * l / (4 * Math.PI);
-    public Object[][] createNegativeDataForGetFunction() {
-        return new Object[][]{
-                {new double[]{-1}, 2},
-                {new double[]{0}, 2}
-        };
-    }
-
     @DataProvider(name = "dataForGetMultiply")
     public Object[][] createPositiveDataForGetMultiply() {
         return new Object[][]{
-                {new double[]{0, 0}, 0},
+                {new double[]{0, 0},0 },
                 {new double[]{-1, 1}, -1},
                 {new double[]{1, -1}, -1},
                 {new double[]{-1, -1}, 1}
@@ -49,10 +41,10 @@ public class Task03LinearAlgorithmTest {
         assertEquals(actual, expected, 0.0001);
     }
 
-    @Test(description = "Negative scenario of the getFunction", dataProvider = "dataForGetFunctionNegative")
-    public void testGetFunctionNegative(double a[], double z) {
-        double actual = task03LinearAlgorithm.getFunction(a[0]);
-        double expected = z;
-        assertEquals(actual, expected, 0.0001);
+    @Test(description = "Negative first scenario of the Calculate",
+            enabled = true, expectedExceptions = IllegalArgumentException.class,
+            expectedExceptionsMessageRegExp = "It can't be: length of circle is < = 0!")
+    public void testNegative1Calculate() throws IllegalArgumentException {
+       task03LinearAlgorithm.getFunction(-1);
     }
 }

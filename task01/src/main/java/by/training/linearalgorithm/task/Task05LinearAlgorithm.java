@@ -14,12 +14,14 @@ public class Task05LinearAlgorithm {
     private static final Logger logger = LogManager.getLogger(Task05LinearAlgorithm.class);
 
     /**
-     * @param number 4ех-значное число
+     * @param number четырехзначное число
+     * @return массив частных произведений[четное, нечетное]
      */
-    public String getFunction(int number) {
+    public int[] getFunction(int number) {
         int oddDigit = 1;
         int evenDigit = 1;
-        String result ;
+        int array[] = new int[2];
+        String result;
 
         while (number != 0) {
             int tmp = number % 10;
@@ -30,9 +32,10 @@ public class Task05LinearAlgorithm {
                 oddDigit *= tmp;
             }
         }
-        logger.info("Произведение четных: " + evenDigit);
-        logger.info("Произведение нечетных: " + oddDigit);
-        return "oddDigit  evenDigit";
+        array[0] = evenDigit;
+        array[1] = oddDigit;
+
+        return array;
     }
 
 

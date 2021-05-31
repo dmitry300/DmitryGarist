@@ -1,12 +1,14 @@
 package by.training.linearalgorithm.control;
 
 import by.training.linearalgorithm.task.*;
+import by.training.linearalgorithm.view.Menu;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 /**
  * приложение по запуску 5 задач
@@ -25,10 +27,11 @@ public class Main {
         Task03LinearAlgorithm task03LinearAlgorithm = new Task03LinearAlgorithm();
         Task04LinearAlgorithm task04LinearAlgorithm = new Task04LinearAlgorithm();
         Task05LinearAlgorithm task05LinearAlgorithm = new Task05LinearAlgorithm();
+        new Menu().menu();//вызов меню
 
         boolean isEnable = true;
         while (isEnable) {
-            menu();
+
             int userInput = getUserInputInt(">> ");
             switch (userInput) {
                 case 0: {
@@ -48,7 +51,7 @@ public class Main {
                     c = getUserInputDouble("c >> ");
                     result = task01LinearAlgorithm.expression(a, b, c);
 
-                    logger.info(String.format("Значение функции = %s", result));
+                    System.out.println(String.format("Значение функции = %s", result));
                     break;
                 }
                 case 2: {
@@ -66,7 +69,7 @@ public class Main {
                     y2 = getUserInputDouble("y2 >> ");
                     result = task02LinearAlgorithm.getFunction(x1, x2, y1, y2);
 
-                    logger.info(String.format("Расстояние между точками: = %s", result));
+                    System.out.println(String.format("Расстояние между точками: = %s", result));
                     break;
                 }
                 case 3: {
@@ -76,9 +79,12 @@ public class Main {
                     System.out.println("Введите длину окружности: ");
                     l = getUserInputDouble("l >> ");
                     logger.info(String.format("Пользователь ввел: %s >> ", l));
-                    s = task03LinearAlgorithm.getFunction(l);
-
-                    logger.info(String.format("Площадь окружности = %s", s));
+                    try {
+                        s = task03LinearAlgorithm.getFunction(l);
+                        System.out.println(String.format("Площадь окружности = %s", s));
+                    } catch (IllegalArgumentException e) {
+                        logger.warn(e);
+                    }
                     break;
                 }
                 case 4: {
@@ -88,7 +94,8 @@ public class Main {
                     angle = getUserInputDouble("angle >> ");
                     logger.info(String.format("Пользователь ввел: %s >> ", angle));
 
-                    task04LinearAlgorithm.getFunction(angle);
+                    System.out.println(String.format("%s гр, %s мин, %s cек", task04LinearAlgorithm.getFunction(angle)[0],
+                            task04LinearAlgorithm.getFunction(angle)[1], task04LinearAlgorithm.getFunction(angle)[2]));
                     break;
                 }
                 case 5: {
@@ -97,7 +104,8 @@ public class Main {
                     number = getUserInputInt("Введите четырехзначное число >> ");
                     logger.info(String.format("Пользователь ввел: %s >> ", number));
 
-                    task05LinearAlgorithm.getFunction(number);
+                    System.out.println("1-ое число отображает произведение четных чисел,2-ое - нечетных.");
+                    System.out.println(Arrays.toString(task05LinearAlgorithm.getFunction(number)));
                     break;
                 }
                 default:
@@ -141,14 +149,5 @@ public class Main {
         return 0;
 
     }
-
-    public static void menu() {
-        System.out.println("Выберете номер задачи из предложенных!");
-        System.out.println("1. (4) Найдите значение функции: z = ( (a – 3 ) * b / 2) + c.");
-        System.out.println("2. (12) Вычислить расстояние между двумя точками с данными координатами (х1, у1) и (x2, у2).");
-        System.out.println("3. (20) Известна длина окружности. Найти площадь круга, ограниченного этой окружностью.");
-        System.out.println("4. (28) Составить программу перевода радианной меры угла в градусы, минуты и секунды.");
-        System.out.println("5. (36) Найти частное произведений четных и нечетных цифр четырехзначного числа.");
-        System.out.println("Нажмите 0 для выхода.");
-    }
 }
+
