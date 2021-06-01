@@ -4,7 +4,8 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
 /**
- *  (4) Найдите значение функции: z = ( (a – 3 ) * b / 2) + c.
+ * (4) Найдите значение функции: z = ( (a – 3 ) * b / 2) + c.
+ *
  * @author Dmitry Garist
  */
 
@@ -19,8 +20,9 @@ public class Task01LinearAlgorithm {
      * @return z - возращаемое наше значение
      */
     public double expression(double a, double b, double c) {
-        logger.info(String.format("Expression is called a = %s, b = %s, c = %s", a, b, c));
-        return ((a - 3) * b / 2) + c;
+        double result = ((a - 3) * b / 2) + c;
+        logger.info(String.format("Expression is called a = %s, b = %s, c = %s, result = %s", a, b, c, result));
+        return result;
     }
 
     /**
@@ -28,7 +30,7 @@ public class Task01LinearAlgorithm {
      * @param b - слагаемое
      * @return сумму двух чисел
      */
-    public double getSum(double a, double b) {
+    public double sum(double a, double b) {
         logger.info(String.format("getSum is called a = %s, b = %s", a, b));
         return a + b;
     }
@@ -38,7 +40,7 @@ public class Task01LinearAlgorithm {
      * @param b - вычитающее
      * @return - разность двух чисел
      */
-    public double getDifference(double a, double b) {
+    public double difference(double a, double b) {
         logger.info(String.format("getDifference is called a = %s, b = %s", a, b));
         return a - b;
     }
@@ -48,7 +50,7 @@ public class Task01LinearAlgorithm {
      * @param b - умножающее
      * @return умножение двух чисел
      */
-    public double getMultiply(double a, double b) {
+    public double multiply(double a, double b) {
         logger.info(String.format("getMultiply is called a = %s, b = %s", a, b));
         return a * b;
     }

@@ -52,14 +52,14 @@ public class Task01LinearAlgorithmTest {
 
     @Test(description = "Positive scenario of the getSum", dataProvider = "dataForGetSum")
     public void testGetSum(double ab[], double z) {
-        double actual = task01LinearAlgorithm.getSum(ab[0], ab[1]);
+        double actual = task01LinearAlgorithm.sum(ab[0], ab[1]);
         double expected = z;
         assertEquals(actual, expected, 0.0001);
     }
 
     @Test(description = "Positive scenario of the getDifference", dataProvider = "dataForGetDifference")
     public void testGetDifference(double ab[], double z) {
-        double actual = task01LinearAlgorithm.getDifference(ab[0], ab[1]);
+        double actual = task01LinearAlgorithm.difference(ab[0], ab[1]);
         double expected = z;
         assertEquals(actual, expected, 0.0001);
     }
@@ -73,7 +73,7 @@ public class Task01LinearAlgorithmTest {
 
     @Test(description = "Positive scenario of the getMultiply", dataProvider = "dataForGetMultiply")
     public void testGetMultiply(double ab[], double z) {
-        double actual = task01LinearAlgorithm.getMultiply(ab[0], ab[1]);
+        double actual = task01LinearAlgorithm.multiply(ab[0], ab[1]);
         double expected = z;
         assertEquals(actual, expected, 0.0001);
     }

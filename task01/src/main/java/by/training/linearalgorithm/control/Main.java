@@ -67,7 +67,7 @@ public class Main {
                     y1 = getUserInputDouble("y1 >> ");
                     x2 = getUserInputDouble("x2 >> ");
                     y2 = getUserInputDouble("y2 >> ");
-                    result = task02LinearAlgorithm.getFunction(x1, x2, y1, y2);
+                    result = task02LinearAlgorithm.function(x1, x2, y1, y2);
 
                     System.out.println(String.format("Расстояние между точками: = %s", result));
                     break;
@@ -78,12 +78,11 @@ public class Main {
 
                     System.out.println("Введите длину окружности: ");
                     l = getUserInputDouble("l >> ");
-                    logger.info(String.format("Пользователь ввел: %s >> ", l));
                     try {
                         s = task03LinearAlgorithm.getFunction(l);
                         System.out.println(String.format("Площадь окружности = %s", s));
                     } catch (IllegalArgumentException e) {
-                        logger.warn(e);
+                        logger.error(e);
                     }
                     break;
                 }
@@ -92,20 +91,18 @@ public class Main {
 
                     System.out.println("Введите радиианный угол: ");
                     angle = getUserInputDouble("angle >> ");
-                    logger.info(String.format("Пользователь ввел: %s >> ", angle));
 
-                    System.out.println(String.format("%s гр, %s мин, %s cек", task04LinearAlgorithm.getFunction(angle)[0],
-                            task04LinearAlgorithm.getFunction(angle)[1], task04LinearAlgorithm.getFunction(angle)[2]));
+                    System.out.println(String.format("%s гр, %s мин, %s cек", task04LinearAlgorithm.function(angle)[0],
+                            task04LinearAlgorithm.function(angle)[1], task04LinearAlgorithm.function(angle)[2]));
                     break;
                 }
                 case 5: {
                     int number;
 
                     number = getUserInputInt("Введите четырехзначное число >> ");
-                    logger.info(String.format("Пользователь ввел: %s >> ", number));
 
                     System.out.println("1-ое число отображает произведение четных чисел,2-ое - нечетных.");
-                    System.out.println(Arrays.toString(task05LinearAlgorithm.getFunction(number)));
+                    System.out.println(Arrays.toString(task05LinearAlgorithm.function(number)));
                     break;
                 }
                 default:
@@ -128,7 +125,7 @@ public class Main {
                 return Double.parseDouble(inputLine);
             }
         } catch (IOException e) {
-            logger.warn("IOException: " + e);
+            logger.error("IOException: " + e);
         }
         return 0;
 
@@ -144,7 +141,7 @@ public class Main {
                 return Integer.parseInt(inputLine);
             }
         } catch (IOException e) {
-            logger.warn("IOException: " + e);
+            logger.error("IOException: " + e);
         }
         return 0;
 

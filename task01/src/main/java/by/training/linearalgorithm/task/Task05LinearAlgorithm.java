@@ -17,7 +17,7 @@ public class Task05LinearAlgorithm {
      * @param number четырехзначное число
      * @return массив частных произведений[четное, нечетное]
      */
-    public int[] getFunction(int number) {
+    public int[] function(int number) {
         int oddDigit = 1;
         int evenDigit = 1;
         int array[] = new int[2];
@@ -34,7 +34,7 @@ public class Task05LinearAlgorithm {
         }
         array[0] = evenDigit;
         array[1] = oddDigit;
-
+        logger.info(String.format("Пользователь ввел: %s, multiply even digits = %s,multiply odd digits = %s ", number, evenDigit, oddDigit));
         return array;
     }
 

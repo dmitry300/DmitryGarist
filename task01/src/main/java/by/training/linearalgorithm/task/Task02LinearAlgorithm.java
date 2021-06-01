@@ -20,9 +20,11 @@ public class Task02LinearAlgorithm {
      * @param y2 4ая координата
      * @return расстояние между двумя точками
      */
-    public double getFunction(double x1, double x2, double y1, double y2) {
-        logger.info(String.format("getFunction (х1, у1)и (x2, у2), где x1 = %s,x2 = %s,y1 = %s,y2 = %s ", x1, x2, y1, y2));
-        return Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
+    public double function(double x1, double x2, double y1, double y2) {
+        double result;
+        result = Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
+        logger.info(String.format("getFunction (х1, у1)и (x2, у2), где x1 = %s,x2 = %s,y1 = %s,y2 = %s, result = %s ", x1, x2, y1, y2, result));
+        return result;
     }
 
     /**
@@ -30,7 +32,7 @@ public class Task02LinearAlgorithm {
      * @param x1 - вычитающее
      * @return - разность двух чисел
      */
-    public double getDifferenceX(double x1, double x2) {
+    public double differenceX(double x1, double x2) {
         logger.info(String.format("getDifference is called x2 = %s, x1 = %s", x2, x1));
         return x2 - x1;
     }
@@ -40,7 +42,7 @@ public class Task02LinearAlgorithm {
      * @param y1 - вычитающее
      * @return - разность двух чисел
      */
-    public double getDifferenceY(double y1, double y2) {
+    public double differenceY(double y1, double y2) {
         logger.info(String.format("getDifference is called x2 = %s, x1 = %s", y2, y1));
         return y2 - y1;
     }
@@ -50,7 +52,7 @@ public class Task02LinearAlgorithm {
      * @param x1 - вычитающее
      * @return квадрат разности
      */
-    public double getPowX(double x1, double x2) {
+    public double powX(double x1, double x2) {
         logger.info(String.format("getPow is called x1 = %s, x2 = %s", x1, x2));
         return Math.pow((x2 - x1), 2);
     }
@@ -60,7 +62,7 @@ public class Task02LinearAlgorithm {
      * @param y1 - вычитающее
      * @return квадрат разности
      */
-    public double getPowY(double y1, double y2) {
+    public double powY(double y1, double y2) {
         logger.info(String.format("getPow is called x1 = %s, x2 = %s", y1, y2));
         return Math.pow((y2 - y1), 2);
     }

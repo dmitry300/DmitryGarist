@@ -61,35 +61,35 @@ public class Task02LinearAlgorithmTest {
 
     @Test(description = "Positive scenario of the getDifferenceX", dataProvider = "dataForGetDifferenceX")
     public void testGetDifferenceX(double ab[], double z) {
-        double actual = task02LinearAlgorithm.getDifferenceX(ab[0], ab[1]);
+        double actual = task02LinearAlgorithm.differenceX(ab[0], ab[1]);
         double expected = z;
         assertEquals(actual, expected, 0.0001);
     }
 
     @Test(description = "Positive scenario of the getDifferenceY", dataProvider = "dataForGetDifferenceY")
     public void testGetDifferenceY(double ab[], double z) {
-        double actual = task02LinearAlgorithm.getDifferenceY(ab[0], ab[1]);
+        double actual = task02LinearAlgorithm.differenceY(ab[0], ab[1]);
         double expected = z;
         assertEquals(actual, expected, 0.0001);
     }
 
     @Test(description = "Positive scenario of the getFunction", dataProvider = "dataForGetFunction")
     public void testGetFunction(double abcd[], double z) {
-        double actual = task02LinearAlgorithm.getFunction(abcd[0], abcd[1], abcd[2], abcd[3]);
+        double actual = task02LinearAlgorithm.function(abcd[0], abcd[1], abcd[2], abcd[3]);
         double expected = z;
         assertEquals(actual, expected, 0.0001);
     }
 
     @Test(description = "Positive scenario of the getPowX", dataProvider = "dataForGetPowX")
     public void testGetPowX(double ab[], double z) {
-        double actual = task02LinearAlgorithm.getPowX(ab[0], ab[1]);
+        double actual = task02LinearAlgorithm.powX(ab[0], ab[1]);
         double expected = z;
         assertEquals(actual, expected, 0.0001);
     }
 
     @Test(description = "Positive scenario of the getPowY", dataProvider = "dataForGetPowY")
     public void testGetPowY(double ab[], double z) {
-        double actual = task02LinearAlgorithm.getPowY(ab[0], ab[1]);
+        double actual = task02LinearAlgorithm.powY(ab[0], ab[1]);
         double expected = z;
         assertEquals(actual, expected, 0.0001);
     }

@@ -18,11 +18,12 @@ public class Task03LinearAlgorithm {
      * @return расстояние между двумя точками
      */
     public double getFunction(double l) {
+        double areaOfCircle = l * l / (4 * Math.PI);
         if (l <= 0) {
             throw new IllegalArgumentException("It can't be: length of circle is < = 0!");
         }
-        logger.info(String.format("getFunction: l = %s", l));
-        return l * l / (4 * Math.PI);
+        logger.info(String.format("getFunction: l = %s, area of a circle = %s", l, areaOfCircle));
+        return areaOfCircle;
     }
 
     /**
@@ -30,7 +31,7 @@ public class Task03LinearAlgorithm {
      * @param b - умножающее
      * @return умножение двух чисел
      */
-    public double getMultiply(double a, double b) {
+    public double multiply(double a, double b) {
         logger.info(String.format("Expression is called a = %s, b = %s", a, b));
         return a * b;
     }

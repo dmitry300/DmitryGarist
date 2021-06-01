@@ -29,7 +29,7 @@ public class Task03LinearAlgorithmTest {
 
     @Test(description = "Positive scenario of the getMultiply", dataProvider = "dataForGetMultiply")
     public void testGetMultiply(double ab[], double z) {
-        double actual = task03LinearAlgorithm.getMultiply(ab[0], ab[1]);
+        double actual = task03LinearAlgorithm.multiply(ab[0], ab[1]);
         double expected = z;
         assertEquals(actual, expected, 0.0001);
     }
@@ -41,7 +41,7 @@ public class Task03LinearAlgorithmTest {
         assertEquals(actual, expected, 0.0001);
     }
 
-    @Test(description = "Negative first scenario of the Calculate",
+    @Test(description = "Negative first scenario of the Function",
             enabled = true, expectedExceptions = IllegalArgumentException.class,
             expectedExceptionsMessageRegExp = "It can't be: length of circle is < = 0!")
     public void testNegative1Calculate() throws IllegalArgumentException {

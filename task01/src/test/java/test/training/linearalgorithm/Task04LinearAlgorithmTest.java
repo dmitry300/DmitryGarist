@@ -22,7 +22,7 @@ public class Task04LinearAlgorithmTest {
 
     @Test(description = "Positive scenario of the getFunction", dataProvider = "dataForGetFunctionPositive")
     public void testGetFunction(double a, double[] z) {
-        double[] actual = task04LinearAlgorithm.getFunction(a);
+        double[] actual = task04LinearAlgorithm.function(a);
         double[] expected = z;
         assertEquals(actual, expected);
     }

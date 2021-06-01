@@ -9,7 +9,7 @@ import static org.testng.Assert.assertEquals;
 public class Task05LinearAlgorithmTest {
     Task05LinearAlgorithm task05LinearAlgorithm = new Task05LinearAlgorithm();
 
-    @DataProvider(name = "dataForGetFunctionPositive") //l * l / (4 * Math.PI);
+    @DataProvider(name = "dataForGetFunctionPositive")
     public Object[][] createPositiveDataForGetFunction() {
         return new Object[][]{
                 {1111, new int[]{1, 1}},
@@ -22,7 +22,7 @@ public class Task05LinearAlgorithmTest {
 
     @Test(description = "Positive scenario of the getFunction", dataProvider = "dataForGetFunctionPositive")
     public void testGetFunction(int a, int[] array) {
-        int[] actual = task05LinearAlgorithm.getFunction(a);
+        int[] actual = task05LinearAlgorithm.function(a);
         int[] expected = array;
         assertEquals(actual, expected);
     }
