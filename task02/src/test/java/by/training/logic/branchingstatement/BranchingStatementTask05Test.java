@@ -22,7 +22,7 @@ public class BranchingStatementTask05Test {
     }
 
     @Test(description = "Positive scenario of the DefineFunction", dataProvider = "dataForGetDefineFunction")
-    public void testDefineFunction(double a[], double value) {
+    public void testDefineFunction(double[] a, double value) {
         double actual = branchingStatementTask05.defineFunction(a[0]);
         double expected = value;
         assertEquals(actual, expected, 0.0001);

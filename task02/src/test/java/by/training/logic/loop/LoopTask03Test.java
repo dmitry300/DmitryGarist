@@ -1,6 +1,5 @@
 package by.training.logic.loop;
 
-import by.training.logic.loop.LoopTask03;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -22,7 +21,7 @@ public class LoopTask03Test {
     }
 
     @Test(description = "Positive scenario of the SumMembersOfNumbers", dataProvider = "dataForGetSumMembersOfNumbers")
-    public void testSumMembersOfNumbers(double a[], double value) {
+    public void testSumMembersOfNumbers(double[] a, double value) {
         double actual = loopTask03.sumMembersOfNumbers(a[0]);
         double expected = value;
         assertEquals(actual, expected, 0.0001);

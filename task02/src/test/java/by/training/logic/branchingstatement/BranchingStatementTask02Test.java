@@ -20,8 +20,8 @@ public class BranchingStatementTask02Test {
         };
     }
 
-    @Test(description = "Positive scenario of the powFunction", dataProvider = "dataForPowFunction")
-    public void testPowFunction(double a[], double powResult) {
+    @Test(description = "Positive scenario of the powFunction", dataProvider = "dataForGetPowFunction")
+    public void testPowFunction(double[] a, double powResult) {
         double actual = branchingStatementTask02.powFunction(a[0]);
         double expected = powResult;
         assertEquals(actual, expected,0.0001);

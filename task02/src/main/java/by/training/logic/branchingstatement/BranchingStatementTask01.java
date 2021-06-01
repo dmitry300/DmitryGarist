@@ -10,8 +10,6 @@ public class BranchingStatementTask01 {
      * @return boolean answer
      */
     public boolean equalsTwoNumber(double a, double b) {
-        if (a == b) {
-            return true;
-        } else return false;
+        return a == b;
     }
 }

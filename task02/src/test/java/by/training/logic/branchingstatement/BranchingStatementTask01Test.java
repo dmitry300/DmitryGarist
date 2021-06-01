@@ -20,7 +20,7 @@ public class BranchingStatementTask01Test {
     }
 
     @Test(description = "Positive scenario of the equalsTwoNumber", dataProvider = "dataForGetEqualsTwoNumber")
-    public void testEqualsTwoNumber(double ab[], boolean isEqual) {
+    public void testEqualsTwoNumber(double[] ab, boolean isEqual) {
         boolean actual = branchingStatementTask01.equalsTwoNumber(ab[0], ab[1]);
         boolean expected = isEqual;
         assertEquals(actual, expected);

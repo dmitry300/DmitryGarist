@@ -12,10 +12,9 @@ public class BranchingStatementTask03 {
      * @param c number
      * @param k divider
      * @return number which k divide
-     * @throws DivisionByZero
      */
     public int[] divider(int a, int b, int c, int k) throws DivisionByZero {
-        int array[] = new int[3];
+        int[] array = new int[3];
         int i = 0;
         if(k==0){
             throw new DivisionByZero();

@@ -23,7 +23,7 @@ public class BranchingStatementTask04Test {
     }
 
     @Test(description = "Positive scenario of the DefineNumber", dataProvider = "dataForGetDefineNumber")
-    public void testDefineNumber(double abcd[], double result) {
+    public void testDefineNumber(double[] abcd, double result) {
         double actual = branchingStatementTask04.defineNumber(abcd[0], abcd[1], abcd[2], abcd[3]);
         double expected = result;
         assertEquals(actual, expected, 0.0001);

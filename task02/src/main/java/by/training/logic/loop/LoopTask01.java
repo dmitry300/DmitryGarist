@@ -6,7 +6,7 @@ public class LoopTask01 {
      * @return массив чисел
      */
     public int[] evenNumber() {
-        int array[] = new int[50];
+        int[] array = new int[50];
         int i=0;
         int n = 0;
         while (n < 100) {

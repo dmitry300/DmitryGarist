@@ -22,14 +22,14 @@ public class BranchingStatementTask03Test {
     }
 
     @Test(description = "Positive scenario of the Divider ", dataProvider = "dataForGetDivider")
-    public void testDivider(int abcd[], int result[]) {
-        int actual[] = branchingStatementTask03.divider(abcd[0], abcd[1], abcd[2], abcd[3]);
-        int expected[] = result;
+    public void testDivider(int[] abcd, int[] result) {
+        int[] actual = branchingStatementTask03.divider(abcd[0], abcd[1], abcd[2], abcd[3]);
+        int[] expected = result;
         assertEquals(actual, expected);
     }
 
     @Test(description = "Negative first scenario of the Calculate",
-            enabled = true, expectedExceptions = DivisionByZero.class,
+            expectedExceptions = DivisionByZero.class,
             expectedExceptionsMessageRegExp = "Деление на ноль запрещено!")
     public void testNegative1Calculate() throws DivisionByZero {
         branchingStatementTask03.divider(1, 2, 3, 0);

@@ -1,8 +1,6 @@
 package by.training.control;
 
 import by.training.exception.DivisionByZero;
-import by.training.logic.loop.LoopTask01;
-import by.training.logic.loop.LoopTask02;
 import by.training.view.ApplicationOutput;
 import by.training.view.Menu;
 import org.apache.logging.log4j.LogManager;
@@ -26,10 +24,6 @@ public class Main {
             int userInput = getUserInputInt(">> ");
 
             switch (userInput) {
-                case 0: {
-                    isEnable = false;
-                    break;
-                }
                 case 1: {
                     double a;
                     double b;
@@ -107,7 +101,7 @@ public class Main {
 
                 }
                 case 7: {
-                    new ApplicationOutput().outputLoopTask02(new LoopTask02().sequence());
+                    new ApplicationOutput().outputLoopTask02();
                     break;
                 }
                 case 8: {
@@ -143,6 +137,10 @@ public class Main {
                     new ApplicationOutput().outputLoopTask05();
                     break;
                 }
+                case 0: {
+                    isEnable = false;
+                    break;
+                }
                 default:
                     throw new IllegalStateException("Unexpected value: " + userInput);
 
@@ -154,7 +152,7 @@ public class Main {
     }
 
     public static int getUserInputInt(String message) {
-        String inputLine = null;
+        String inputLine ;
         System.out.print(message);
         try {
             BufferedReader is = new BufferedReader(new InputStreamReader(System.in));
@@ -163,14 +161,14 @@ public class Main {
                 return Integer.parseInt(inputLine);
             }
         } catch (IOException e) {
-            logger.warn("IOException: " + e);
+            logger.error(String.format("IOException: %s", e));
         }
         return 0;
 
     }
 
     public static double getUserInputDouble(String message) {
-        String inputLine = null;
+        String inputLine ;
         System.out.print(message);
         try {
             BufferedReader is = new BufferedReader(new InputStreamReader(System.in));
@@ -179,7 +177,7 @@ public class Main {
                 return Double.parseDouble(inputLine);
             }
         } catch (IOException e) {
-            logger.warn("IOException: " + e);
+            logger.error(String.format("IOException: %s", e));
         }
         return 0;
 
@@ -195,7 +193,7 @@ public class Main {
                 return inputLine;
             }
         } catch (IOException e) {
-            logger.warn("IOException: " + e);
+            logger.error(String.format("IOException: %s", e));
         }
         return 0;
     }
