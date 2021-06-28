@@ -8,7 +8,7 @@ import java.io.IOException;
 public class MatrixOperationView {
     public void printMatrixResult(String nameOfOperation) throws MatrixException, IOException {
         Controller controller = new Controller();
-        System.out.println(nameOfOperation + " : " + controller.execute(nameOfOperation));
+        System.out.println(nameOfOperation + " : " + controller.executeMatrix(nameOfOperation));
     }
 
 }

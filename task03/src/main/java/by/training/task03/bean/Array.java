@@ -9,17 +9,16 @@ public class Array<T extends Number> {
 
     }
 
-    public Array(T[] array) {
-        this.array = array;
-    }
-
-    public Array(Class<T> type, int length) throws IllegalArgumentException {
+    public Array(Class<T> type, int length) {
         if (length < 1) {
             throw new IllegalArgumentException();
         } else {
             this.array = (T[]) java.lang.reflect.Array.newInstance(type, length);
         }
+    }
 
+    public Array(T[] array) {
+        this.array = array;
     }
 
     public T[] getArray() {
@@ -57,17 +56,13 @@ public class Array<T extends Number> {
         this.array[right] = tmp;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Array<T> array1 = (Array<T>) o;
-        for (int i = 0; i < array1.getLength(); i++) {
-            if (array1.getElement(i) != array[i]) {
-                return false;
-            }
-        }
-        return true;
+        Array<?> array1 = (Array<?>) o;
+        return Arrays.equals(array, array1.array);
     }
 
     @Override

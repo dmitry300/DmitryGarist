@@ -1,26 +1,20 @@
 package by.training.task03.service.impl;
 
 import by.training.task03.bean.Array;
-import by.training.task03.dao.ArrayDao;
-import by.training.task03.dao.DAOFactory;
 import by.training.task03.service.Sorting;
 
 public class ShellSort implements Sorting {
-    private final DAOFactory daoFactory = DAOFactory.getInstance();
 
     /**
      * @param array
      * @return sorted array
      */
     @Override
-    public Array<Number> sortIncreasing(Array<Number> array) {
-        if (array == null) {
-            ArrayDao arrayDao = daoFactory.getFileArrayDao();
-            array = arrayDao.saveArray();
-        }
-        int inner, outer;
+    public Array<Double> sortIncreasing(Array<Double> array) {
+        int inner;
+        int outer;
 
-        Number temp;
+        Double temp;
 
         int h = 1;
         while (h <= array.getLength() / 3) {
@@ -31,7 +25,7 @@ public class ShellSort implements Sorting {
                 temp = array.getElement(outer);
                 inner = outer;
 
-                while (inner > h - 1 && array.getElement(inner - h).doubleValue() >= temp.doubleValue()) {
+                while (inner > h - 1 && array.getElement(inner - h) >= temp) {
                     array.setElement(inner, array.getElement(inner - h));
                     inner -= h;
                 }
@@ -47,13 +41,10 @@ public class ShellSort implements Sorting {
      * @return sorted array
      */
     @Override
-    public Array<Number> sortDecreasing(Array<Number> array) {
-        if (array == null) {
-            ArrayDao arrayDao = daoFactory.getFileArrayDao();
-            array = arrayDao.saveArray();
-        }
-        int inner, outer;
-        Number temp;
+    public Array<Double> sortDecreasing(Array<Double> array) {
+        int inner;
+        int outer;
+        Double temp;
 
         int h = 1;
         while (h <= array.getLength() / 3) {
@@ -64,7 +55,7 @@ public class ShellSort implements Sorting {
                 temp = array.getElement(outer);
                 inner = outer;
 
-                while (inner > h - 1 && array.getElement(inner - h).doubleValue() <= temp.doubleValue()) {
+                while (inner > h - 1 && array.getElement(inner - h) <= temp) {
                     array.setElement(inner, array.getElement(inner - h));
                     inner -= h;
                 }

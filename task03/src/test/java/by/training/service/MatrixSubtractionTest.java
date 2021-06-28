@@ -15,22 +15,21 @@ public class MatrixSubtractionTest {
     @DataProvider(name = "dataForMatrixSubtraction")
     public Object[][] createPositiveDataForMatrixSubtraction() {
         return new Object[][]{
-                {new Matrix(new double[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}),
-                        new Matrix(new double[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}),
-                        new Matrix(new double[][]{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}})},
-                {new Matrix(new double[][]{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}}),
-                        new Matrix(new double[][]{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}}),
-                        new Matrix(new double[][]{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}})},
-                {new Matrix(new double[][]{{-1, -1, -1}, {-1, -1, -1}, {-1, -1, -1}}),
-                        new Matrix(new double[][]{{-1, -1, -1}, {-1, -1, -1}, {-1, -1, -1}}),
-                        new Matrix(new double[][]{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}})}
+                {new Matrix<>(new Double[][]{{1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}, {7.0, 8.0, 9.0}}),
+                        new Matrix<>(new Double[][]{{1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}, {7.0, 8.0, 9.0}}),
+                        new Matrix<>(new Double[][]{{0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}})},
+                {new Matrix<>(new Double[][]{{0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}}),
+                        new Matrix<>(new Double[][]{{0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}}),
+                        new Matrix<>(new Double[][]{{0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}})},
+                {new Matrix<>(new Double[][]{{-1.0, -1.0, -1.0}, {-1.0, -1.0, -1.0}, {-1.0, -1.0, -1.0}}),
+                        new Matrix<>(new Double[][]{{-1.0, -1.0, -1.0}, {-1.0, -1.0, -1.0}, {-1.0, -1.0, -1.0}}),
+                        new Matrix<>(new Double[][]{{0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}})}
         };
     }
 
     @Test(description = "Positive scenario of the matrix subtraction", dataProvider = "dataForMatrixSubtraction")
-    public void testOperation(Matrix mtrx1, Matrix mtrx2, Matrix expectedMtrx) throws MatrixException {
-        Matrix actual = matrixSubtraction.operation(mtrx1,mtrx2);
-        Matrix expected = expectedMtrx;
-        assertEquals(actual, expected);
+    public void testOperation(Matrix<Double> mtrx1, Matrix<Double> mtrx2, Matrix<Double> expectedMtrx) throws MatrixException {
+        Matrix<Double> actual = matrixSubtraction.operation(mtrx1, mtrx2);
+        assertEquals(actual, expectedMtrx);
     }
 }

@@ -3,34 +3,31 @@ package by.training.task03.bean;
 import java.util.Arrays;
 
 public class Matrix<T extends Number> {
-    private T[][] a;
+    private T[][] matrix;
 
     public Matrix() {
 
     }
 
-    public Matrix(T[][] a) {
-        this.a = a;
+    public Matrix(T[][] matrix) {
+        this.matrix = matrix;
     }
 
-    public Matrix(Class<T> type, int n, int m) throws MatrixException {
-        if (n < 1 || m < 1) {// check input
-            throw new MatrixException();
-        }
-        a = (T[][]) java.lang.reflect.Array.newInstance(type, n, m);
+    public Matrix(Class<T> type, int n, int m){
+        this.matrix = (T[][]) java.lang.reflect.Array.newInstance(type, n, m);
     }
 
     public int getVerticalSize() {
-        return a.length;
+        return matrix.length;
     }
 
     public int getHorizontalSize() {
-        return a[0].length;
+        return matrix[0].length;
     }
 
     public T getElement(int i, int j) throws MatrixException {
         if (checkRange(i, j)) { // check i & j
-            return a[i][j];
+            return matrix[i][j];
         } else {
             throw new MatrixException();
         }
@@ -38,7 +35,7 @@ public class Matrix<T extends Number> {
 
     public void setElement(int i, int j, T value) throws MatrixException {
         if (checkRange(i, j)) {
-            a[i][j] = value;
+            matrix[i][j] = value;
         } else {
             throw new MatrixException();
         }
@@ -46,44 +43,28 @@ public class Matrix<T extends Number> {
 
 
     private boolean checkRange(int i, int j) {// check matrix range
-        if (i < 0 || i > a.length - 1 || j < 0 || j > a[0].length - 1) {
-            return false;
-        } else {
-            return true;
-        }
+        return i >= 0 && i <= matrix.length - 1 && j >= 0 && j <= matrix[0].length - 1;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Matrix matrix1 = (Matrix) o;
-        for (int i = 0; i < matrix1.getVerticalSize(); i++) {
-            for (int j = 0; j < matrix1.getHorizontalSize(); j++) {
-                try {
-                    if (matrix1.getElement(i, j) != a[i][j]) {
-                        return false;
-                    }
-                } catch (MatrixException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }
-        return true;
+        Matrix<?> matrix1 = (Matrix<?>) o;
+        return Arrays.deepEquals(matrix, matrix1.matrix);
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(a);
+        return Arrays.deepHashCode(matrix);
     }
 
     @Override
     public String toString() {
         final String BLANK = " ";
-        StringBuilder s = new StringBuilder("\nMatrix : " + a.length + "x"
-                + a[0].length + "\n");
-        for (T[] row : a) {
+        StringBuilder s = new StringBuilder("\nMatrix : " + matrix.length + "x"
+                + matrix[0].length + "\n");
+        for (T[] row : matrix) {
             for (T value : row) {
                 s.append(value).append(BLANK);
             }
@@ -91,6 +72,5 @@ public class Matrix<T extends Number> {
         }
         return s.toString();
     }
-    //TODO сделать параметризацию для матрикс и array
 }
 

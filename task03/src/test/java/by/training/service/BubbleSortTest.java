@@ -13,35 +13,33 @@ public class BubbleSortTest {
     @DataProvider(name = "dataForSortIncreasing")
     public Object[][] createPositiveDataForSortIncreasing() {
         return new Object[][]{
-                {new Array<>(new Number[]{6, 20, 13, 15, 2, 1, 9, 30, 17, 10}), new Array<>(new Number[]{1, 2, 6, 9, 10, 13, 15, 17, 20, 30})},
-                {new Array<>(new Number[]{0, 0, 0, 0, 0}), new Array<>(new Number[]{0, 0, 0, 0, 0})},
-                {new Array<>(new Number[]{-1, -1, -1, -1, -1}), new Array<>(new Number[]{-1, -1, -1, -1, -1})},
-                {new Array<>(new Number[]{1, 1, 1, 1, 1}), new Array<>(new Number[]{1, 1, 1, 1, 1})}
+                {new Array<>(new Double[]{6.0, 20.0, 13.0, 15.0, 2.0, 1.0, 9.0, 30.0, 17.0, 10.0}), new Array<>(new Double[]{1.0, 2.0, 6.0, 9.0, 10.0, 13.0, 15.0, 17.0, 20.0, 30.0})},
+                {new Array<>(new Double[]{0.0, 0.0, 0.0, 0.0, 0.0}), new Array<>(new Double[]{0.0, 0.0, 0.0, 0.0, 0.0})},
+                {new Array<>(new Double[]{-1.0, -1.0, -1.0, -1.0, -1.0}), new Array<>(new Double[]{-1.0, -1.0, -1.0, -1.0, -1.0})},
+                {new Array<>(new Double[]{1.0, 1.0, 1.0, 1.0, 1.0}), new Array<>(new Double[]{1.0, 1.0, 1.0, 1.0, 1.0})}
         };
     }
 
     @DataProvider(name = "dataForSortDecreasing")
     public Object[][] createPositiveDataForSortDecreasing() {
         return new Object[][]{
-                {new Array<>(new Number[]{6, 20, 13, 15, 2, 1, 9, 30, 17, 10}), new Array<>(new Number[]{30, 20, 17, 15, 13, 10, 9, 6, 2, 1})},
-                {new Array<>(new Number[]{0, 0, 0, 0, 0}), new Array<>(new Number[]{0, 0, 0, 0, 0})},
-                {new Array<>(new Number[]{-1, -1, -1, -1, -1}), new Array<>(new Number[]{-1, -1, -1, -1, -1})},
-                {new Array<>(new Number[]{1, 1, 1, 1, 1}), new Array<>(new Number[]{1, 1, 1, 1, 1})}
+                {new Array<>(new Number[]{6.0, 20.0, 13.0, 15.0, 2.0, 1.0, 9.0, 30.0, 17.0, 10.0}), new Array<>(new Number[]{30.0, 20.0, 17.0, 15.0, 13.0, 10.0, 9.0, 6.0, 2.0, 1.0})},
+                {new Array<>(new Double[]{0.0, 0.0, 0.0, 0.0, 0.0}), new Array<>(new Double[]{0.0, 0.0, 0.0, 0.0, 0.0})},
+                {new Array<>(new Double[]{-1.0, -1.0, -1.0, -1.0, -1.0}), new Array<>(new Double[]{-1.0, -1.0, -1.0, -1.0, -1.0})},
+                {new Array<>(new Double[]{1.0, 1.0, 1.0, 1.0, 1.0}), new Array<>(new Double[]{1.0, 1.0, 1.0, 1.0, 1.0})}
         };
     }
 
     @Test(description = "Positive scenario of the bubble sort(increasing)", dataProvider = "dataForSortIncreasing")
-    public void testSortIncreasing(Array<Number> arr, Array<Number> expArr) {
-        Array<Number> actualArray = bubbleSort.sortIncreasing(arr);
-        Array<Number> expected = expArr;
-        assertEquals(actualArray, expected);
+    public void testSortIncreasing(Array<Double> arr, Array<Double> expArr) {
+        Array<Double> actualArray = bubbleSort.sortIncreasing(arr);
+        assertEquals(actualArray, expArr);
     }
 
     @Test(description = "Positive scenario of the bubble sort(decreasing)", dataProvider = "dataForSortDecreasing")
-    public void testSortDecreasing(Array<Number> arr, Array<Number> expArr) {
-        Array<Number> actualArray = bubbleSort.sortDecreasing(arr);
-        Array<Number> expected = expArr;
-        assertEquals(actualArray, expected);
+    public void testSortDecreasing(Array<Double> arr, Array<Double> expArr) {
+        Array<Double> actualArray = bubbleSort.sortDecreasing(arr);
+        assertEquals(actualArray, expArr);
     }
 
 }

@@ -5,62 +5,57 @@ import by.training.task03.service.impl.*;
 public class ServiceFactory {
     private static final ServiceFactory instance = new ServiceFactory();
 
-    private final Sorting sortingBubble = new BubbleSort();
-    private final Sorting sortingInsertion = new InsertionSort();
-   // private final Sorting sortingInsertionHash = new InsertionHashSort();
-    private final Sorting sortingShell = new ShellSort();
-    private final Sorting sortingShaker = new ShakerSort();
-    private final Sorting sortingSelection = new SelectionSort();
-    private final MergeSort sortingMerge = new MergeSort();
-    private final OperationWithMatrix addition = new MatrixAddition();
-    private final OperationWithMatrix substraction = new MatrixSubtraction();
-    private final OperationWithMatrix multiply = new MatrixMultiply();
+    private final SortingLoad sortingBubbleLoad = new BubbleSortLoad();
+    private final SortingLoad sortingInsertionLoad = new InsertionSortLoad();
+    // private final Sorting sortingInsertionHash = new InsertionHashSort();
+    private final SortingLoad sortingShellLoad = new ShellSortLoad();
+    private final SortingLoad sortingShakerLoad = new ShakerSortLoad();
+    private final SortingLoad sortingSelectionLoad = new SelectionSortLoad();
+    private final MergeSortLoad sortingMergeLoad = new MergeSortLoad();
+    private final OperationWithMatrixLoad additionLoad = new MatrixAdditionLoad();
+    private final OperationWithMatrixLoad subtractionLoad = new MatrixSubtractionLoad();
+    private final OperationWithMatrixLoad multiplyLoad = new MatrixMultiplyLoad();
 
     private ServiceFactory() {
-    }
-
-    public Sorting getSortingInsertion() {
-        return sortingInsertion;
-    }
-
-//    public Sorting getSortingInsertionHash() {
-//        return sortingInsertionHash;
-//    }
-
-    public Sorting getSortingShell() {
-        return sortingShell;
-    }
-
-    public Sorting getSortingShaker() {
-        return sortingShaker;
-    }
-
-    public Sorting getSortingSelection() {
-        return sortingSelection;
-    }
-
-    public MergeSort getSortingMerge() {
-        return sortingMerge;
-    }
-
-    public OperationWithMatrix getAddition() {
-        return addition;
-    }
-
-    public OperationWithMatrix getSubtraction() {
-        return substraction;
-    }
-
-    public OperationWithMatrix getMultiply() {
-        return multiply;
     }
 
     public static ServiceFactory getInstance() {
         return instance;
     }
 
-    public Sorting getSortingBubble() {
-        return sortingBubble;
+    public SortingLoad getSortingBubbleLoad() {
+        return sortingBubbleLoad;
     }
 
+    public SortingLoad getSortingInsertionLoad() {
+        return sortingInsertionLoad;
+    }
+
+    public SortingLoad getSortingShellLoad() {
+        return sortingShellLoad;
+    }
+
+    public SortingLoad getSortingShakerLoad() {
+        return sortingShakerLoad;
+    }
+
+    public SortingLoad getSortingSelectionLoad() {
+        return sortingSelectionLoad;
+    }
+
+    public MergeSortLoad getSortingMergeLoad() {
+        return sortingMergeLoad;
+    }
+
+    public OperationWithMatrixLoad getAdditionLoad() {
+        return additionLoad;
+    }
+
+    public OperationWithMatrixLoad getSubtractionLoad() {
+        return subtractionLoad;
+    }
+
+    public OperationWithMatrixLoad getMultiplyLoad() {
+        return multiplyLoad;
+    }
 }

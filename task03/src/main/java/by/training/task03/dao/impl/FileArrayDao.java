@@ -14,14 +14,17 @@ public class FileArrayDao implements ArrayDao {
     private static final Logger logger = LogManager.getLogger(FileArrayDao.class);
 
     @Override
-    public Array<Number> saveArray() {
-        Array<Number> array = new Array<>(Number.class,29);
+    public Array<Double> saveArray(String fileName) {
+        int lengthArray = 0;
         BufferedReader br = null;
+        Array<Double> array = null;
         try {
-            br = new BufferedReader(new FileReader("C:/Users/KaMo User/IdeaProjects/demomatrix/src/data/dataForArray.txt"));
+            br = new BufferedReader(new FileReader(fileName));
             String tmp;
             while ((tmp = br.readLine()) != null) {
                 String[] s = tmp.split("\\s+");
+                lengthArray += s.length;
+                array = new Array<>(Double.class, lengthArray);
                 for (int i = 0; i < s.length; i++) {
                     array.setElement(i, Double.parseDouble(s[i]));
                 }
@@ -35,11 +38,8 @@ public class FileArrayDao implements ArrayDao {
                 } catch (IOException e) {
                     logger.error(e);
                 }
-
             }
-
         }
         return array;
     }
-
 }

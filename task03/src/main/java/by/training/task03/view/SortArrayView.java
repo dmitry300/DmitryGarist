@@ -8,7 +8,7 @@ import java.io.IOException;
 public class SortArrayView {
     public void printArraySort(String nameOFSort) throws MatrixException, IOException {
         Controller controller = new Controller();
-        System.out.println(nameOFSort + " : " + controller.execute(nameOFSort));
+        System.out.println(nameOFSort + " : " + controller.executeArray(nameOFSort));
     }
 
 }

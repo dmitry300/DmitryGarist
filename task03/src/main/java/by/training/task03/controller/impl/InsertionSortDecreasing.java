@@ -1,18 +1,15 @@
 package by.training.task03.controller.impl;
 
 import by.training.task03.bean.Array;
-import by.training.task03.controller.Command;
+import by.training.task03.controller.CommandArray;
 import by.training.task03.service.ServiceFactory;
-import by.training.task03.service.Sorting;
+import by.training.task03.service.SortingLoad;
 
-import java.util.Arrays;
-
-public class InsertionSortDecreasing implements Command {
+public class InsertionSortDecreasing implements CommandArray {
     @Override
-    public String executeCommand() {
+    public Array<Double> executeCommand() {
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
-        Sorting sorting = serviceFactory.getSortingInsertion();
-        Array array = null;
-        return Arrays.toString(sorting.sortDecreasing(array).getArray()); 
+        SortingLoad sortingLoad = serviceFactory.getSortingInsertionLoad();
+        return sortingLoad.sortDecreasing();
     }
 }

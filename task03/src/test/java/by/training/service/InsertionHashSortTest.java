@@ -1,14 +1,15 @@
 package by.training.service;
 
 import by.training.task03.bean.Array;
-import by.training.task03.service.impl.SelectionSort;
+import by.training.task03.service.impl.InsertionHashSort;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.*;
 
-public class SelectionSortTest {
-    SelectionSort selectionSort = new SelectionSort();
+public class InsertionHashSortTest {
+
+    InsertionHashSort insertionHashSort = new InsertionHashSort();
 
     @DataProvider(name = "dataForSortIncreasing")
     public Object[][] createPositiveDataForSortIncreasing() {
@@ -32,14 +33,13 @@ public class SelectionSortTest {
 
     @Test(description = "Positive scenario of the bubble sort(increasing)", dataProvider = "dataForSortIncreasing")
     public void testSortIncreasing(Array<Double> arr, Array<Double> expArr) {
-        Array<Double> actualArray = selectionSort.sortIncreasing(arr);
+        Array<Double> actualArray = insertionHashSort.sortIncreasing(arr);
         assertEquals(actualArray, expArr);
     }
 
     @Test(description = "Positive scenario of the bubble sort(decreasing)", dataProvider = "dataForSortDecreasing")
     public void testSortDecreasing(Array<Double> arr, Array<Double> expArr) {
-        Array<Double> actualArray = selectionSort.sortDecreasing(arr);
+        Array<Double> actualArray = insertionHashSort.sortDecreasing(arr);
         assertEquals(actualArray, expArr);
     }
-
 }

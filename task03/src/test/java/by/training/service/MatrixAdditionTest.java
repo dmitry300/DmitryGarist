@@ -12,25 +12,25 @@ import static org.testng.Assert.*;
 public class MatrixAdditionTest {
     MatrixAddition matrixAddition = new MatrixAddition();
 
+
     @DataProvider(name = "dataForMatrixAddition")
     public Object[][] createPositiveDataForMatrixAddition() {
         return new Object[][]{
-                {new Matrix(new double[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}),
-                        new Matrix(new double[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}),
-                        new Matrix(new double[][]{{2, 4, 6}, {8, 10, 12}, {14, 16, 18}})},
-                {new Matrix(new double[][]{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}}),
-                        new Matrix(new double[][]{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}}),
-                        new Matrix(new double[][]{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}})},
-                {new Matrix(new double[][]{{-1, -1, -1}, {-1, -1, -1}, {-1, -1, -1}}),
-                        new Matrix(new double[][]{{-1, -1, -1}, {-1, -1, -1}, {-1, -1, -1}}),
-                        new Matrix(new double[][]{{-2, -2, -2}, {-2, -2, -2}, {-2, -2, -2}})}
+                {new Matrix<>(new Double[][]{{1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}, {7.0, 8.0, 9.0}}),
+                        new Matrix<>(new Double[][]{{1.0, 2.0, 3.0}, {4.0, 5.0, 6.0}, {7.0, 8.0, 9.0}}),
+                        new Matrix<>(new Double[][]{{2.0, 4.0, 6.0}, {8.0, 10.0, 12.0}, {14.0, 16.0, 18.0}})},
+                {new Matrix<>(new Double[][]{{0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}}),
+                        new Matrix<>(new Double[][]{{0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}}),
+                        new Matrix<>(new Double[][]{{0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}})},
+                {new Matrix<>(new Double[][]{{-1.0, -1.0, -1.0}, {-1.0, -1.0, -1.0}, {-1.0, -1.0, -1.0}}),
+                        new Matrix<>(new Double[][]{{-1.0, -1.0, -1.0}, {-1.0, -1.0, -1.0}, {-1.0, -1.0, -1.0}}),
+                        new Matrix<>(new Double[][]{{-2.0, -2.0, -2.0}, {-2.0, -2.0, -2.0}, {-2.0, -2.0, -2.0}})}
         };
     }
 
     @Test(description = "Positive scenario of the matrix addition", dataProvider = "dataForMatrixAddition")
-    public void testOperation(Matrix mtrx1, Matrix mtrx2, Matrix expectedMtrx) throws MatrixException {
-        Matrix actual = matrixAddition.operation(mtrx1, mtrx2);
-        Matrix expected = expectedMtrx;
-        assertEquals(actual, expected);
+    public void testOperation(Matrix<Double> mtrx1, Matrix<Double> mtrx2, Matrix<Double> expectedMtrx) throws MatrixException {
+        Matrix<Double> actual = matrixAddition.operation(mtrx1, mtrx2);
+        assertEquals(actual, expectedMtrx);
     }
 }

@@ -2,14 +2,11 @@ package by.training.task03.service.impl;
 
 import by.training.task03.bean.Matrix;
 import by.training.task03.bean.MatrixException;
-import by.training.task03.dao.DAOFactory;
-import by.training.task03.dao.MatrixDao;
 import by.training.task03.service.OperationWithMatrix;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class MatrixMultiply implements OperationWithMatrix {
-    private final DAOFactory daoFactory = DAOFactory.getInstance();
     private static final Logger logger = LogManager.getLogger(MatrixMultiply.class);
 
     /**
@@ -18,29 +15,21 @@ public class MatrixMultiply implements OperationWithMatrix {
      * @return matrix result
      */
     @Override
-    public Matrix<Number> operation(Matrix<Number> matrix1, Matrix<Number> matrix2) {
-        if (matrix1 == null) {
-            MatrixDao matrixDao1 = daoFactory.getFileMatrix1Dao();
-            matrix1 = matrixDao1.saveMatrix();
-        }
-        if (matrix2 == null) {
-            MatrixDao matrixDao2 = daoFactory.getFileMatrix2Dao();
-            matrix2 = matrixDao2.saveMatrix();
-        }
+    public Matrix<Double> operation(Matrix<Double> matrix1, Matrix<Double> matrix2) {
         int v = matrix1.getVerticalSize();
         int h = matrix2.getHorizontalSize();
         int controlSize = matrix1.getHorizontalSize();
         if (controlSize != matrix2.getVerticalSize()) {
             logger.warn("Size of matrix could be equals because it's multiply!");
         }
-        Matrix result = null;
+        Matrix<Double> result = null;
         try {
-            result = new Matrix<>(Number.class, v, h);
+            result = new Matrix<>(Double.class, v, h);
             for (int i = 0; i < v; i++) {
                 for (int j = 0; j < h; j++) {
                     double value = 0;
                     for (int k = 0; k < controlSize; k++) {
-                        value += matrix1.getElement(i, k).doubleValue() * matrix2.getElement(k, j).doubleValue();
+                        value += matrix1.getElement(i, k) * matrix2.getElement(k, j);
                     }
                     result.setElement(i, j, value);
                 }
