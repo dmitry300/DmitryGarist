@@ -3,32 +3,27 @@ package by.training.task04.service.impl;
 import by.training.task04.bean.Account;
 import by.training.task04.bean.Bank;
 import by.training.task04.bean.Client;
-import by.training.task04.dao.DAOFactory;
 import by.training.task04.service.Sorting;
 
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+
 public class SortClientAccount implements Sorting {
-    private final DAOFactory daoFactory = DAOFactory.getInstance();
 
     @Override
-    public Account[] sortAccount(int idClient) {
-        Bank bank = daoFactory.getBankDao().addAccount();
-        Account[] sortAccounts = null;
+    public List<Account> sortAccount(Bank bank) {
+        List<Account> sortAccounts = new LinkedList<>();
         for (Client i : bank.getClients()) {
-            if (idClient == i.getIdClient()) {
-                sortAccounts = i.getAccounts();
-            }
+            sortAccounts.addAll(i.getAccounts());
         }
-        if (sortAccounts != null) {
-            for (int i = 0; i < sortAccounts.length - 1; i++) {
-                for (int j = 0; j < i; j++) {
-                    if (sortAccounts[j].getBalance  () < sortAccounts[j + 1].getBalance()) {
-                        Account tmp = sortAccounts[j];
-                        sortAccounts[j] = sortAccounts[j + 1];
-                        sortAccounts[j + 1] = tmp;
-                    }
-                }
+        sortAccounts.sort(new Comparator<>() {//сортировка всех счетов по балансу по возрастанию.
+
+            @Override
+            public int compare(Account o1, Account o2) {
+                return o1.getBalance() - o2.getBalance();
             }
-        }
+        });
         return sortAccounts;
     }
 }

@@ -1,8 +1,10 @@
 package by.training.task04.service;
 
 import by.training.task04.bean.Account;
-import by.training.task04.bean.Client;
+import by.training.task04.bean.Bank;
+
+import java.util.List;
 
 public interface Finding {
-    Account[] findAccount(int idClient);
+    List<Account> findAccount(Bank bank, int idClient);
 }

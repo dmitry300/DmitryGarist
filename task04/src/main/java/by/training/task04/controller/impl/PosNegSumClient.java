@@ -1,18 +1,16 @@
 package by.training.task04.controller.impl;
 
-import by.training.task04.controller.Command;
-import by.training.task04.service.SeparateSum;
+import by.training.task04.controller.CommandBalance;
+import by.training.task04.service.SeparateSumLoad;
 import by.training.task04.service.ServiceFactory;
 
-import java.util.Arrays;
 
-public class PosNegSumClient implements Command {
+public class PosNegSumClient implements CommandBalance {
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     @Override
-    public String executeCommand(String idClient) {
-        SeparateSum separateSum = serviceFactory.getSeparateSum();
-        int[] result = separateSum.separateSum(Integer.parseInt(idClient));
-        return Arrays.toString(result);
+    public int[] executeCommand(String idClient) {
+        SeparateSumLoad separateSum = serviceFactory.getSeparateSum();
+        return separateSum.separateSum(Integer.parseInt(idClient));
     }
 }

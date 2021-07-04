@@ -1,24 +1,28 @@
 package by.training.task04.bean;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class Bank {
-    private Client[] clients;
+    private List<Client> clients;
 
     public Bank() {
 
     }
 
-    public Bank(Client[] clients) {
+//    public Bank(Client[] clients) {
+//        this.clients = clients;
+//    }
+
+    public Bank(List<Client> clients) {
         this.clients = clients;
     }
 
-    public Client[] getClients() {
+    public List<Client> getClients() {
         return clients;
     }
 
-    public void setClients(Client[] clients) {
+    public void setClients(List<Client> clients) {
         this.clients = clients;
     }
 
@@ -27,18 +31,18 @@ public class Bank {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Bank bank = (Bank) o;
-        return Arrays.equals(clients, bank.clients);
+        return Objects.equals(clients, bank.clients);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), clients);
+        return Objects.hash(clients);
     }
 
     @Override
     public String toString() {
         return "Bank{" +
-                "clients=" + Arrays.toString(clients) +
+                "clients=" + clients +
                 '}';
     }
 }

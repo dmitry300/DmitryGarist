@@ -1,14 +1,13 @@
 package by.training.task04.service.impl;
 
-import by.training.task04.dao.DAOFactory;
+import by.training.task04.bean.Bank;
 import by.training.task04.service.Blocking;
 
 public class BlockAccount implements Blocking {
-    private final DAOFactory daoFactory = DAOFactory.getInstance();
 
     @Override
-    public boolean block(int idAccount) {
-        for (var client : daoFactory.getBankDao().addAccount().getClients()) {
+    public boolean block(Bank bank, int idAccount) {
+        for (var client : bank.getClients()) {
             for (var account : client.getAccounts()) {
                 if (idAccount == account.getIdAccount()) {
                     account.setAccountStatus(false);
@@ -20,8 +19,8 @@ public class BlockAccount implements Blocking {
     }
 
     @Override
-    public boolean unblock(int idAccount) {
-        for (var client : daoFactory.getBankDao().addAccount().getClients()) {
+    public boolean unblock(Bank bank, int idAccount) {
+        for (var client : bank.getClients()) {
             for (var account : client.getAccounts()) {
                 if (idAccount == account.getIdAccount()) {
                     account.setAccountStatus(true);

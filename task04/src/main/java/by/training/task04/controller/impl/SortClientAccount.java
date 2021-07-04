@@ -1,17 +1,18 @@
 package by.training.task04.controller.impl;
 
 import by.training.task04.bean.Account;
-import by.training.task04.controller.Command;
-import by.training.task04.service.Sorting;
+import by.training.task04.controller.CommandAccount;
 import by.training.task04.service.ServiceFactory;
+import by.training.task04.service.SortingLoad;
 
-public class SortClientAccount implements Command {
+import java.util.List;
+
+public class SortClientAccount implements CommandAccount {
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     @Override
-    public String executeCommand(String idClient) {
-        Sorting sorting = serviceFactory.getSorting();
-        Account[] accounts = sorting.sortAccount(Integer.parseInt(idClient));
-        return accounts.toString();
+    public List<Account> executeCommand(String idClient) {
+        SortingLoad sorting = serviceFactory.getSorting();
+        return sorting.sortAccount();
     }
 }

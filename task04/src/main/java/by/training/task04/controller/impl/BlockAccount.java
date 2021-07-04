@@ -1,16 +1,15 @@
 package by.training.task04.controller.impl;
 
-import by.training.task04.controller.Command;
-import by.training.task04.service.Blocking;
+import by.training.task04.controller.CommandBlock;
+import by.training.task04.service.BlockingLoad;
 import by.training.task04.service.ServiceFactory;
 
-public class BlockAccount implements Command {
+public class BlockAccount implements CommandBlock {
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     @Override
-    public String executeCommand(String idClient) {
-        Blocking blocking = serviceFactory.getBlocking();
-        boolean result = blocking.block(Integer.parseInt(idClient));
-        return "Blocking is done, status of the account = " + result;
+    public boolean executeCommand(String idClient) {
+        BlockingLoad blocking = serviceFactory.getBlocking();
+        return blocking.block(Integer.parseInt(idClient));
     }
 }

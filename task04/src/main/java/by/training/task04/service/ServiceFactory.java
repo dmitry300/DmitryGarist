@@ -5,43 +5,43 @@ import by.training.task04.service.impl.*;
 public class ServiceFactory {
     private static final ServiceFactory instance = new ServiceFactory();
 
-    private final Blocking blocking = new BlockAccount();
-    private final Finding finding = new FindAccount();
-    private final SeparateSum separateSum = new PosAndNegSumClient();
-    private final Sorting sorting = new SortClientAccount();
-    private final TotalNegAndPosSum totalNegSum = new NegativeBalanceBank();
-    private final TotalNegAndPosSum totalPosSum = new PositiveBalanceBank();
-    private final TotalSumClient totalSumAccount = new TotalBalanceClient();
+    private final BlockingLoad blocking = new BlockAccountLoad();
+    private final FindingLoad finding = new FindAccountLoad();
+    private final SeparateSumLoad separateSum = new PosAndNegSumClientLoad();
+    private final SortingLoad sorting = new SortClientAccountLoad();
+    private final TotalNegAndPosSumLoad totalNegSum = new NegativeBalanceBankLoad();
+    private final TotalNegAndPosSumLoad totalPosSum = new PositiveBalanceBankLoad();
+    private final TotalSumClientLoad totalSumAccount = new TotalBalanceClientLoad();
 
     public static ServiceFactory getInstance() {
         return instance;
     }
 
-    public Blocking getBlocking() {
+    public BlockingLoad getBlocking() {
         return blocking;
     }
 
-    public Finding getFinding() {
+    public FindingLoad getFinding() {
         return finding;
     }
 
-    public SeparateSum getSeparateSum() {
+    public SeparateSumLoad getSeparateSum() {
         return separateSum;
     }
 
-    public Sorting getSorting() {
+    public SortingLoad getSorting() {
         return sorting;
     }
 
-    public TotalNegAndPosSum getTotalNegSum() {
+    public TotalNegAndPosSumLoad getTotalNegSum() {
         return totalNegSum;
     }
 
-    public TotalNegAndPosSum getTotalPosSum() {
+    public TotalNegAndPosSumLoad getTotalPosSum() {
         return totalPosSum;
     }
 
-    public TotalSumClient getTotalSumAccount() {
+    public TotalSumClientLoad getTotalSumAccount() {
         return totalSumAccount;
     }
 }

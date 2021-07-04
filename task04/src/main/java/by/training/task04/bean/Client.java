@@ -1,17 +1,16 @@
 package by.training.task04.bean;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class Client {
     private int idClient;
-    private Account[] accounts;
+    private List<Account> accounts;
 
     public Client() {
-
     }
 
-    public Client(Account[] accounts) {
+    public Client(List<Account> accounts) {
         this.accounts = accounts;
     }
 
@@ -23,11 +22,11 @@ public class Client {
         this.idClient = idClient;
     }
 
-    public Account[] getAccounts() {
+    public List<Account> getAccounts() {
         return accounts;
     }
 
-    public void setAccounts(Account[] accounts) {
+    public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
     }
 
@@ -36,11 +35,19 @@ public class Client {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Client client = (Client) o;
-        return Arrays.equals(accounts, client.accounts);
+        return idClient == client.idClient && Objects.equals(accounts, client.accounts);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), accounts);
+        return Objects.hash(super.hashCode(), idClient, accounts);
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "idClient=" + idClient +
+                ", accounts=" + accounts +
+                '}';
     }
 }

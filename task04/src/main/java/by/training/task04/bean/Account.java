@@ -54,5 +54,12 @@ public class Account {
         return Objects.hash(super.hashCode(), balance, accountStatus, idAccount);
     }
 
-
+    @Override
+    public String toString() {
+        return "Account{" +
+                "idAccount=" + idAccount +
+                ", balance=" + balance +
+                ", accountStatus=" + accountStatus +
+                '}';
+    }
 }
