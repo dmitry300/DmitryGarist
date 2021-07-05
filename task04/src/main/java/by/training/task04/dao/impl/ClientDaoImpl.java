@@ -10,8 +10,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class ClientDaoImpl implements ClientDao {
@@ -24,36 +23,29 @@ public class ClientDaoImpl implements ClientDao {
         Bank bank = new Bank(clients);
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new FileReader("C:/Users/KaMo User/IdeaProjects/task04/src/main/java/by/training/task04/data/dataForAccount.txt"));
+            br = new BufferedReader(new FileReader(fileName));
             String tmp;
-
             while ((tmp = br.readLine()) != null) {
-                Client client = new Client();
                 String[] s = tmp.split(String.valueOf(DELIMITER));
+                Client client = new Client();
                 client.setIdClient(Integer.parseInt(s[1]));
                 clients.add(client);
             }
 
-//            Set<Client> set = new LinkedHashSet<>(clients);
-//            clients.clear();
-//            clients.addAll(set);
-            for (Client i : clients) {
-                logger.info(i.toString());
-            }
-
-            for (int i = 0; i < clients.size() - 1; i++) {
+            for (int i = 0; i < clients.size() - 1; i++) { //убираем дублирующих клинетов с одинаковым Id
                 for (int j = i; j < clients.size(); j++) {
                     if (clients.get(i).getIdClient() == clients.get(j).getIdClient()) {
                         clients.remove(j);
                     }
                 }
             }
-
-            for (Client client : clients) {
-                logger.info(client.toString());
-            }
-
-            bank.setClients(clients);
+            clients.sort(new Comparator<Client>() { // сортируем по возрастанию,
+                @Override                           // для удобства чтения данных для них в последующем
+                public int compare(Client o1, Client o2) {
+                    return o1.getIdClient() - o2.getIdClient();
+                }
+            });
+            bank.setClients(clients); // передаем клиентов сущности банка
         } catch (IOException e) {
             logger.error(String.format("Error reading file %s", e));
         } finally {

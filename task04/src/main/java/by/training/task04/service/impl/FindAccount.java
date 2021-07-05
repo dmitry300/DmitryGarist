@@ -9,6 +9,11 @@ import java.util.List;
 
 public class FindAccount implements Finding {
 
+    /**
+     * @param bank     entity
+     * @param idClient
+     * @return accounts[] for certain client
+     */
     @Override
     public List<Account> findAccount(Bank bank, int idClient) {
         for (var client : bank.getClients()) {

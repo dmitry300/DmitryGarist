@@ -10,7 +10,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class SortClientAccount implements Sorting {
-
+    /**
+     * @param bank entity
+     * @return sorted array of accounts of all clients by balance ascending
+     */
     @Override
     public List<Account> sortAccount(Bank bank) {
         List<Account> sortAccounts = new LinkedList<>();

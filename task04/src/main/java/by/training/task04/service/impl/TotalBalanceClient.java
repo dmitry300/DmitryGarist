@@ -7,8 +7,13 @@ import by.training.task04.service.TotalSumClient;
 
 public class TotalBalanceClient implements TotalSumClient {
 
+    /**
+     * @param bank     entity
+     * @param idClient
+     * @return common balance of accounts for certain client
+     */
     @Override
-    public int totalSumAccount(Bank bank,int idClient) {
+    public int totalSumAccount(Bank bank, int idClient) {
         int totalSum = 0;
         for (Client i : bank.getClients()) {
             if (idClient == i.getIdClient()) {

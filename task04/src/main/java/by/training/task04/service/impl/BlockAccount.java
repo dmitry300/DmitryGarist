@@ -5,6 +5,12 @@ import by.training.task04.service.Blocking;
 
 public class BlockAccount implements Blocking {
 
+    /**
+     *
+     * @param bank entity that saves clients[]
+     * @param idAccount
+     * @return boolean false
+     */
     @Override
     public boolean block(Bank bank, int idAccount) {
         for (var client : bank.getClients()) {
@@ -17,7 +23,12 @@ public class BlockAccount implements Blocking {
         }
         return false;
     }
-
+    /**
+     *
+     * @param bank entity that saves clients[]
+     * @param idAccount
+     * @return boolean true
+     */
     @Override
     public boolean unblock(Bank bank, int idAccount) {
         for (var client : bank.getClients()) {
@@ -28,6 +39,6 @@ public class BlockAccount implements Blocking {
                 }
             }
         }
-        return false;
+        return true;
     }
 }

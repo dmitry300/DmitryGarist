@@ -6,6 +6,11 @@ import by.training.task04.bean.Client;
 import by.training.task04.service.SeparateSum;
 
 public class PosAndNegSumClient implements SeparateSum {
+    /**
+     * @param bank     entity
+     * @param idClient
+     * @return int{positive sum accounts,negative sum accounts}
+     */
     @Override
     public int[] separateSum(Bank bank, int idClient) {
         int[] posNegSum = new int[2];

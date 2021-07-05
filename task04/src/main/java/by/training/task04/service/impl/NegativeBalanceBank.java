@@ -6,7 +6,10 @@ import by.training.task04.bean.Client;
 import by.training.task04.service.TotalNegAndPosSum;
 
 public class NegativeBalanceBank implements TotalNegAndPosSum {
-
+    /**
+     * @param bank entity
+     * @return negative sum of account for all client
+     */
     @Override
     public int findTotalBalanceClient(Bank bank) {
         int negativeSum = 0;
