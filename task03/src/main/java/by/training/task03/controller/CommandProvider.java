@@ -5,7 +5,7 @@ import by.training.task03.controller.impl.*;
 import java.util.EnumMap;
 
 public class CommandProvider {
-    private final EnumMap<CommandName, Object> repository = new EnumMap<>(CommandName.class);
+    private final EnumMap<CommandName, Command> repository = new EnumMap<>(CommandName.class);
 
     CommandProvider() {
         repository.put(CommandName.BUBBLE_SORT_INCREASING, new BubbleSort());
@@ -29,7 +29,7 @@ public class CommandProvider {
         CommandName commandName;
         try {
             commandName = CommandName.valueOf(comName.toUpperCase());
-            return (Command) repository.get(commandName);
+            return repository.get(commandName);
         } catch (IllegalArgumentException | NullPointerException e) {
             e.printStackTrace();
         }

@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.EnumMap;
 
 public class CommandProvider {
-    private final EnumMap<CommandName, Object> repository = new EnumMap<>(CommandName.class);
+    private final EnumMap<CommandName, Command> repository = new EnumMap<>(CommandName.class);
     private static final Logger logger = LogManager.getLogger(CommandProvider.class);
 
     CommandProvider() {
@@ -22,14 +22,14 @@ public class CommandProvider {
     }
 
     Command getCommand(String name) {
-        CommandName commandName = null;
-        Command command = null;
+        CommandName commandName;
+        Command command;
         try {
             commandName = CommandName.valueOf(name.toUpperCase());
-            command = (Command) repository.get(commandName);
+            command = repository.get(commandName);
         } catch (IllegalArgumentException e) {
             logger.error("That command doesn't exist!");
-            repository.get(CommandName.WRONG_REQUEST);
+            command = repository.get(CommandName.WRONG_REQUEST);
         }
         return command;
     }

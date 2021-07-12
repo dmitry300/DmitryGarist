@@ -29,7 +29,7 @@ public class BankView {
 
     public void printResponseBalance(String request) {
         Controller controller = controlProvider.getController();
-        List<Integer> listBalance = new LinkedList<>((List) controller.execute(request));
+        List<Integer> listBalance = new LinkedList<>((List<Integer>) controller.execute(request));
         System.out.println("Ваш положительный бюджет составляет: " + listBalance.get(0));
         System.out.println("Ваш отрицательный бюджет составляет: " + listBalance.get(1));
         logger.info(String.format("[сумма счетов с пол. балансом, сумма счетов с отр. балансом]: %s", listBalance));
