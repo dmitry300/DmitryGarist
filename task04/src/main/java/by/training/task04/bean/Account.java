@@ -19,9 +19,12 @@ public class Account {
         this.idAccount = idAccount;
     }
 
-    public Account(int balance, boolean accountStatus) {
-        this.balance = balance;
+    public Account(boolean accountStatus) {
         this.accountStatus = accountStatus;
+    }
+
+    public Account(int balance) {
+        this.balance = balance;
     }
 
     public int getBalance() {

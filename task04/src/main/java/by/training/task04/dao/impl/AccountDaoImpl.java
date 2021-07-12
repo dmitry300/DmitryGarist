@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.util.Integers;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -25,8 +26,9 @@ public class AccountDaoImpl implements AccountDao {
         ClientDaoImpl clientDao = new ClientDaoImpl();
         Bank bank = clientDao.addClientData(fileName); // отдельный метод для загрузки клиентов
         BufferedReader br = null;
+        //String dir = System.getProperty("resources.data");
         try {
-            br = new BufferedReader(new FileReader(fileName));
+            br = new BufferedReader(new FileReader("C:/Users/KaMo User/IdeaProjects/task04/src/main/resources/data/" + fileName));
             String tmp;
             for (Client client : bank.getClients()) {
                 while ((tmp = br.readLine()) != null) {

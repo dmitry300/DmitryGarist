@@ -11,7 +11,7 @@ public class NegativeBalanceBank implements TotalNegAndPosSum {
      * @return negative sum of account for all client
      */
     @Override
-    public int findTotalBalanceClient(Bank bank) {
+    public Integer findTotalBalanceClient(Bank bank) {
         int negativeSum = 0;
         for (Client i : bank.getClients()) {
             for (Account account : i.getAccounts()) {

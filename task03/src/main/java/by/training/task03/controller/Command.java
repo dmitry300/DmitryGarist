@@ -5,5 +5,5 @@ import by.training.task03.bean.MatrixException;
 import java.io.IOException;
 
 public interface Command {
-    public String executeCommand() throws MatrixException, IOException;
+    public Object executeCommand() throws MatrixException, IOException;
 }

@@ -1,6 +1,7 @@
 package by.training.task03.bean;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class Array<T extends Number> {
     private T[] array;
@@ -67,7 +68,7 @@ public class Array<T extends Number> {
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(array);
+        return Objects.hash(super.hashCode(), array);
     }
 
     @Override

@@ -1,13 +1,18 @@
 package by.training.task03.controller.impl;
 
 import by.training.task03.bean.Array;
-import by.training.task03.controller.CommandArray;
-import by.training.task03.service.ServiceFactory;
+import by.training.task03.controller.Command;
+import by.training.task03.service.LoadingArray;
+import by.training.task03.service.factory.ServiceFactory;
+import by.training.task03.service.SortingMerge;
 
-public class MergeSortDecreasing implements CommandArray {
+public class MergeSortDecreasing implements Command {
     @Override
-    public Array<Double> executeCommand() {
+    public Object executeCommand() {
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
-        return serviceFactory.getSortingMergeLoad().sortDecreasing();
+        LoadingArray loader = serviceFactory.getLoaderArray();
+        Array<Double> array = loader.readArray();
+        SortingMerge sorting = serviceFactory.getSortingMerge();
+        return sorting.sortDecreasing(array, 0, array.getLength() - 1);
     }
 }

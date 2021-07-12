@@ -1,5 +1,6 @@
 package by.training.task04.bean;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -8,10 +9,16 @@ public class Client {
     private List<Account> accounts;
 
     public Client() {
+        accounts = new LinkedList<>();
     }
 
     public Client(List<Account> accounts) {
         this.accounts = accounts;
+    }
+
+    public Client(List<Account> accounts, int idClient) {
+        this.accounts = accounts;
+        this.idClient = idClient;
     }
 
     public int getIdClient() {
@@ -28,7 +35,7 @@ public class Client {
 
     public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
-    }
+    }//TODO добавлять по одному
 
     @Override
     public boolean equals(Object o) {

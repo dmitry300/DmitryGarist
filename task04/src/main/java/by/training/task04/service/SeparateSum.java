@@ -2,6 +2,8 @@ package by.training.task04.service;
 
 import by.training.task04.bean.Bank;
 
+import java.util.List;
+
 public interface SeparateSum {
-    int[] separateSum(Bank bank, int id);
+    List<Integer> separateSum(Bank bank, int id);
 }

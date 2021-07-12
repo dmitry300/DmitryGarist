@@ -2,16 +2,24 @@ package by.training.task03.controller.impl;
 
 import by.training.task03.bean.Matrix;
 import by.training.task03.bean.MatrixException;
-import by.training.task03.controller.CommandMatrix;
-import by.training.task03.service.OperationWithMatrixLoad;
-import by.training.task03.service.ServiceFactory;
+import by.training.task03.controller.Command;
+import by.training.task03.service.LoadingMatrix;
+import by.training.task03.service.OperationWithMatrix;
+import by.training.task03.service.factory.ServiceFactory;
 
-public class MatrixMultiply implements CommandMatrix {
+import java.util.LinkedList;
+import java.util.List;
+
+public class MatrixMultiply implements Command {
 
     @Override
-    public Matrix<Double> executeCommand() throws MatrixException {
+    public Object executeCommand() throws MatrixException {
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
-        OperationWithMatrixLoad operationWithMatrixLoad = serviceFactory.getMultiplyLoad();
-        return operationWithMatrixLoad.operation();
+        LoadingMatrix loader = serviceFactory.getLoaderMatrix();
+        List<Matrix<Double>> listMatrix = new LinkedList<>(loader.readTwoMatrix());
+        Matrix<Double> matrix1 = listMatrix.get(0);
+        Matrix<Double> matrix2 = listMatrix.get(1);
+        OperationWithMatrix operationWithMatrix = serviceFactory.getMultiply();
+        return operationWithMatrix.operation(matrix1, matrix2);
     }
 }

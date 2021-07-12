@@ -2,15 +2,18 @@ package by.training.task03.controller.impl;
 
 
 import by.training.task03.bean.Array;
-import by.training.task03.controller.CommandArray;
-import by.training.task03.service.ServiceFactory;
-import by.training.task03.service.SortingLoad;
+import by.training.task03.controller.Command;
+import by.training.task03.service.LoadingArray;
+import by.training.task03.service.factory.ServiceFactory;
+import by.training.task03.service.Sorting;
 
-public class BubbleSort implements CommandArray {
+public class BubbleSort implements Command {
     @Override
-    public Array<Double> executeCommand() {
+    public Object executeCommand() {
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
-        SortingLoad sortingLoad = serviceFactory.getSortingBubbleLoad();
-        return sortingLoad.sortIncreasing();
+        LoadingArray loader = serviceFactory.getLoaderArray();
+        Array<Double> array = loader.readArray();
+        Sorting sorting = serviceFactory.getSortingBubble();
+        return sorting.sortIncreasing(array);
     }
 }

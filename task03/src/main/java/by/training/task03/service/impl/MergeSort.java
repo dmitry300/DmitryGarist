@@ -1,8 +1,9 @@
 package by.training.task03.service.impl;
 
 import by.training.task03.bean.Array;
+import by.training.task03.service.SortingMerge;
 
-public class MergeSort {
+public class MergeSort implements SortingMerge {
 
     /**
      * @param array - input array

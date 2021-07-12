@@ -22,8 +22,9 @@ public class ClientDaoImpl implements ClientDao {
         List<Client> clients = new LinkedList<>();
         Bank bank = new Bank(clients);
         BufferedReader br = null;
+      //  String dir = System.getProperty("by.training.task04resources.data");
         try {
-            br = new BufferedReader(new FileReader(fileName));
+            br = new BufferedReader(new FileReader("C:/Users/KaMo User/IdeaProjects/task04/src/main/resources/data/" + fileName));
             String tmp;
             while ((tmp = br.readLine()) != null) {
                 String[] s = tmp.split(String.valueOf(DELIMITER));

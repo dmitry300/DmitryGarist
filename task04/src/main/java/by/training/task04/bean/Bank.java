@@ -1,5 +1,6 @@
 package by.training.task04.bean;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -7,12 +8,8 @@ public class Bank {
     private List<Client> clients;
 
     public Bank() {
-
+    clients = new LinkedList<>();
     }
-
-//    public Bank(Client[] clients) {
-//        this.clients = clients;
-//    }
 
     public Bank(List<Client> clients) {
         this.clients = clients;
@@ -36,7 +33,7 @@ public class Bank {
 
     @Override
     public int hashCode() {
-        return Objects.hash(clients);
+        return Objects.hash(super.hashCode(), clients);
     }
 
     @Override

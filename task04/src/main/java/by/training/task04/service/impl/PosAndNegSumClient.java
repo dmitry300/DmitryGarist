@@ -5,6 +5,9 @@ import by.training.task04.bean.Bank;
 import by.training.task04.bean.Client;
 import by.training.task04.service.SeparateSum;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class PosAndNegSumClient implements SeparateSum {
     /**
      * @param bank     entity
@@ -12,8 +15,8 @@ public class PosAndNegSumClient implements SeparateSum {
      * @return int{positive sum accounts,negative sum accounts}
      */
     @Override
-    public int[] separateSum(Bank bank, int idClient) {
-        int[] posNegSum = new int[2];
+    public List<Integer> separateSum(Bank bank, int idClient) {
+        List<Integer> posNegSum = new LinkedList<>();
         int positiveSum = 0;
         int negativeSum = 0;
         for (Client i : bank.getClients()) {
@@ -27,8 +30,8 @@ public class PosAndNegSumClient implements SeparateSum {
                 }
             }
         }
-        posNegSum[0] = positiveSum;
-        posNegSum[1] = negativeSum;
+        posNegSum.add(positiveSum);
+        posNegSum.add(negativeSum);
         return posNegSum;
     }
 }

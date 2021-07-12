@@ -1,18 +1,19 @@
 package by.training.task04.controller.impl;
 
-import by.training.task04.bean.Account;
-import by.training.task04.controller.CommandAccount;
-import by.training.task04.service.FindingLoad;
-import by.training.task04.service.ServiceFactory;
+import by.training.task04.bean.Bank;
+import by.training.task04.controller.Command;
+import by.training.task04.service.Finding;
+import by.training.task04.service.Loading;
+import by.training.task04.service.factory.ServiceFactory;
 
-import java.util.List;
-
-public class FindAccount implements CommandAccount {
+public class FindAccount implements Command {
     private final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     @Override
-    public List<Account> executeCommand(String idClient) {
-        FindingLoad finding = serviceFactory.getFinding();
-        return finding.findAccount(Integer.parseInt(idClient));
+    public Object executeCommand(String idClient, String fileName) {
+        Loading loading = serviceFactory.getLoading();
+        Bank bank = loading.readBank(fileName);
+        Finding finding = serviceFactory.getFinding();
+        return finding.findAccount(bank, Integer.parseInt(idClient));
     }
 }
