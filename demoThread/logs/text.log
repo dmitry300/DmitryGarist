@@ -1,0 +1,12 @@
+2021-07-21 18:06:51.550 [Thread-0] INFO  by.training.thread.helloworld.DemoThread - demo thread: hello world
+2021-07-21 18:06:51.550 [main] INFO  by.training.thread.helloworld.DemoThread - main thread: hello world
+2021-07-21 18:09:16.285 [main] INFO  by.training.thread.helloworld.DemoThread - main thread: hello world
+2021-07-21 18:09:16.285 [Thread-0] INFO  by.training.thread.helloworld.DemoThread - demo thread: hello world
+2021-07-21 18:09:22.449 [main] INFO  by.training.thread.helloworld.DemoThread - main thread: hello world
+2021-07-21 18:09:22.449 [Thread-0] INFO  by.training.thread.helloworld.DemoThread - demo thread: hello world
+2021-07-21 18:09:25.737 [Thread-0] INFO  by.training.thread.helloworld.DemoThread - demo thread: hello world
+2021-07-21 18:09:25.737 [main] INFO  by.training.thread.helloworld.DemoThread - main thread: hello world
+2021-07-21 18:09:29.167 [Thread-0] INFO  by.training.thread.helloworld.DemoThread - demo thread: hello world
+2021-07-21 18:09:29.167 [main] INFO  by.training.thread.helloworld.DemoThread - main thread: hello world
+2021-07-21 18:20:53.849 [daughter thread] INFO  by.training.thread.helloworld.DemoThread - demo thread: hello world
+2021-07-21 18:20:53.849 [main] INFO  by.training.thread.helloworld.DemoThread - main thread: hello world
