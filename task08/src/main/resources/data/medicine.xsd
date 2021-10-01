@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.training.by/bean"
+        xmlns:tns="http://www.training.by/bean"
+        elementFormDefault="qualified">
+
+    <element name="entity" type="tns:Entity" abstract="true"></element>
+    <element name="medicine" type="tns:Medicine" substitutionGroup="tns:entity"></element>
+
+    <element name="medicines">
+        <complexType>
+            <sequence>
+                <element ref="tns:entity"
+                         maxOccurs="unbounded"/>
+            </sequence>
+        </complexType>
+    </element>
+    <complexType name="Entity">
+        <sequence>
+            <element name="name" type="string"/>
+        </sequence>
+    </complexType>
+    <complexType name="Medicine">
+        <complexContent>
+            <extension base="tns:Entity">
+                <sequence>
+                    <element name="pharm" type="string"/>
+                    <element name="group" type="tns:Group"/>
+                    <element name="analogs">
+                        <complexType>
+                            <sequence>
+                                <element name="analog" type="string" maxOccurs="unbounded"/>
+                            </sequence>
+                        </complexType>
+                    </element>
+                    <element name="version" type="string"/>
+                    <element name="certificate" type="tns:Certificate"/>
+                    <element name="package" type="tns:Package"/>
+                    <element name="dosage" type="tns:Dosage"/>
+                </sequence>
+                <attribute name="id" type="int" use="required"/>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="Dosage">
+        <sequence>
+            <element name="dose" type="string"/>
+            <element name="frequency" type="string"/>
+        </sequence>
+    </complexType>
+    <complexType name="Package">
+        <sequence>
+            <element name="type" type="string"/>
+            <element name="amount" type="positiveInteger"/>
+            <element name="price" type="string"/>
+        </sequence>
+    </complexType>
+    <simpleType name="Group">
+        <restriction base="string">
+            <enumeration value="Analgesics"/>
+            <enumeration value="Antiviral"/>
+            <enumeration value="Tissue regeneration stimulant"/>
+        </restriction>
+    </simpleType>
+    <complexType name="Certificate">
+        <sequence>
+            <element name="number" type="nonNegativeInteger"/>
+            <element name="shelfLife" type="string"/>
+            <element name="registeringOrganization" type="string"/>
+        </sequence>
+    </complexType>
+    <simpleType name="shelfLife">
+        <restriction base="string">
+            <pattern value="([a-zA-Z])[a-zA-Z0-9]{6,9}"/>
+        </restriction>
+    </simpleType>
+
+
+</schema>

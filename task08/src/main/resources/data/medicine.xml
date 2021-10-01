@@ -1,0 +1,94 @@
+<?xml version ="1.0" encoding = "UTF-8"?>
+
+<medicines xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns="http://www.training.by/bean"
+           xsi:schemaLocation="http://www.training.by/bean medicine.xsd">
+    <medicine id="1">
+        <name>Citramon-Borimed</name>
+        <pharm>JSC "Borisovskuy plant of medicines" RB</pharm>
+        <group>Analgesics</group>
+        <analogs>
+            <analog>Askofen</analog>
+            <analog>Pharmadol</analog>
+            <analog>Ibuprofen</analog>
+        </analogs>
+        <version>Tablet</version>
+        <certificate>
+            <number>6</number>
+            <shelfLife>4 years</shelfLife>
+            <registeringOrganization>Ministry of Health of the Republic of Belarus</registeringOrganization>
+        </certificate>
+        <package>
+            <type>Contour cell packaging</type>
+            <amount>10</amount>
+            <price>0.55 ruble</price>
+        </package>
+        <dosage>
+            <dose>1-2</dose>
+            <frequency>4-6 times/day</frequency>
+        </dosage>
+    </medicine>
+    <medicine id="2">
+        <name>Angrimax</name>
+        <pharm>UE "Minskintercaps" RB</pharm>
+        <group>Antiviral</group>
+        <analogs>
+            <analog>Orvikold</analog>
+            <analog>Grippolek</analog>
+            <analog>Antigrippin</analog>
+        </analogs>
+        <version>Capsule</version>
+        <certificate>
+            <number>20</number>
+            <shelfLife>2 years</shelfLife>
+            <registeringOrganization>Ministry of Health of the Republic of Belarus</registeringOrganization>
+        </certificate>
+        <package>
+            <type>Contour cell packaging</type>
+            <amount>20</amount>
+            <price>6.02 ruble</price>
+        </package>
+        <dosage>
+            <dose>2</dose>
+            <frequency>4-6 times/day</frequency>
+        </dosage>
+    </medicine>
+    <medicine id="3">
+        <name>Bepanten</name>
+        <pharm>Bayer Consumer Care AG</pharm>
+        <group>Tissue regeneration stimulant</group>
+        <analogs>
+            <analog>Dexpanthenol</analog>
+            <analog>Panthenol</analog>
+            <analog>Pantoderm</analog>
+        </analogs>
+        <version>Salve</version>
+        <certificate>
+            <number>1</number>
+            <shelfLife>3 years</shelfLife>
+            <registeringOrganization>Ministry of Health of the Republic of Belarus</registeringOrganization>
+        </certificate>
+        <package>
+            <type>Aluminum tube in carton</type>
+            <amount>10</amount>
+            <price>18.5 ruble</price>
+        </package>
+        <dosage>
+            <dose>1</dose>
+            <frequency>1 times/day</frequency>
+        </dosage>
+    </medicine>
+</medicines>
+        <!--
+        Лекарственные препараты
+        Лекарственные препараты имеют следующие характеристики.
+        Name – наименование препарата.
+        Pharm – фирма-производитель.
+        Group – группа препаратов к которым относится лекарство (антибиотики, болеутоляющие, витамины и т.п.).
+        Analogs (может быть несколько) – содержит наименование аналога.
+        Versions – варианты исполнения (консистенция/вид: таблетки, капсулы, порошок, капли и т.п.). Для каждого варианта исполнения может быть несколько производителей лекарственных препаратов со следующими характеристиками:
+        Certificate – свидетельство о регистрации препарата (номер, даты выдачи/истечения действия, регистрирующая организация);
+        Package – упаковка (тип упаковки, количество в упаковке, цена за упаковку);
+        Dosage – дозировка препарата, периодичность приема.
+        Корневой элемент назвать Medicins.
+        -->
