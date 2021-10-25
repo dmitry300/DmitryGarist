@@ -19,12 +19,11 @@ public class ServiceListCommand implements Command {
 
     @Override
     public Router executeCommand(HttpServletRequest request) {
-        HttpSession session = request.getSession();
         try {
             List<Haircut> haircuts = serviceFactory.getHaircutService().findHaircuts();
             request.setAttribute("services",haircuts);
         } catch (ServiceException e) {
-            logg.error("Service exception: {}", e);
+            logg.error("Service exception: {}", e.getMessage());
         }
         return new Router(PagePath.SERVICES_PAGE, Router.RouterType.FORWARD);
     }

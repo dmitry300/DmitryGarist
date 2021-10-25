@@ -23,6 +23,8 @@ public class HaircutServiceImpl implements HaircutService {
             return haircutDao.findAll();
         } catch (DaoException e) {
             throw new ServiceException(e);
+        }finally {
+            transactionDao.endTransaction();
         }
     }
 }

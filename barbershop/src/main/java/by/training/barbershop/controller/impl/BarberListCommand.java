@@ -1,7 +1,6 @@
 package by.training.barbershop.controller.impl;
 
 import by.training.barbershop.bean.Barber;
-import by.training.barbershop.bean.Haircut;
 import by.training.barbershop.controller.Command;
 import by.training.barbershop.controller.PagePath;
 import by.training.barbershop.controller.Router;
@@ -11,7 +10,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public class BarberListCommand implements Command {
@@ -20,7 +18,6 @@ public class BarberListCommand implements Command {
 
     @Override
     public Router executeCommand(HttpServletRequest request) {
-        HttpSession session = request.getSession();
         try {
             List<Barber> barbers = serviceFactory.getBarberService().findBarbers();
             request.setAttribute("barbers",barbers);

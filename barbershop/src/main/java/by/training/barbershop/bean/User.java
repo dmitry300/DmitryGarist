@@ -1,11 +1,15 @@
 package by.training.barbershop.bean;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class User extends Entity {
+public class User extends Entity implements Serializable {
+    private static final long serialVersionUID = 2017964826433870L;
     private String login;
     private String password;
     private UserRole role;
+    private UserInfo userInfo;
+    private UserStatus userStatus;
 
     public User() {
     }
@@ -34,18 +38,34 @@ public class User extends Entity {
         this.role = role;
     }
 
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
+    }
+
+    public UserStatus getUserStatus() {
+        return userStatus;
+    }
+
+    public void setUserStatus(UserStatus userStatus) {
+        this.userStatus = userStatus;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         User user = (User) o;
-        return Objects.equals(login, user.login) && Objects.equals(password, user.password) && role == user.role;
+        return Objects.equals(login, user.login) && Objects.equals(password, user.password) && role == user.role && Objects.equals(userInfo, user.userInfo) && userStatus == user.userStatus;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), login, password, role);
+        return Objects.hash(super.hashCode(), login, password, role, userInfo, userStatus);
     }
 
     @Override
@@ -54,6 +74,8 @@ public class User extends Entity {
                 "login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +
+                ", userInfo=" + userInfo +
+                ", userStatus=" + userStatus +
                 '}';
     }
 }

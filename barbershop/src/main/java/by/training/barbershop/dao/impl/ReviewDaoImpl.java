@@ -2,6 +2,7 @@ package by.training.barbershop.dao.impl;
 
 import by.training.barbershop.bean.Barber;
 import by.training.barbershop.bean.Review;
+import by.training.barbershop.bean.User;
 import by.training.barbershop.bean.UserInfo;
 import by.training.barbershop.dao.ReviewDao;
 import by.training.barbershop.dao.exception.DaoException;
@@ -17,26 +18,26 @@ import java.util.List;
 
 public class ReviewDaoImpl extends AbstractDao implements ReviewDao {
     private static final Logger logg = LogManager.getLogger(ReviewDaoImpl.class);
-    private static final String SQL_SELECT_ALL_REVIEWS = "SELECT id,comment,comment_data,user_info_id,barber_id FROM reviews";
-    private static final String SQL_SELECT_REVIEW_BY_ID = "SELECT comment,comment_data,user_info_id,barber_id FROM reviews WHERE id = ?";
+    private static final String SQL_SELECT_ALL_REVIEWS = "SELECT id,comment,comment_data,user_id,barber_id FROM reviews";
+    private static final String SQL_SELECT_REVIEW_BY_ID = "SELECT comment,comment_data,user_id,barber_id FROM reviews WHERE id = ?";
     private static final String SQL_DELETE_REVIEW_BY_ID = "DELETE FROM reviews WHERE id = ?";
-    private static final String SQL_UPDATE_REVIEW_BY_ID = "UPDATE reviews set comment =?,comment_data=?,user_info_id=?,barber_id=? WHERE  id = ?";
-    private static final String SQL_INSERT_INTO_REVIEW = "INSERT INTO reviews(id,comment,comment_data,user_info_id,barber_id)" +
+    private static final String SQL_UPDATE_REVIEW_BY_ID = "UPDATE reviews set comment =?,comment_data=?,user_id=?,barber_id=? WHERE  id = ?";
+    private static final String SQL_INSERT_INTO_REVIEW = "INSERT INTO reviews(id,comment,comment_data,user_id,barber_id)" +
             "VALUES(?,?,?,?,?)";
 
     private void finding(List<Review> reviews, PreparedStatement statement) throws SQLException {
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
-            UserInfo userInfo = new UserInfo();
+            User user = new User();
             Barber barber = new Barber();
             Review review = new Review();
             review.setId(resultSet.getInt("id"));
             review.setComment(resultSet.getString("comment"));
             review.setCommentData(resultSet.getTimestamp("comment_data"));
             barber.setId(resultSet.getInt("barber_id"));
-            userInfo.setId(resultSet.getInt("user_info_id"));
+            user.setId(resultSet.getInt("user_id"));
             review.setBarber(barber);
-            review.setUserInfo(userInfo);
+            review.setUser(user);
             reviews.add(review);
         }
     }
@@ -65,15 +66,15 @@ public class ReviewDaoImpl extends AbstractDao implements ReviewDao {
             statement = connection.prepareStatement(SQL_SELECT_REVIEW_BY_ID);
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                UserInfo userInfo = new UserInfo();
+                User user = new User();
                 Barber barber = new Barber();
                 review.setId(resultSet.getInt("id"));
                 review.setComment(resultSet.getString("comment"));
                 review.setCommentData(resultSet.getTimestamp("comment_data"));
                 barber.setId(resultSet.getInt("barber_id"));
-                userInfo.setId(resultSet.getInt("user_info_id"));
+                user.setId(resultSet.getInt("user_id"));
                 review.setBarber(barber);
-                review.setUserInfo(userInfo);
+                review.setUser(user);
             }
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -130,7 +131,7 @@ public class ReviewDaoImpl extends AbstractDao implements ReviewDao {
             statement.setInt(1, review.getId());
             statement.setString(2, review.getComment());
             statement.setTimestamp(3, review.getCommentData());
-            statement.setInt(4, review.getUserInfo().getId());
+            statement.setInt(4, review.getUser().getId());
             statement.setInt(5, review.getBarber().getId());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
@@ -150,7 +151,7 @@ public class ReviewDaoImpl extends AbstractDao implements ReviewDao {
             statement.setInt(1, review.getId());
             statement.setString(2, review.getComment());
             statement.setTimestamp(3, review.getCommentData());
-            statement.setInt(4, review.getUserInfo().getId());
+            statement.setInt(4, review.getUser().getId());
             statement.setInt(5, review.getBarber().getId());
             statement.executeUpdate();
             int rowsUpdate = statement.executeUpdate();

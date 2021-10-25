@@ -2,7 +2,6 @@ package by.training.barbershop.service.impl;
 
 import by.training.barbershop.bean.Barber;
 import by.training.barbershop.dao.BarberDao;
-import by.training.barbershop.dao.HaircutDao;
 import by.training.barbershop.dao.TransactionDao;
 import by.training.barbershop.dao.exception.DaoException;
 import by.training.barbershop.dao.impl.AbstractDao;
@@ -23,6 +22,9 @@ public class BarberServiceImpl implements BarberService {
             return barberDao.findAll();
         } catch (DaoException e) {
             throw new ServiceException(e);
+        }finally {
+            transactionDao.endTransaction();
         }
+
     }
 }

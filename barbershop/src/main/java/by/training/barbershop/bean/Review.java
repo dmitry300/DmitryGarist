@@ -6,7 +6,7 @@ import java.util.Objects;
 public class Review extends Entity {
     private String comment;
     private Timestamp commentData;
-    private UserInfo userInfo;
+    private User user;
     private Barber barber;
 
     public String getComment() {
@@ -24,13 +24,14 @@ public class Review extends Entity {
     public void setCommentData(Timestamp commentData) {
         this.commentData = commentData;
     }
+    UserInfo userInfo = new UserInfo();
 
-    public UserInfo getUserInfo() {
-        return userInfo;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Barber getBarber() {
@@ -45,13 +46,14 @@ public class Review extends Entity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         Review review = (Review) o;
-        return Objects.equals(comment, review.comment) && Objects.equals(commentData, review.commentData) && Objects.equals(userInfo, review.userInfo) && Objects.equals(barber, review.barber);
+        return Objects.equals(comment, review.comment) && Objects.equals(commentData, review.commentData) && Objects.equals(user, review.user) && Objects.equals(barber, review.barber) && Objects.equals(userInfo, review.userInfo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(comment, commentData, userInfo, barber);
+        return Objects.hash(super.hashCode(), comment, commentData, user, barber, userInfo);
     }
 
     @Override
@@ -59,8 +61,9 @@ public class Review extends Entity {
         return "Review{" +
                 "comment='" + comment + '\'' +
                 ", commentData=" + commentData +
-                ", userInfo=" + userInfo +
+                ", user=" + user +
                 ", barber=" + barber +
+                ", userInfo=" + userInfo +
                 '}';
     }
 }

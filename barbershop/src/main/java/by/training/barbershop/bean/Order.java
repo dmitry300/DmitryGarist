@@ -5,13 +5,11 @@ import java.util.Objects;
 
 public class Order extends Entity {
     private Timestamp dateTime;
-   // private int userInfoId;
-    private UserInfo userInfo;
-  //  private int barberId;
+    private Timestamp dateTimePlane;
+    private User user;
     private Barber barber;
-   // private int haircutId;
     private Haircut haircut;
-
+    private OrderStatus status;
     public Order() {
     }
 
@@ -23,12 +21,20 @@ public class Order extends Entity {
         this.dateTime = dateTime;
     }
 
-    public UserInfo getUserInfo() {
-        return userInfo;
+    public Timestamp getDateTimePlane() {
+        return dateTimePlane;
     }
 
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
+    public void setDateTimePlane(Timestamp dateTimePlane) {
+        this.dateTimePlane = dateTimePlane;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Barber getBarber() {
@@ -47,27 +53,37 @@ public class Order extends Entity {
         this.haircut = haircut;
     }
 
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Order order = (Order) o;
-        return Objects.equals(dateTime, order.dateTime) && Objects.equals(userInfo, order.userInfo) && Objects.equals(barber, order.barber) && Objects.equals(haircut, order.haircut);
+        return Objects.equals(dateTime, order.dateTime) && Objects.equals(dateTimePlane, order.dateTimePlane) && Objects.equals(user, order.user) && Objects.equals(barber, order.barber) && Objects.equals(haircut, order.haircut) && status == order.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), dateTime, userInfo, barber, haircut);
+        return Objects.hash(super.hashCode(), dateTime, dateTimePlane, user, barber, haircut, status);
     }
 
     @Override
     public String toString() {
         return "Order{" +
                 "dateTime=" + dateTime +
-                ", userInfo=" + userInfo +
+                ", dateTimePlane=" + dateTimePlane +
+                ", user=" + user +
                 ", barber=" + barber +
                 ", haircut=" + haircut +
+                ", status=" + status +
                 '}';
     }
 }

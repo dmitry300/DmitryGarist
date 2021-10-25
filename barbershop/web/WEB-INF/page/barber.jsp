@@ -21,20 +21,20 @@
 <jsp:include page="header.jsp" flush="true"/>
 <c:choose>
     <c:when test="${not empty requestScope.barbers}">
-        <c:forEach items="${requestScope.barbers}" var="barber">
+        <c:forEach items="${requestScope.barbers}" var="user">
             <div class="align-middle d-flex w-100 align-items-center justify-content-center flex-column">
                 <div class="row">
                     <div class="col-md-6 card-body">
-                        <h5 class="card-title display-4">${barber.surname} ${barber.name} ${barber.patronymic}</h5>
+                        <h5 class="card-title display-4">${user.surname} ${user.name} ${user.patronymic}</h5>
                         <p class="card-text fs-5">
-                                ${barber.age} <fmt:message key="barber.age" bundle="${ rb }"/><br>
-                            <fmt:message key="barber.phone" bundle="${ rb }"/>: +${barber.phone}<br>
-                            <a href="${barber.tiktokLink}" class="card-link"><fmt:message key="barber.tiktok"
-                                                                                          bundle="${ rb }"/></a>
+                                ${user.age} <fmt:message key="barber.age" bundle="${ rb }"/><br>
+                            <fmt:message key="barber.phone" bundle="${ rb }"/>: +${user.phone}<br>
+                            <a href="${user.tiktokLink}" class="card-link"><fmt:message key="barber.tiktok"
+                                                                                        bundle="${ rb }"/></a>
                         </p>
                     </div>
                     <div class="col-md-6 card-body">
-                        <img src="${pageContext.request.contextPath}/${barber.photo}"
+                        <img src="${pageContext.request.contextPath}/${user.photo}"
                              class="card-img-top" alt="barber">
                     </div>
                 </div>

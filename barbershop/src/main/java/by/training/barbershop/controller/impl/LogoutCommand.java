@@ -11,6 +11,6 @@ public class LogoutCommand implements Command {
     @Override
     public Router executeCommand(HttpServletRequest request) {
         request.getSession().removeAttribute(SessionAttribute.USER);
-        return new Router(PagePath.HOME_PAGE, Router.RouterType.FORWARD);
+        return new Router(PagePath.HOME_PAGE_REDIRECT, Router.RouterType.REDIRECT);
     }
 }

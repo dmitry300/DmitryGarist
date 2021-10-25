@@ -10,15 +10,15 @@ public class TransactionDaoImpl implements TransactionDao {
     private Connection connection;
 
     public void initTransaction(AbstractDao dao, AbstractDao... daos) {
+        if (connection == null) {
+            connection = ConnectionPool.getInstance().getConnection();
+        }
         try {
-            if (connection == null) {
-                connection = ConnectionPool.getInstance().getConnection();
-            }
             connection.setAutoCommit(false);
-            dao.setConnection(connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        dao.setConnection(connection);
         for (AbstractDao daoElement : daos) {
             daoElement.setConnection(connection);
         }

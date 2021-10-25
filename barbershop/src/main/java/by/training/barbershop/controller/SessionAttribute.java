@@ -9,6 +9,7 @@ public class SessionAttribute {
     public static final String INFO_KEY = "info_key";
     public static final String IS_LOGIN_OR_PASSWORD_ERROR = "is_login_or_password_error";
     public static final String IS_SIGNUP_ERROR = "is_signup_error";
+    public static final String ACCOUNT_IS_BLOCKED = "account_is_blocked";
 
     private SessionAttribute() {
     }

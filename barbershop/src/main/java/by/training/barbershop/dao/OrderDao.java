@@ -6,10 +6,12 @@ import by.training.barbershop.dao.exception.DaoException;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface OrderDao extends Dao<Order>{
+public interface OrderDao extends Dao<Order> {
     List<Order> findAll() throws DaoException;
 
     Order findEntityById(Integer id) throws DaoException;
+
+    List<Order> findEntityByUserId(Integer userId) throws DaoException;
 
     boolean delete(Order t) throws DaoException;
 

@@ -35,6 +35,15 @@
         <filter-name>SaveCurrentPageFilter</filter-name>
         <servlet-name>controller</servlet-name>
     </filter-mapping>
+    <filter>
+        <filter-name>SessionAttributeFilter</filter-name>
+        <filter-class>by.training.barbershop.controller.filter.SessionAttributeFilter</filter-class>
+
+    </filter>
+    <filter-mapping>
+        <filter-name>SessionAttributeFilter</filter-name>
+        <servlet-name>controller</servlet-name>
+    </filter-mapping>
     <!--    <filter>-->
     <!--        <filter-name>PageRedirectFilter</filter-name>-->
     <!--        <filter-class>by.training.barbershop.controller.filter.PageRedirectFilter</filter-class>-->

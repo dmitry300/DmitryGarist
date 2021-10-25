@@ -17,8 +17,9 @@
                    href="${pageContext.request.contextPath}/controller?command=home"><fmt:message key="header.home"
                                                                                                   bundle="${ rb }"/></a>
                 <a class="nav-link " aria-current="page"
-                   href="${pageContext.request.contextPath}/controller?command=go_to_about_us"><fmt:message key="header.about_us"
-                                                                                                   bundle="${ rb }"/></a>
+                   href="${pageContext.request.contextPath}/controller?command=go_to_about_us"><fmt:message
+                        key="header.about_us"
+                        bundle="${ rb }"/></a>
                 <a class="nav-link " aria-current="page"
                    href="${pageContext.request.contextPath}/controller?command=services"><fmt:message
                         key="header.services"
@@ -40,13 +41,16 @@
                                 bundle="${ rb }"/></a>
                     </c:when>
                     <c:when test="${sessionScope.user.role eq UserRole.CLIENT}">
-                        <a class="nav-link " aria-current="page"
-                           href="${pageContext.request.contextPath}/controller?command=student_lesson_schedule">
+                        <a class="nav-link" aria-current="page"
+                           href="${pageContext.request.contextPath}/controller?command=order"><fmt:message
+                                key="order.do" bundle="${ rb }"/></a>
+                        <a review="button" class="btn btn-outline-primary me-2"
+                           href="${pageContext.request.contextPath}/controller?command=client_profile">
                             <fmt:message key="header.profile" bundle="${ rb }"/></a>
                     </c:when>
                     <c:when test="${sessionScope.user.role eq UserRole.ADMIN}">
-                        <a class="nav-link " aria-current="page"
-                           href="${pageContext.request.contextPath}/controller?command=all_lessons_page">
+                        <a review="button" class="btn btn-primary me-2"
+                           href="${pageContext.request.contextPath}/controller?command=client_profile">
                             <fmt:message key="header.profile" bundle="${ rb }"/>
                         </a>
                     </c:when>
@@ -54,7 +58,7 @@
                 <c:if test="${sessionScope.user != null}">
                     <a href="${pageContext.request.contextPath}/controller?command=logout"
                        review="button"
-                       class="btn btn-secondary"><fmt:message key="header.logout" bundle="${ rb }"/></a>
+                       class="btn btn-success"><fmt:message key="header.logout" bundle="${ rb }"/></a>
                 </c:if>
             </div>
         </div>

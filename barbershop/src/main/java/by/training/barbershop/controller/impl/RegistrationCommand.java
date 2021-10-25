@@ -3,11 +3,11 @@ package by.training.barbershop.controller.impl;
 import by.training.barbershop.bean.User;
 import by.training.barbershop.bean.UserInfo;
 import by.training.barbershop.bean.UserRole;
-import by.training.barbershop.controller.Command;
-import by.training.barbershop.controller.PagePath;
-import by.training.barbershop.controller.Router;
+import by.training.barbershop.bean.UserStatus;
+import by.training.barbershop.controller.*;
 import by.training.barbershop.service.ServiceFactory;
 import by.training.barbershop.service.exception.ServiceException;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,10 +36,12 @@ public class RegistrationCommand implements Command {
             birthday = Date.valueOf(birthdayStr);
         }
         String phone = request.getParameter("phone");
-        long parsePhone = serviceFactory.getUserServiceImpl().parseTel(phone);
+        long parsePhone = serviceFactory.getUserRequestValidation().parseTel(phone);
         UserRole userRole = UserRole.valueOf(role);
         HttpSession session = request.getSession();
-        if (!serviceFactory.getValidatorRepeatPassword().isSubmittedPassword(password, repeatPassword)) {
+        if (!serviceFactory.getUserRequestValidation().isSubmittedPassword(password, repeatPassword)) {
+            session.setAttribute(SessionAttribute.IS_SIGNUP_ERROR, true);
+            session.setAttribute(SessionAttribute.ERROR_KEY, BundleKey.SIGNUP_INVALID_REQUEST);
             return new Router(PagePath.REGISTRATION_PAGE_REDIRECT, Router.RouterType.REDIRECT);
         }
 
@@ -47,17 +49,24 @@ public class RegistrationCommand implements Command {
         user.setLogin(login);
         user.setPassword(password);
         user.setRole(userRole);
+        user.setUserStatus(UserStatus.PERMITTED);
         UserInfo userInfo = new UserInfo();
-        userInfo.setUser(user);
         userInfo.setName(name);
         userInfo.setSurname(surname);
         userInfo.setPatronymic(patronymic);
         userInfo.setEmail(email);
         userInfo.setPhone(parsePhone);
         userInfo.setBirthday(birthday);
+        user.setUserInfo(userInfo);
 
         try {
-            if (serviceFactory.getUserServiceImpl().addNewUser(userInfo)) {
+            if (serviceFactory.getUserServiceImpl().isLoginFreeForNewUser(login)) {
+                logg.log(Level.DEBUG, "Login already exists");
+                session.setAttribute(SessionAttribute.IS_SIGNUP_ERROR, true);
+                session.setAttribute(SessionAttribute.ERROR_KEY, BundleKey.SIGNUP_LOGIN_NOT_AVAILABLE);
+                return new Router(PagePath.REGISTRATION_PAGE_REDIRECT, Router.RouterType.REDIRECT);
+            }
+            if (serviceFactory.getUserServiceImpl().addNewUser(user)) {
                 return new Router(PagePath.HOME_PAGE, Router.RouterType.FORWARD);
             } else {
                 return new Router(PagePath.ERROR_500_PAGE, Router.RouterType.REDIRECT);
@@ -66,6 +75,5 @@ public class RegistrationCommand implements Command {
             logg.error("Error user registration: {} ", e.getMessage());
             return new Router("адрес страницы ошибки..", Router.RouterType.REDIRECT);
         }
-
     }
 }

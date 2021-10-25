@@ -1,6 +1,6 @@
-let password1 = document.getElementById("password");
-let password2 = document.getElementById("repeatPassword");
-let error_message = document.getElementById("passwords_mismatch");
+// let password1 = document.getElementById("password");
+// let password2 = document.getElementById("repeatPassword");
+// let error_message = document.getElementById("passwords_mismatch");
 (() => {
     'use strict';
 

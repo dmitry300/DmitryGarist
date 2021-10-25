@@ -136,14 +136,14 @@
                 </div>
             </div>
             <button id="signup_btn" type="submit" class="btn btn-success mt-2 mb-3" value="Registration"
-                    onClick="if (password1.value !== password2.value) alert('Пароли не совпадают');" >
+                    onClick="if (password1.value !== password2.value) alert('Пароли не совпадают');">
                 <fmt:message key="signup.button"
-                             bundle="${rb}"/></button>
-            <p class=" fs-6
-            "><fmt:message key="signup.have_account" bundle="${rb}"/>
-            <a class="login_link"
-               href="${pageContext.request.contextPath}/controller?command=go_to_login"><fmt:message
-                    key="login_page.login_button" bundle="${rb}"/></a>
+                             bundle="${rb}"/>
+            </button>
+            <p class=" fs-6"><fmt:message key="signup.have_account" bundle="${rb}"/>
+                <a class="login_link"
+                   href="${pageContext.request.contextPath}/controller?command=go_to_login"><fmt:message
+                        key="login_page.login_button" bundle="${rb}"/></a>
             </p>
         </form>
     </div>

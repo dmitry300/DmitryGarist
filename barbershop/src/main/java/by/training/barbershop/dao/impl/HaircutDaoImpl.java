@@ -64,9 +64,10 @@ public class HaircutDaoImpl extends AbstractDao implements HaircutDao {
         ResultSet resultSet = null;
         try {
             statement = connection.prepareStatement(SQL_SELECT_HAIRCUT_BY_ID);
+            statement.setInt(1, id);
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                haircut.setId(resultSet.getInt("id"));
+                haircut.setId(id);
                 haircut.setName(resultSet.getString("name"));
                 haircut.setTime(resultSet.getTime("time"));
                 haircut.setPrice(resultSet.getDouble("price"));

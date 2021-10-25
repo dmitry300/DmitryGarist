@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.util.Objects;
 
 public class UserInfo extends Entity {
-    private User user;
     private String name;
     private String surname;
     private String patronymic;
@@ -13,14 +12,6 @@ public class UserInfo extends Entity {
     private String email;
 
     public UserInfo() {
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public String getName() {
@@ -75,24 +66,24 @@ public class UserInfo extends Entity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         UserInfo userInfo = (UserInfo) o;
-        return phone == userInfo.phone && birthday == userInfo.birthday && Objects.equals(user, userInfo.user) && Objects.equals(name, userInfo.name) && Objects.equals(surname, userInfo.surname) && Objects.equals(patronymic, userInfo.patronymic) && Objects.equals(email, userInfo.email);
+        return phone == userInfo.phone && Objects.equals(name, userInfo.name) && Objects.equals(surname, userInfo.surname) && Objects.equals(patronymic, userInfo.patronymic) && Objects.equals(birthday, userInfo.birthday) && Objects.equals(email, userInfo.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(user, name, surname, patronymic, phone, birthday, email);
+        return Objects.hash(super.hashCode(), name, surname, patronymic, phone, birthday, email);
     }
 
     @Override
     public String toString() {
         return "UserInfo{" +
-                "user=" + user +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", patronymic='" + patronymic + '\'' +
                 ", phone=" + phone +
-                ", age=" + birthday +
+                ", birthday=" + birthday +
                 ", email='" + email + '\'' +
                 '}';
     }

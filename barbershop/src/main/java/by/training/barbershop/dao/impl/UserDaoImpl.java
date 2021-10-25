@@ -1,7 +1,9 @@
 package by.training.barbershop.dao.impl;
 
 import by.training.barbershop.bean.User;
+import by.training.barbershop.bean.UserInfo;
 import by.training.barbershop.bean.UserRole;
+import by.training.barbershop.bean.UserStatus;
 import by.training.barbershop.dao.UserDao;
 import by.training.barbershop.dao.exception.DaoException;
 import org.apache.logging.log4j.LogManager;
@@ -16,18 +18,18 @@ import java.util.List;
 
 public class UserDaoImpl extends AbstractDao implements UserDao {
     private static final Logger logg = LogManager.getLogger(UserDaoImpl.class);
-    private static final String SQL_SELECT_USER_BY_LOGIN_AND_PASSWORD = "SELECT id, role FROM users" +
-            " WHERE login = ? AND password = ?";
+    private static final String SQL_SELECT_USER_BY_LOGIN = "SELECT id, role,password,user_status FROM users" +
+            " WHERE login = ?";
     private static final String SQL_SELECT_ALL_USERS = "SELECT id,login," +
-            "password,role FROM users";
+            "password,role,user_status FROM users";
     private static final String SQL_SELECT_USER_BY_ID = "SELECT login," +
-            "password,role FROM users WHERE id = ?";
+            "password,role,user_status FROM users WHERE id = ?";
     private static final String SQL_DELETE_USER_BY_ID = "DELETE FROM users" +
             " WHERE id = ?";
     private static final String SQL_UPDATE_USER_BY_ID = "UPDATE users" +
-            " set login = ?,password= ?,role= ? WHERE  id = ?";
+            " SET login = ?, password= ?, role= ?, user_status = ? WHERE  id = ?";
     private static final String SQL_INSERT_INTO_USER = "INSERT INTO" +
-            " users(login,password,role)VALUES(?,?,?)";
+            " users(login,password,role,user_status)VALUES(?,?,?,?)";
 
     @Override
     public List<User> findAll() throws DaoException {
@@ -40,9 +42,13 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             while (resultSet.next()) {
                 User user = new User();
                 user.setId(resultSet.getInt("id"));
+                UserInfo userInfo = new UserInfo();
+                userInfo.setId(user.getId());
+                user.setUserInfo(userInfo);
                 user.setLogin(resultSet.getString("login"));
                 user.setPassword(resultSet.getString("password"));
                 user.setRole(UserRole.getById(resultSet.getInt("role")));
+                user.setUserStatus(UserStatus.getById(resultSet.getInt("user_status")));
                 users.add(user);
             }
             return users;
@@ -54,18 +60,21 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
         }
     }
 
-    public User findUserByLoginAndPassword(String login, String password) throws DaoException {
-        User user = new User();
+    public User findUserByLogin(String login) throws DaoException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            statement = connection.prepareStatement(SQL_SELECT_USER_BY_LOGIN_AND_PASSWORD);
+            statement = connection.prepareStatement(SQL_SELECT_USER_BY_LOGIN);
             statement.setString(1, login);
-            statement.setString(2, password);
             resultSet = statement.executeQuery();
+            User user = null;
             if (resultSet.next()) {
+                user = new User();
                 user.setId(resultSet.getInt("id"));
+                user.setLogin(login);
                 user.setRole(UserRole.getById(resultSet.getInt("role")));
+                user.setPassword(resultSet.getString("password"));
+                user.setUserStatus(UserStatus.getById(resultSet.getInt("user_status")));
             }
             return user;
         } catch (SQLException e) {
@@ -78,17 +87,20 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
     @Override
     public User findEntityById(Integer id) throws DaoException {
-        User user = new User();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
             statement = connection.prepareStatement(SQL_SELECT_USER_BY_ID);
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
+            User user = null;
             if (resultSet.next()) {
+                user = new User();
+                user.setId(id);
                 user.setLogin(resultSet.getString("login"));
                 user.setPassword(resultSet.getString("password"));
                 user.setRole(UserRole.getById(resultSet.getInt("role")));
+                user.setUserStatus(UserStatus.getById(resultSet.getInt("user_status")));
             }
             return user;
         } catch (SQLException e) {
@@ -145,8 +157,8 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getPassword());
             statement.setInt(3, user.getRole().getId());
+            statement.setInt(4, user.getUserStatus().getId());
             statement.executeUpdate();
-
             resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
                 id = resultSet.getInt(1);
@@ -163,14 +175,13 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     @Override
     public User update(User user) throws DaoException {
         PreparedStatement statement = null;
-        ResultSet resultSet = null;
         try {
-            statement = connection.prepareStatement(SQL_UPDATE_USER_BY_ID, Statement.RETURN_GENERATED_KEYS);
-            statement.setInt(1, user.getId());
-            statement.setString(2, user.getLogin());
-            statement.setString(3, user.getPassword());
-            statement.setInt(4, user.getRole().getId());
-            resultSet = statement.getGeneratedKeys();
+            statement = connection.prepareStatement(SQL_UPDATE_USER_BY_ID);
+            statement.setString(1, user.getLogin());
+            statement.setString(2, user.getPassword());
+            statement.setInt(3, user.getRole().getId());
+            statement.setInt(4, user.getUserStatus().getId());
+            statement.setInt(5, user.getId());
             int rowsUpdate = statement.executeUpdate();
             logg.info("Updated: {} rows", rowsUpdate);
             return user;
@@ -178,7 +189,6 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
             throw new DaoException(e);
         } finally {
             closeStatement(statement);
-            closeResultSet(resultSet);
         }
     }
 }

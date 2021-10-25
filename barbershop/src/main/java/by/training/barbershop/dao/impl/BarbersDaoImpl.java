@@ -3,7 +3,6 @@ package by.training.barbershop.dao.impl;
 import by.training.barbershop.bean.Barber;
 import by.training.barbershop.dao.BarberDao;
 import by.training.barbershop.dao.exception.DaoException;
-import by.training.barbershop.dao.pool.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,7 +19,7 @@ public class BarbersDaoImpl extends AbstractDao implements BarberDao {
             " patronymic, age, photo, phone, start_job, tiktok_link, end_job FROM barbers";
     private static final String SQL_SELECT_BARBER_BY_SURNAME = "SELECT id, name," +
             " patronymic, age, photo, phone, start_job, tiktok_link, end_job FROM barbers WHERE surname = ?";
-    private static final String SQL_SELECT_BARBER_BY_ID = "SELECT id, name," +
+    private static final String SQL_SELECT_BARBER_BY_ID = "SELECT name,surname," +
             " patronymic, age, photo, phone, start_job, tiktok_link, end_job FROM barbers WHERE id = ?";
     private static final String SQL_DELETE_BARBER_BY_ID = "DELETE FROM barbers" +
             " WHERE id = ?";
@@ -88,15 +87,16 @@ public class BarbersDaoImpl extends AbstractDao implements BarberDao {
         ResultSet resultSet = null;
         try {
             statement = connection.prepareStatement(SQL_SELECT_BARBER_BY_ID);
+            statement.setInt(1,id);
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                barber.setId(resultSet.getInt("id"));
+                barber.setId(id);
                 barber.setName(resultSet.getString("name"));
                 barber.setSurname(resultSet.getString("surname"));
                 barber.setPatronymic(resultSet.getString("patronymic"));
-                barber.setAge(resultSet.getInt("surname"));
+                barber.setAge(resultSet.getInt("age"));
                 barber.setPhoto(resultSet.getString("photo"));
-                barber.setPhone(resultSet.getInt("phone"));
+                barber.setPhone(resultSet.getLong("phone"));
                 // SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 barber.setStartJob(resultSet.getDate("start_job"));
                 barber.setEndJob(resultSet.getDate("end_job"));
@@ -105,8 +105,8 @@ public class BarbersDaoImpl extends AbstractDao implements BarberDao {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            closeResultSet(resultSet);
             closeStatement(statement);
+            closeResultSet(resultSet);
         }
         return barber;
     }

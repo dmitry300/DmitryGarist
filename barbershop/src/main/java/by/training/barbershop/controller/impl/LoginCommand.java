@@ -1,7 +1,7 @@
 package by.training.barbershop.controller.impl;
 
 import by.training.barbershop.bean.User;
-import by.training.barbershop.bean.UserRole;
+import by.training.barbershop.bean.UserStatus;
 import by.training.barbershop.controller.*;
 import by.training.barbershop.service.ServiceFactory;
 import by.training.barbershop.service.exception.ServiceException;
@@ -27,18 +27,16 @@ public class LoginCommand implements Command {
                 session.setAttribute(SessionAttribute.ERROR_KEY, BundleKey.LOGIN_OR_PASSWORD_ERROR);
                 return new Router(PagePath.LOGIN_PAGE_REDIRECT, Router.RouterType.REDIRECT);
             }
+            if (user.getUserStatus().equals(UserStatus.BLOCKED)){
+                session.setAttribute(SessionAttribute.ACCOUNT_IS_BLOCKED,true);
+                session.setAttribute(SessionAttribute.ERROR_KEY,BundleKey.LOGIN_USER_BLOCKED);
+                return new Router(PagePath.LOGIN_PAGE_REDIRECT, Router.RouterType.REDIRECT);
+            }
             session.setAttribute(SessionAttribute.USER, user);
-            UserRole userRole = user.getRole();
-//            if(userRole==UserRole.ADMIN){
-//                return new Router(PagePath.,Router.RouterType.REDIRECT);
-//            }
-//            if(userRole==UserRole.CLIENT){
-//                return new Router(PagePath.,Router.RouterType.REDIRECT);
-//            }
+            return new Router(PagePath.HOME_PAGE_REDIRECT, Router.RouterType.REDIRECT);
         } catch (ServiceException e) {
             logg.error("Error finding registered user, {} ", e.getMessage());
             return new Router(PagePath.ERROR_500_PAGE, Router.RouterType.REDIRECT);
         }
-        return null;
     }
 }
