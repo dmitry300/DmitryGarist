@@ -19,5 +19,3 @@ ___
     * Edit barbers
     * Edit orders
     * Remove any review
-
-![barbershop](sql/databasepng/db.png)
