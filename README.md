@@ -14,7 +14,7 @@ ___
     * Make/delete/change order
     * Write/change/delete review about barber
 * Admin
-    * delete/block user
+    * block user
     * Edit services
     * Edit barbers
     * Edit orders
