@@ -31,13 +31,15 @@ public class RegistrationCommand implements Command {
         String patronymic = request.getParameter("patronymic");
         String email = request.getParameter("email");
         String birthdayStr = request.getParameter("birthday");
+        String phone = request.getParameter("phone");
+
         Date birthday = null;
         if (birthdayStr != null && !birthdayStr.equals("")) {
             birthday = Date.valueOf(birthdayStr);
         }
-        String phone = request.getParameter("phone");
         long parsePhone = serviceFactory.getUserRequestValidation().parseTel(phone);
         UserRole userRole = UserRole.valueOf(role);
+
         HttpSession session = request.getSession();
         if (!serviceFactory.getUserRequestValidation().isSubmittedPassword(password, repeatPassword)) {
             session.setAttribute(SessionAttribute.IS_SIGNUP_ERROR, true);

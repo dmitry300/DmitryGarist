@@ -21,20 +21,26 @@
 <jsp:include page="header.jsp" flush="true"/>
 <c:choose>
     <c:when test="${not empty requestScope.barbers}">
-        <c:forEach items="${requestScope.barbers}" var="user">
-            <div class="align-middle d-flex w-100 align-items-center justify-content-center flex-column">
+        <c:forEach items="${requestScope.barbers}" var="barber" >
+            <div class="align-middle d-flex w-100 flex-column">
                 <div class="row">
-                    <div class="col-md-6 card-body">
-                        <h5 class="card-title display-4">${user.surname} ${user.name} ${user.patronymic}</h5>
+                    <div class="col-md-6 card-body ps-lg-5 align-content-end">
+                        <h5 class="card-title display-4">${barber.surname} ${barber.name} ${barber.patronymic}</h5>
                         <p class="card-text fs-5">
-                                ${user.age} <fmt:message key="barber.age" bundle="${ rb }"/><br>
-                            <fmt:message key="barber.phone" bundle="${ rb }"/>: +${user.phone}<br>
-                            <a href="${user.tiktokLink}" class="card-link"><fmt:message key="barber.tiktok"
-                                                                                        bundle="${ rb }"/></a>
+                                ${barber.age} <fmt:message key="barber.birthday" bundle="${ rb }"/><br>
+                            <fmt:message key="barber.phone" bundle="${ rb }"/>: +${barber.phone}<br>
+                            <a href="${barber.tiktokLink}" class="card-link m-1"><fmt:message key="barber.tiktok"
+                                                                                          bundle="${ rb }"/></a><br>
+                            <c:if test="${not empty sessionScope.user}">
+                                <a class="btn btn-primary m-1"
+                                   href="${pageContext.request.contextPath}/controller?command=go_to_review&barberId=${barber.id}"><fmt:message
+                                        key="review.button"
+                                        bundle="${ rb }"/></a>
+                            </c:if>
                         </p>
                     </div>
                     <div class="col-md-6 card-body">
-                        <img src="${pageContext.request.contextPath}/${user.photo}"
+                        <img src="${pageContext.request.contextPath}/img?path=${barber.photo}"
                              class="card-img-top" alt="barber">
                     </div>
                 </div>

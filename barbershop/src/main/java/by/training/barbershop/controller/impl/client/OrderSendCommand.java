@@ -34,7 +34,7 @@ public class OrderSendCommand implements Command {
         LocalDateTime localDateTime = LocalDateTime.of(localDate, localTime);
         HttpSession session = request.getSession();
         if (!DateTimeValidator.isValidDateTime(localDateTime)) {
-            session.setAttribute("is_not_dateTime_valid", true);
+            session.setAttribute(SessionAttribute.IS_NOT_DATA_TIME_VALID, true);
             session.setAttribute(SessionAttribute.ERROR_KEY, BundleKey.ORDER_INVALID_DATE);
             return new Router(PagePath.ORDER_PAGE_REDIRECT, Router.RouterType.REDIRECT);
         }

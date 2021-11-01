@@ -1,6 +1,7 @@
 package by.training.barbershop.dao;
 
 import by.training.barbershop.bean.Order;
+import by.training.barbershop.bean.OrderStatus;
 import by.training.barbershop.dao.exception.DaoException;
 
 import java.sql.SQLException;
@@ -12,6 +13,8 @@ public interface OrderDao extends Dao<Order> {
     Order findEntityById(Integer id) throws DaoException;
 
     List<Order> findEntityByUserId(Integer userId) throws DaoException;
+
+    List<Order> findEntityByStatus(OrderStatus status) throws DaoException;
 
     boolean delete(Order t) throws DaoException;
 

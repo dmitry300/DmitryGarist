@@ -19,8 +19,8 @@ public class HaircutDaoImpl extends AbstractDao implements HaircutDao {
     private static final String SQL_SELECT_HAIRCUT_BY_ID = "SELECT name,time,price FROM haircuts WHERE id = ?";
     private static final String SQL_DELETE_HAIRCUT_BY_ID = "DELETE FROM haircuts WHERE id = ?";
     private static final String SQL_UPDATE_HAIRCUT_BY_ID = "UPDATE haircuts set name = ?, time = ?, price = ? WHERE  id = ?";
-    private static final String SQL_INSERT_INTO_HAIRCUTS = "INSERT INTO haircuts(id,name,time,price)" +
-            "VALUES(?,?,?,?)";
+    private static final String SQL_INSERT_INTO_HAIRCUTS = "INSERT INTO haircuts(name,time,price)" +
+            "VALUES(?,?,?)";
 
     private void finding(List<Haircut> haircuts, PreparedStatement statement) throws SQLException {
         ResultSet resultSet = statement.executeQuery();
@@ -32,14 +32,6 @@ public class HaircutDaoImpl extends AbstractDao implements HaircutDao {
             haircut.setPrice(resultSet.getDouble("price"));
             haircuts.add(haircut);
         }
-    }
-
-    private void haircutSetStatement(Haircut haircut, PreparedStatement statement) throws SQLException {
-        statement.setInt(1, haircut.getId());
-        statement.setString(2, haircut.getName());
-        statement.setTime(2, haircut.getTime());
-        statement.setDouble(4, haircut.getPrice());
-        statement.executeUpdate();
     }
 
     @Override
@@ -59,26 +51,28 @@ public class HaircutDaoImpl extends AbstractDao implements HaircutDao {
 
     @Override
     public Haircut findEntityById(Integer id) throws DaoException {
-        Haircut haircut = new Haircut();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
             statement = connection.prepareStatement(SQL_SELECT_HAIRCUT_BY_ID);
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
+            Haircut haircut = null;
             if (resultSet.next()) {
+                haircut = new Haircut();
                 haircut.setId(id);
                 haircut.setName(resultSet.getString("name"));
                 haircut.setTime(resultSet.getTime("time"));
                 haircut.setPrice(resultSet.getDouble("price"));
             }
+            return haircut;
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
             closeStatement(statement);
             closeResultSet(resultSet);
         }
-        return haircut;
+
     }
 
     @Override
@@ -122,16 +116,24 @@ public class HaircutDaoImpl extends AbstractDao implements HaircutDao {
     @Override
     public int create(Haircut haircut) throws DaoException {
         PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        int id = 0;
         try {
             statement = connection.prepareStatement(SQL_INSERT_INTO_HAIRCUTS, Statement.RETURN_GENERATED_KEYS);
-            haircutSetStatement(haircut, statement);
+            statement.setString(1, haircut.getName());
+            statement.setTime(2, haircut.getTime());
+            statement.setDouble(3, haircut.getPrice());
             statement.executeUpdate();
-            ResultSet resultSet = statement.getGeneratedKeys();
-            return resultSet.getInt(1);
+            resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                id = resultSet.getInt(1);
+            }
+            return id;
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
             closeStatement(statement);
+            closeResultSet(resultSet);
         }
     }
 
@@ -140,7 +142,11 @@ public class HaircutDaoImpl extends AbstractDao implements HaircutDao {
         PreparedStatement statement = null;
         try {
             statement = connection.prepareStatement(SQL_UPDATE_HAIRCUT_BY_ID);
-            haircutSetStatement(haircut, statement);
+            statement.setString(1, haircut.getName());
+            statement.setTime(2, haircut.getTime());
+            statement.setDouble(3, haircut.getPrice());
+            statement.setInt(4, haircut.getId());
+            statement.executeUpdate();
             int rowsUpdate = statement.executeUpdate();
             logg.info("Updated: {} rows", rowsUpdate);
             return haircut;

@@ -21,7 +21,6 @@ public class ChangeOrderStatusCommand implements Command {
         String status = request.getParameter("status_order");
         String orderId = request.getParameter("orderId");
         String userIdParameter = request.getParameter("userId");
-        int userId = Integer.parseInt(userIdParameter);
         try {
             Order order = serviceFactory.getOrderService().findOrderById(Integer.parseInt(orderId));
             if (order == null) {
@@ -30,10 +29,14 @@ public class ChangeOrderStatusCommand implements Command {
             if (!serviceFactory.getOrderService().changeStatusOrder(order, OrderStatus.valueOf(status.toUpperCase()))) {
                 return new Router(PagePath.ERROR_404_PAGE, Router.RouterType.FORWARD);
             }
+            if (userIdParameter == null) {
+                return new Router(PagePath.ACTIVE_ORDERS_PAGE_REDIRECT, Router.RouterType.REDIRECT);
+            }
 
         } catch (ServiceException e) {
             logg.error(e.getMessage());
         }
+        int userId = Integer.parseInt(userIdParameter);
         return new Router(PagePath.CLIENT_ORDERS_MANAGE_REDIRECT + userId, Router.RouterType.REDIRECT);
     }
 }

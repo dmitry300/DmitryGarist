@@ -1,8 +1,10 @@
 package by.training.barbershop.service.validator;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Period;
 import java.time.format.DateTimeParseException;
 
 public class DateTimeValidator {
@@ -44,8 +46,10 @@ public class DateTimeValidator {
         }
         return true;
     }
+
     public static boolean isValidDateTime(LocalDateTime localDateTime) {
         LocalDateTime now = LocalDateTime.now();
-        return localDateTime.isAfter(now);
+        return localDateTime.isAfter(now) && localDateTime.getHour() > 7
+                && localDateTime.getHour() < 21;
     }
 }

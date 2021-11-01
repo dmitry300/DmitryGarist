@@ -6,8 +6,10 @@ import by.training.barbershop.dao.exception.DaoException;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface ReviewDao extends Dao<Review>{
+public interface ReviewDao extends Dao<Review> {
     List<Review> findAll() throws DaoException;
+
+    List<Review> findReviewByBarberId(int barberId) throws DaoException;
 
     Review findEntityById(Integer id) throws DaoException;
 

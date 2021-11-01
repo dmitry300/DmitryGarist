@@ -16,13 +16,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="${pageContext.request.contextPath}/css/footer.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/client_profile.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/profile.css" rel="stylesheet">
 </head>
 <body>
 <jsp:include page="../header.jsp" flush="true"/>
 <div class="container-fluid">
     <div class="row flex-nowrap">
-        <jsp:include page="../client/client_navbar.jsp"/>
+        <jsp:include page="../navbar.jsp"/>
         <c:choose>
             <c:when test="${not empty sessionScope.user}">
                 <c:if test="${not empty requestScope.users}">
@@ -41,22 +41,22 @@
                                     <TH scope="col"><fmt:message key="client.view.orders" bundle="${ rb }"/></TH>
                                     <TH scope="col"><fmt:message key="client.status.change" bundle="${ rb }"/></TH>
                                 </TR>
-                                <c:forEach items="${requestScope.users}" var="user">
+                                <c:forEach items="${requestScope.users}" var="barber">
                                     <TR>
-                                        <c:if test="${user.userStatus eq UserStatus.PERMITTED}">
-                                            <TD class="table-success">${user.userStatus.name()}</TD>
+                                        <c:if test="${barber.userStatus eq UserStatus.PERMITTED}">
+                                            <TD class="table-success">${barber.userStatus.name()}</TD>
                                         </c:if>
-                                        <c:if test="${user.userStatus eq UserStatus.BLOCKED}">
-                                            <TD class="table-danger">${user.userStatus.name()}</TD>
+                                        <c:if test="${barber.userStatus eq UserStatus.BLOCKED}">
+                                            <TD class="table-danger">${barber.userStatus.name()}</TD>
                                         </c:if>
-                                        <TD>${user.userInfo.surname} ${user.userInfo.name} ${user.userInfo.patronymic}</TD>
-                                        <TD>${user.userInfo.birthday}</TD>
-                                        <TD>${user.userInfo.email}</TD>
-                                        <TD>+${user.userInfo.phone}</TD>
+                                        <TD>${barber.userInfo.surname} ${barber.userInfo.name} ${barber.userInfo.patronymic}</TD>
+                                        <TD>${barber.userInfo.birthday}</TD>
+                                        <TD>${barber.userInfo.email}</TD>
+                                        <TD>+${barber.userInfo.phone}</TD>
                                         <TD>
                                             <form action="controller" method="post">
                                                 <input type="hidden" name="command" value="view_orders">
-                                                <input type="hidden" name="userId" value="${user.id}">
+                                                <input type="hidden" name="userId" value="${barber.id}">
                                                 <button type="submit" name="view"><fmt:message key="view.orders"
                                                                                                bundle="${ rb }"/></button>
                                             </form>
@@ -64,14 +64,14 @@
                                         <TD>
                                             <form action="controller" method="post">
                                                 <input type="hidden" name="command" value="change_user_status">
-                                                <input type="hidden" name="userId" value="${user.id}">
+                                                <input type="hidden" name="userId" value="${barber.id}">
                                                 <button type="submit" name="change">
                                                     <c:choose>
-                                                        <c:when test="${user.userStatus eq UserStatus.BLOCKED}">
+                                                        <c:when test="${barber.userStatus eq UserStatus.BLOCKED}">
                                                             <fmt:message key="client.status.unblock"
                                                                          bundle="${ rb }"/>
                                                         </c:when>
-                                                        <c:when test="${user.userStatus eq UserStatus.PERMITTED}">
+                                                        <c:when test="${barber.userStatus eq UserStatus.PERMITTED}">
                                                             <fmt:message key="client.status.block"
                                                                          bundle="${ rb }"/>
                                                         </c:when>

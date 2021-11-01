@@ -13,7 +13,7 @@ import java.util.Properties;
 public class ConnectionFactory {
     private static final Logger log = LogManager.getLogger(ConnectionFactory.class);
     private static final Properties properties = new Properties();
-    private static final String DATABASES_PROPERTIES = "database.properties";
+    private static final String DATABASES_PROPERTIES = "properties/database.properties";
     private static final String PROPERTY_URL = "db.url";
     private static final String PROPERTY_DRIVER = "db.driver";
     private static final String PROPERTY_USER = "db.user";

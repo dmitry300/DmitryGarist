@@ -133,7 +133,7 @@ public class UserServiceImpl implements UserService {
             transactionDao.rollback();
             throw new ServiceException(e.getMessage());
         } finally {
-            transactionDao.end();
+            transactionDao.endTransaction();
         }
     }
 

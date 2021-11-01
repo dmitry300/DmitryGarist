@@ -11,7 +11,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public class GoToOrderCommand implements Command {
@@ -22,7 +21,7 @@ public class GoToOrderCommand implements Command {
     public Router executeCommand(HttpServletRequest request) {
         try {
             List<Haircut> haircuts = serviceFactory.getHaircutService().findHaircuts();
-            List<Barber> barbers = serviceFactory.getBarberService().findBarbers();
+            List<Barber> barbers = serviceFactory.getBarberService().findActiveBarbers();
             request.setAttribute("services", haircuts);
             request.setAttribute("barbers", barbers);
         } catch (ServiceException e) {

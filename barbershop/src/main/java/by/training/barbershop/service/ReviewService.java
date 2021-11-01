@@ -10,5 +10,11 @@ public interface ReviewService {
 
     Review findReviewById(int id) throws ServiceException;
 
-    int addReview(Review review) throws ServiceException;
+    void addReview(Review review) throws ServiceException;
+
+    boolean removeReview(int reviewId) throws ServiceException;
+
+    boolean updateReview(Review review) throws ServiceException;
+
+    List<Review> findReviewsByBarberId(int barberId) throws ServiceException;
 }

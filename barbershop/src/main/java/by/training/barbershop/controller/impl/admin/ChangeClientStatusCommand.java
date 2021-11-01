@@ -23,6 +23,7 @@ public class ChangeClientStatusCommand implements Command {
             }
         } catch (ServiceException e) {
             logg.error("Service exception: {}", e.getMessage());
+            return new Router(PagePath.ERROR_500_PAGE, Router.RouterType.REDIRECT);
         }
         return new Router(PagePath.CLIENT_LIST_PAGE_REDIRECT, Router.RouterType.REDIRECT);
     }

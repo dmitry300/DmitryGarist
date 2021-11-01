@@ -1,10 +1,8 @@
 package by.training.barbershop.bean;
 
-import java.io.Serializable;
 import java.util.Objects;
 
-public class User extends Entity implements Serializable {
-    private static final long serialVersionUID = 2017964826433870L;
+public class User extends Entity {
     private String login;
     private String password;
     private UserRole role;

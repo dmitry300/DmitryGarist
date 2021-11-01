@@ -15,20 +15,20 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="${pageContext.request.contextPath}/css/footer.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/client_profile.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/profile.css" rel="stylesheet">
 </head>
 <body>
 <jsp:include page="../header.jsp" flush="true"/>
 <div class="container-fluid">
     <div class="row flex-nowrap">
-        <jsp:include page="client_navbar.jsp"/>
+        <jsp:include page="../navbar.jsp"/>
         <c:choose>
             <c:when test="${not empty sessionScope.user}">
                 <div class="col py-3">
                     <div class="align-middle d-flex w-100 align-items-center justify-content-center flex-column">
                         <form class="d-flex flex-column needs-validation w-50" novalidate name="registrationForm"
                               action="controller" method="post">
-                            <input type="hidden" name="command" value="client_edit_personal_data" required>
+                            <input type="hidden" name="command" value="client_edit_personal_data">
                             <div class="mb-3">
                                 <div class="form-outline">
                                     <label for="login" class="form-label"><fmt:message key="signup.login"
@@ -120,7 +120,9 @@
                             <div class="mb-3">
                                 <label for="birthday" class="form-label"><fmt:message key="signup.birthday"
                                                                                       bundle="${rb}"/></label>
-                                <input type="date" placeholder="${sessionScope.user.userInfo.birthday}"
+                                <input type="text" placeholder="${sessionScope.user.userInfo.birthday}"
+                                       onfocus="(this.type='datetime-local')"
+                                       onblur="(this.type='text')"
                                        class="form-control"
                                        name="birthday" id="birthday"/><br>
                             </div>

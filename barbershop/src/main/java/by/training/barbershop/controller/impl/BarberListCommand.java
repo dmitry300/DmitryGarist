@@ -6,6 +6,7 @@ import by.training.barbershop.controller.PagePath;
 import by.training.barbershop.controller.Router;
 import by.training.barbershop.service.ServiceFactory;
 import by.training.barbershop.service.exception.ServiceException;
+import by.training.barbershop.service.validator.DateTimeValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,8 +20,8 @@ public class BarberListCommand implements Command {
     @Override
     public Router executeCommand(HttpServletRequest request) {
         try {
-            List<Barber> barbers = serviceFactory.getBarberService().findBarbers();
-            request.setAttribute("barbers",barbers);
+            List<Barber> barbers = serviceFactory.getBarberService().findActiveBarbers();
+            request.setAttribute("barbers", barbers);
         } catch (ServiceException e) {
             logg.error("Service exception: {}", e);
         }

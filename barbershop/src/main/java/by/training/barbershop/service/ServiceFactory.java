@@ -1,9 +1,6 @@
 package by.training.barbershop.service;
 
-import by.training.barbershop.service.impl.BarberServiceImpl;
-import by.training.barbershop.service.impl.HaircutServiceImpl;
-import by.training.barbershop.service.impl.OrderServiceImpl;
-import by.training.barbershop.service.impl.UserServiceImpl;
+import by.training.barbershop.service.impl.*;
 import by.training.barbershop.service.validator.UserRequestValidation;
 
 public class ServiceFactory {
@@ -13,9 +10,7 @@ public class ServiceFactory {
     private final HaircutService haircutService = new HaircutServiceImpl();
     private final BarberService barberService = new BarberServiceImpl();
     private final OrderService orderService = new OrderServiceImpl();
-
-    private ServiceFactory() {
-    }
+    private final ReviewService reviewService= new ReviewServiceImpl();
 
     public static ServiceFactory getInstance() {
         return instance;
@@ -39,5 +34,9 @@ public class ServiceFactory {
 
     public OrderService getOrderService() {
         return orderService;
+    }
+
+    public ReviewService getReviewService() {
+        return reviewService;
     }
 }

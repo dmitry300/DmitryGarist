@@ -15,55 +15,55 @@ import java.util.List;
 
 public class OrdersDaoImpl extends AbstractDao implements OrderDao {
     private static final Logger logg = LogManager.getLogger(OrdersDaoImpl.class);
-    private static final String SQL_SELECT_ALL_ORDERS = "SELECT id,status,date_time,date_time_plane, user_id," +
-            " barber_id, haircut_id FROM orders";
+    private static final String SQL_SELECT_ALL_ORDERS = "SELECT id, status, date_time, date_time_plane, user_id," +
+            " barber_id, haircut_id FROM orders ORDER BY date_time_plane";
     private static final String SQL_SELECT_ORDER_BY_ID = "SELECT user_id,status,date_time," +
             "date_time_plane,barber_id,haircut_id FROM orders WHERE id = ?";
+    private static final String SQL_SELECT_ORDER_BY_STATUS = "SELECT id, user_id, date_time, " +
+            "date_time_plane, barber_id, haircut_id FROM orders WHERE status = ? ORDER BY date_time_plane";
     private static final String SQL_SELECT_ORDER_BY_USER_ID = "SELECT id,status,date_time," +
-            "date_time_plane,barber_id,haircut_id FROM orders WHERE user_id = ? ORDER BY date_time DESC ";
+            "date_time_plane,barber_id,haircut_id FROM orders WHERE user_id = ? ORDER BY date_time_plane";
     private static final String SQL_DELETE_ORDER_BY_ID = "DELETE FROM orders WHERE id = ?";
     private static final String SQL_UPDATE_ORDER_BY_ID = "UPDATE orders SET status = ?, " +
             "date_time = ?, date_time_plane = ?, user_id = ?, barber_id = ?, haircut_id = ? WHERE  id = ?";
     private static final String SQL_INSERT_INTO_ORDERS = "INSERT INTO " +
             "orders(status,date_time,date_time_plane,user_id,barber_id,haircut_id) VALUES(?,?,?,?,?,?)";
 
-    private void finding(List<Order> orders, PreparedStatement statement) throws SQLException {
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-            Order order = new Order();
-            order.setId(resultSet.getInt("id"));
-            order.setDateTimePlane(resultSet.getTimestamp("date_time_plane"));
-            order.setDateTime(resultSet.getTimestamp("data_time"));
-            order.setStatus(OrderStatus.getById(resultSet.getInt("status")));
-            User user = new User();
-            user.setId(resultSet.getInt("user_id"));
-            user.getUserInfo().setId(user.getId());
-            order.setUser(user);
-            Barber barber = new Barber();
-            barber.setId(resultSet.getInt("barber_id"));
-            order.setBarber(barber);
-            Haircut haircut = new Haircut();
-            haircut.setId(resultSet.getInt("haircut_id"));
-            order.setHaircut(haircut);
-            orders.add(order);
-        }
-    }
-
     @Override
     public List<Order> findAll() throws DaoException {
-        List<Order> orders = new ArrayList<>();
         PreparedStatement statement = null;
+        ResultSet resultSet = null;
         try {
             statement = connection.prepareStatement(SQL_SELECT_ALL_ORDERS);
-            finding(orders, statement);
+            resultSet = statement.executeQuery();
+            List<Order> orders = new ArrayList<>();
+            while (resultSet.next()) {
+                Order order = new Order();
+                order.setId(resultSet.getInt("id"));
+                order.setStatus(OrderStatus.getById(resultSet.getInt("status")));
+                order.setDateTime(resultSet.getTimestamp("date_time"));
+                order.setDateTimePlane(resultSet.getTimestamp("date_time_plane"));
+                User user = new User();
+                user.setId(resultSet.getInt("user_id"));
+                order.setUser(user);
+                Barber barber = new Barber();
+                barber.setId(resultSet.getInt("barber_id"));
+                order.setBarber(barber);
+                Haircut haircut = new Haircut();
+                haircut.setId(resultSet.getInt("haircut_id"));
+                order.setHaircut(haircut);
+                orders.add(order);
+            }
+            return orders;
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
             closeStatement(statement);
+            closeResultSet(resultSet);
         }
-        return orders;
     }
 
+    @Override
     public List<Order> findEntityByUserId(Integer userId) throws DaoException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -99,15 +99,51 @@ public class OrdersDaoImpl extends AbstractDao implements OrderDao {
     }
 
     @Override
+    public List<Order> findEntityByStatus(OrderStatus status) throws DaoException {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            statement = connection.prepareStatement(SQL_SELECT_ORDER_BY_STATUS);
+            statement.setInt(1, status.getId());
+            resultSet = statement.executeQuery();
+            List<Order> orders = new ArrayList<>();
+            while (resultSet.next()) {
+                Order order = new Order();
+                order.setId(resultSet.getInt("id"));
+                order.setStatus(status);
+                order.setDateTime(resultSet.getTimestamp("date_time"));
+                order.setDateTimePlane(resultSet.getTimestamp("date_time_plane"));
+                User user = new User();
+                user.setId(resultSet.getInt("user_id"));
+                order.setUser(user);
+                Barber barber = new Barber();
+                barber.setId(resultSet.getInt("barber_id"));
+                order.setBarber(barber);
+                Haircut haircut = new Haircut();
+                haircut.setId(resultSet.getInt("haircut_id"));
+                order.setHaircut(haircut);
+                orders.add(order);
+            }
+            return orders;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            closeStatement(statement);
+            closeResultSet(resultSet);
+        }
+    }
+
+    @Override
     public Order findEntityById(Integer id) throws DaoException {
-        Order order = new Order();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
             statement = connection.prepareStatement(SQL_SELECT_ORDER_BY_ID);
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
+            Order order = null;
             if (resultSet.next()) {
+                order = new Order();
                 order.setId(id);
                 order.setStatus(OrderStatus.getById(resultSet.getInt("status")));
                 order.setDateTimePlane(resultSet.getTimestamp("date_time_plane"));
@@ -122,13 +158,13 @@ public class OrdersDaoImpl extends AbstractDao implements OrderDao {
                 haircut.setId(resultSet.getInt("haircut_id"));
                 order.setHaircut(haircut);
             }
+            return order;
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
             closeStatement(statement);
             closeResultSet(resultSet);
         }
-        return order;
     }
 
     @Override

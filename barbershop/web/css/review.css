@@ -1,0 +1,9 @@
+.review {
+    border-radius: 20px;
+    border: 2px solid #198754;
+}
+
+.review-text {
+    width: 540px;
+    word-wrap: break-word;
+}

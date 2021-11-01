@@ -22,7 +22,7 @@ public class ViewOrdersCommand implements Command {
 
         try {
             List<Order> orders = serviceFactory.getOrderService().findOrderByUserId(userId);
-            request.setAttribute("orders",orders);
+            request.setAttribute("orders", orders);
         } catch (ServiceException e) {
             logg.error(e.getMessage());
         }

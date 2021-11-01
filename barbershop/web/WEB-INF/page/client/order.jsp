@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link href="${pageContext.request.contextPath}../css/footer.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/footer.css" rel="stylesheet">
     <title><fmt:message key="company.name" bundle="${rb}"/></title>
 </head>
 <body>
@@ -33,7 +33,7 @@
     </c:if>
     <form class="needs-validation" novalidate name="registrationForm" action="controller"
           method="post">
-        <input type="hidden" name="command" value="order_waiting" required>
+        <input type="hidden" name="command" value="order_waiting">
         <div class="mb-3">
             <div class="form-outline">
                 <label for="service_select" class="form-label"><fmt:message key="order.service" bundle="${rb}"/></label>
@@ -52,8 +52,8 @@
                 <label for="barber_select" class="form-label"><fmt:message key="order.barber" bundle="${rb}"/></label>
                 <select class="form-select" id="barber_select" name="barber" required>
                     <option selected disabled value=""><fmt:message key="order.barber.option" bundle="${rb}"/></option>
-                    <c:forEach items="${requestScope.barbers}" var="user">
-                        <option value="${user.id}">${user.name} ${user.surname} </option>
+                    <c:forEach items="${requestScope.barbers}" var="barber">
+                        <option value="${barber.id}">${barber.name} ${barber.surname} </option>
                     </c:forEach>
                 </select>
                 <div class="invalid-feedback"><fmt:message key="order.barber" bundle="${rb}"/></div>
@@ -74,7 +74,7 @@
                     <option value="12:00" label="Обед">12:00</option>
                     <option value="17:00" label="Конец рабочего дня">17:00</option>
                 </datalist>
-                <input type="time" min="08:00" max="17:00" class="form-control" name="time"
+                <input type="time" min="08:00" max="20:00" class="form-control" name="time"
                        id="time_select" required/><br>
                 <div class="invalid-feedback"><fmt:message key="order.time" bundle="${rb}"/></div>
 

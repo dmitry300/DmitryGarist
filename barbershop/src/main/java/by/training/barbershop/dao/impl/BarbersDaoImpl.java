@@ -16,50 +16,47 @@ import java.util.List;
 public class BarbersDaoImpl extends AbstractDao implements BarberDao {
     private static final Logger logg = LogManager.getLogger(BarbersDaoImpl.class);
     private static final String SQL_SELECT_ALL_BARBERS = "SELECT id, name, surname," +
-            " patronymic, age, photo, phone, start_job, tiktok_link, end_job FROM barbers";
+            " patronymic, birthday, photo, phone, start_job, tiktok_link, end_job FROM barbers";
     private static final String SQL_SELECT_BARBER_BY_SURNAME = "SELECT id, name," +
-            " patronymic, age, photo, phone, start_job, tiktok_link, end_job FROM barbers WHERE surname = ?";
+            " patronymic, birthday, photo, phone, start_job, tiktok_link, end_job FROM barbers WHERE surname = ?";
     private static final String SQL_SELECT_BARBER_BY_ID = "SELECT name,surname," +
-            " patronymic, age, photo, phone, start_job, tiktok_link, end_job FROM barbers WHERE id = ?";
+            " patronymic, birthday, photo, phone, start_job, tiktok_link, end_job FROM barbers WHERE id = ?";
     private static final String SQL_DELETE_BARBER_BY_ID = "DELETE FROM barbers" +
             " WHERE id = ?";
-    private static final String SQL_UPDATE_BARBER_BY_ID = "UPDATE barbers set name = ?," +
-            "surname= ?,patronymic= ?,age= ?,photo=?,phone= ?,start_job= ?, end_job=?,tiktok_link=? WHERE  id = ?";
+    private static final String SQL_UPDATE_BARBER_BY_ID = "UPDATE barbers SET name = ?," +
+            "surname = ?, patronymic = ?, birthday = ?, photo = ?, phone = ?, start_job = ?, end_job = ?, tiktok_link  = ? WHERE  id = ?";
     private static final String SQL_INSERT_INTO_BARBERS = "INSERT INTO" +
-            " barbers(name, surname, patronymic, age, photo, phone, start_job, tiktok_link, end_job)" +
+            " barbers(name, surname, patronymic, birthday, photo, phone, start_job, tiktok_link, end_job)" +
             "VALUES(?,?,?,?,?,?,?,?,?)";
-
-    private void finding(List<Barber> barbers, PreparedStatement statement) throws SQLException, DaoException {
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-            Barber barber = new Barber();
-            barber.setId(resultSet.getInt("id"));
-            barber.setName(resultSet.getString("name"));
-            barber.setSurname(resultSet.getString("surname"));
-            barber.setPatronymic(resultSet.getString("patronymic"));
-            barber.setAge(resultSet.getInt("age"));
-            barber.setPhoto(resultSet.getString("photo"));
-            barber.setPhone(resultSet.getLong("phone"));
-            // SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            barber.setStartJob(resultSet.getDate("start_job"));
-            barber.setEndJob(resultSet.getDate("end_job"));
-            barber.setTiktokLink(resultSet.getString("tiktok_link"));
-            barbers.add(barber);
-        }
-        closeResultSet(resultSet);
-    }
 
     public List<Barber> findUserBySurname(String surname) throws DaoException {
         List<Barber> barbers = new ArrayList<>();
         PreparedStatement statement = null;
+        ResultSet resultSet = null;
         try {
             statement = connection.prepareStatement(SQL_SELECT_BARBER_BY_SURNAME);
             statement.setString(1, surname);
-            finding(barbers, statement);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Barber barber = new Barber();
+                barber.setId(resultSet.getInt("id"));
+                barber.setName(resultSet.getString("name"));
+                barber.setSurname(resultSet.getString("surname"));
+                barber.setPatronymic(resultSet.getString("patronymic"));
+                barber.setBirthday(resultSet.getDate("birthday"));
+                barber.setPhoto(resultSet.getString("photo"));
+                barber.setPhone(resultSet.getLong("phone"));
+                // SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                barber.setStartJob(resultSet.getDate("start_job"));
+                barber.setEndJob(resultSet.getDate("end_job"));
+                barber.setTiktokLink(resultSet.getString("tiktok_link"));
+                barbers.add(barber);
+            }
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
             closeStatement(statement);
+            closeResultSet(resultSet);
         }
         return barbers;
     }
@@ -69,38 +66,24 @@ public class BarbersDaoImpl extends AbstractDao implements BarberDao {
     public List<Barber> findAll() throws DaoException {
         List<Barber> barbers = new ArrayList<>();
         PreparedStatement statement = null;
-        try {
-            statement = connection.prepareStatement(SQL_SELECT_ALL_BARBERS);
-            finding(barbers, statement);
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        } finally {
-            closeStatement(statement);
-        }
-        return barbers;
-    }
-
-    @Override
-    public Barber findEntityById(Integer id) throws DaoException {
-        Barber barber = new Barber();
-        PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            statement = connection.prepareStatement(SQL_SELECT_BARBER_BY_ID);
-            statement.setInt(1,id);
+            statement = connection.prepareStatement(SQL_SELECT_ALL_BARBERS);
             resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                barber.setId(id);
+            while (resultSet.next()) {
+                Barber barber = new Barber();
+                barber.setId(resultSet.getInt("id"));
                 barber.setName(resultSet.getString("name"));
                 barber.setSurname(resultSet.getString("surname"));
                 barber.setPatronymic(resultSet.getString("patronymic"));
-                barber.setAge(resultSet.getInt("age"));
+                barber.setBirthday(resultSet.getDate("birthday"));
                 barber.setPhoto(resultSet.getString("photo"));
                 barber.setPhone(resultSet.getLong("phone"));
                 // SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 barber.setStartJob(resultSet.getDate("start_job"));
                 barber.setEndJob(resultSet.getDate("end_job"));
                 barber.setTiktokLink(resultSet.getString("tiktok_link"));
+                barbers.add(barber);
             }
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -108,7 +91,39 @@ public class BarbersDaoImpl extends AbstractDao implements BarberDao {
             closeStatement(statement);
             closeResultSet(resultSet);
         }
-        return barber;
+        return barbers;
+    }
+
+    @Override
+    public Barber findEntityById(Integer id) throws DaoException {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            statement = connection.prepareStatement(SQL_SELECT_BARBER_BY_ID);
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+            Barber barber = null;
+            if (resultSet.next()) {
+                barber = new Barber();
+                barber.setId(id);
+                barber.setName(resultSet.getString("name"));
+                barber.setSurname(resultSet.getString("surname"));
+                barber.setPatronymic(resultSet.getString("patronymic"));
+                barber.setBirthday(resultSet.getDate("birthday"));
+                barber.setPhoto(resultSet.getString("photo"));
+                barber.setPhone(resultSet.getLong("phone"));
+                barber.setStartJob(resultSet.getDate("start_job"));
+                barber.setEndJob(resultSet.getDate("end_job"));
+                barber.setTiktokLink(resultSet.getString("tiktok_link"));
+            }
+            return barber;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            closeStatement(statement);
+            closeResultSet(resultSet);
+        }
+
     }
 
     @Override
@@ -152,24 +167,30 @@ public class BarbersDaoImpl extends AbstractDao implements BarberDao {
     @Override
     public int create(Barber barber) throws DaoException {
         PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        int id = 0;
         try {
             statement = connection.prepareStatement(SQL_INSERT_INTO_BARBERS, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, barber.getName());
             statement.setString(2, barber.getSurname());
             statement.setString(3, barber.getPatronymic());
-            statement.setInt(4, barber.getAge());
+            statement.setDate(4, barber.getBirthday());
             statement.setString(5, barber.getPhoto());
             statement.setLong(6, barber.getPhone());
             statement.setDate(7, barber.getStartJob());
             statement.setDate(8, barber.getEndJob());
             statement.setString(9, barber.getTiktokLink());
             statement.executeUpdate();
-            ResultSet resultSet = statement.getGeneratedKeys();
-            return resultSet.getInt(1);
+            resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                id = resultSet.getInt(1);
+            }
+            return id;
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
             closeStatement(statement);
+            closeResultSet(resultSet);
         }
     }
 
@@ -178,16 +199,16 @@ public class BarbersDaoImpl extends AbstractDao implements BarberDao {
         PreparedStatement statement = null;
         try {
             statement = connection.prepareStatement(SQL_UPDATE_BARBER_BY_ID);
-            statement.setInt(1, barber.getId());
-            statement.setString(2, barber.getName());
-            statement.setString(3, barber.getSurname());
-            statement.setString(4, barber.getPatronymic());
-            statement.setInt(5, barber.getAge());
-            statement.setString(6, barber.getPhoto());
-            statement.setLong(7, barber.getPhone());
-            statement.setDate(8, barber.getStartJob());
-            statement.setDate(9, barber.getEndJob());
-            statement.setString(10, barber.getTiktokLink());
+            statement.setString(1, barber.getName());
+            statement.setString(2, barber.getSurname());
+            statement.setString(3, barber.getPatronymic());
+            statement.setDate(4, barber.getBirthday());
+            statement.setString(5, barber.getPhoto());
+            statement.setLong(6, barber.getPhone());
+            statement.setDate(7, barber.getStartJob());
+            statement.setDate(8, barber.getEndJob());
+            statement.setString(9, barber.getTiktokLink());
+            statement.setInt(10, barber.getId());
             statement.executeUpdate();
             int rowsUpdate = statement.executeUpdate();
             logg.info("Updated: {} rows", rowsUpdate);

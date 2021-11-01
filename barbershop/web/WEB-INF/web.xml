@@ -9,11 +9,26 @@
     <servlet>
         <servlet-name>controller</servlet-name>
         <servlet-class>by.training.barbershop.controller.DispatcherServlet</servlet-class>
+        <multipart-config>
+            <max-file-size>20848820</max-file-size>
+            <max-request-size>418018841</max-request-size>
+            <file-size-threshold>1048576</file-size-threshold>
+        </multipart-config>
     </servlet>
     <servlet-mapping>
         <servlet-name>controller</servlet-name>
         <url-pattern>/controller</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ImgServlet</servlet-name>
+        <servlet-class>by.training.barbershop.controller.ImgServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ImgServlet</servlet-name>
+        <url-pattern>/img</url-pattern>
+    </servlet-mapping>
+
     <filter>
         <filter-name>EncodingFilter</filter-name>
         <filter-class>by.training.barbershop.controller.filter.EncodingFilter</filter-class>

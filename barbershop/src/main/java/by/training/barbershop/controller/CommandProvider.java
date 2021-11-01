@@ -39,6 +39,26 @@ public class CommandProvider {
         commands.put(CommandType.CHANGE_USER_STATUS, new ChangeClientStatusCommand());
         commands.put(CommandType.CHANGE_ORDER_STATUS, new ChangeOrderStatusCommand());
         commands.put(CommandType.REMOVE_ORDER, new RemoveOrderCommand());
+        commands.put(CommandType.GO_TO_EDIT_ORDER, new GoToEditOrderCommand());
+        commands.put(CommandType.EDIT_ORDER, new EditOrderCommand());
+        commands.put(CommandType.ACTIVE_ORDERS, new AllActiveOrdersCommand());
+        commands.put(CommandType.INACTIVE_ORDERS, new AllInactiveOrdersCommand());
+        commands.put(CommandType.LIST_HAIRCUTS, new ListOfHaircutsCommand());
+        commands.put(CommandType.ADD_HAIRCUT, new AddHaircutCommand());
+        commands.put(CommandType.REMOVE_HAIRCUT, new RemoveHaircutCommand());
+        commands.put(CommandType.EDIT_HAIRCUT, new EditHaircutCommand());
+        commands.put(CommandType.GO_TO_EDIT_HAIRCUT, new GoToEditHaircutCommand());
+        commands.put(CommandType.ACTIVE_BARBERS, new ListOfActiveBarbersCommand());
+        commands.put(CommandType.DISMISSED_BARBERS, new ListOfDismissedBarbersCommand());
+        commands.put(CommandType.ADD_BARBER, new AddBarberCommand());
+        commands.put(CommandType.REMOVE_BARBER, new RemoveBarberCommand());
+        commands.put(CommandType.GO_TO_EDIT_BARBER, new GoToEditBarberCommand());
+        commands.put(CommandType.EDIT_BARBER, new EditBarberCommand());
+        commands.put(CommandType.GO_TO_REVIEW, new GoToReviewCommand());
+        commands.put(CommandType.ADD_REVIEW, new AddReviewCommand());
+        commands.put(CommandType.REMOVE_REVIEW, new RemoveReviewCommand());
+        commands.put(CommandType.EDIT_REVIEW, new EditReviewCommand());
+        commands.put(CommandType.GO_TO_EDIT_REVIEW, new GoToEditReviewCommand());
         commands.put(CommandType.ERROR, new Error404Command());
     }
 
