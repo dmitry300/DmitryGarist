@@ -9,7 +9,7 @@ ___
     * View services
     * View barbers
 * User
-    * View goods
+    * View services
     * Change personal date in the profile
     * Make/delete/change order
     * Write/change/delete review about barber
