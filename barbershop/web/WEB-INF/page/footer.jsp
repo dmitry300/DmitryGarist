@@ -5,7 +5,7 @@
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="content" var="rb"/>
 
-<footer class="navbar navbar-expand-lg navbar-light bg-light ">
+<footer class="navbar fixed-bottom navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid d-flex justify-content-between">
         <div class="navbar-nav">
             <form method="post" action="controller">

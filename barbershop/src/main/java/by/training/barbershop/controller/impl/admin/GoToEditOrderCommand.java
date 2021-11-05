@@ -21,16 +21,22 @@ public class GoToEditOrderCommand implements Command {
     public Router executeCommand(HttpServletRequest request) {
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         String orderIdParameter = request.getParameter("orderId");
+        String isToActivePageParameter = request.getParameter("toActivePage");
 
         if (orderIdParameter.isEmpty()) {
             return new Router(PagePath.ERROR_404_PAGE, Router.RouterType.FORWARD);
         }
+
         try {
             List<Haircut> haircuts = serviceFactory.getHaircutService().findHaircuts();
             List<Barber> barbers = serviceFactory.getBarberService().findActiveBarbers();
             Order order = serviceFactory.getOrderService().findOrderById(Integer.parseInt(orderIdParameter));
             if (order == null) {
                 return new Router(PagePath.ERROR_404_PAGE, Router.RouterType.FORWARD);
+            }
+            if (isToActivePageParameter != null) {
+                int isToActive = Integer.parseInt(isToActivePageParameter);
+                request.setAttribute("toActive", isToActive);
             }
             request.setAttribute("order", order);
             request.setAttribute("haircuts", haircuts);

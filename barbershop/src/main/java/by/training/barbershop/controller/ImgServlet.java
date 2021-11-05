@@ -15,7 +15,7 @@ import java.util.Properties;
 
 public class ImgServlet extends HttpServlet {
     private static final Logger logger = LogManager.getLogger();
-    private static final String PICTURE_PROPERTIES = "properties/picture.properties";
+    private static final String PICTURE_PROPERTIES = "properties/img.properties";
     private static final String BASE_PATH_PROPERTY = "image.path.base";
 
     private String basePicturePath;
@@ -28,7 +28,7 @@ public class ImgServlet extends HttpServlet {
         try {
             ClassLoader classLoader = getClass().getClassLoader();
             Properties properties = new Properties();
-            properties.load(classLoader.getResourceAsStream("properties/img.properties"));
+            properties.load(classLoader.getResourceAsStream(PICTURE_PROPERTIES));
             basePicturePath = properties.getProperty(BASE_PATH_PROPERTY);
         } catch (IOException e) {
             logger.log(Level.ERROR, "Property file exists");

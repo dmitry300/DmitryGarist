@@ -25,6 +25,7 @@ public class ListOfActiveBarbersCommand implements Command {
             logg.error(e.getMessage());
             return new Router(PagePath.ERROR_500_PAGE, Router.RouterType.REDIRECT);
         }
+        request.setAttribute("active_barbers","active_barbers");
         request.setAttribute("barbers", barbers);
         return new Router(PagePath.LIST_BARBERS_PAGE, Router.RouterType.FORWARD);
     }

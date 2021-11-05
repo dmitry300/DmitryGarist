@@ -27,7 +27,7 @@
                 <c:if test="${not empty requestScope.order
                  and not empty requestScope.haircuts
                   and not empty requestScope.barbers}">
-                    <div class="col py-3">
+                    <div class="col py-5 d-flex flex-column align-items-center">
                         <c:if test="${sessionScope.is_not_dateTime_valid != null}">
                             <div id="" class="alert alert-danger d-flex align-items-center" role="alert">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
@@ -42,10 +42,13 @@
                                 </div>
                             </div>
                         </c:if>
-                        <form action="controller" method="post">
+                        <form action="controller" method="post" class="w-50">
                             <input type="hidden" name="command" value="edit_order">
                             <input type="hidden" name="orderId" value="${requestScope.order.id}">
-                            <input type="hidden" name="userId" value="${requestScope.order.user.id}">
+<%--                            <input type="hidden" name="userId" value="${requestScope.order.user.id}">--%>
+                            <c:if test="${not empty requestScope.toActive}">
+                                <input type="hidden" name="toActive" value="${requestScope.toActive}">
+                            </c:if>
                             <div class="mb-3">
                                 <div class="form-outline">
                                     <label for="service_select" class="form-label"><fmt:message key="order.service"
@@ -71,8 +74,8 @@
                                     <select class="form-select" id="barber_select" name="barber">
                                         <option selected
                                                 value="">${requestScope.order.barber.name} ${requestScope.order.barber.surname}</option>
-                                        <c:forEach items="${requestScope.barbers}" var="barber">
-                                            <option value="${barber.id}">${barber.name} ${barber.surname} </option>
+                                        <c:forEach items="${requestScope.barbers}" var="user">
+                                            <option value="${user.id}">${user.name} ${user.surname} </option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -87,10 +90,12 @@
                                            class="form-control" name="data-time" id="data_select"/><br>
                                 </div>
                             </div>
-                            <button id="order_button"
-                                    type="submit" class="btn btn-success mt-2 mb-3" value="Order">
-                                <fmt:message key="order.button" bundle="${rb}"/>
-                            </button>
+                            <div class="container-fluid d-flex flex-column align-items-center">
+                                <button id="order_button"
+                                        type="submit" class="btn btn-success mt-2 mb-3 w-50" value="Order">
+                                    <fmt:message key="order.button" bundle="${rb}"/>
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </c:if>

@@ -5,6 +5,7 @@ import by.training.barbershop.bean.User;
 import by.training.barbershop.bean.UserInfo;
 import by.training.barbershop.dao.*;
 import by.training.barbershop.dao.exception.DaoException;
+import by.training.barbershop.dao.exception.DatabaseConnectionException;
 import by.training.barbershop.dao.impl.AbstractDao;
 import by.training.barbershop.dao.impl.DaoFactory;
 import by.training.barbershop.service.ReviewService;
@@ -17,29 +18,19 @@ import java.util.List;
 
 public class ReviewServiceImpl implements ReviewService {
     private final DaoFactory daoFactory = DaoFactory.getInstance();
-
-    @Override
-    public List<Review> findAllReviews() throws ServiceException {
-        ReviewDao reviewDao = daoFactory.getReviewDao();
-        try {
-            return reviewDao.findAll();
-        } catch (DaoException e) {
-            throw new ServiceException(e.getMessage());
-        }
-    }
+    private final Transaction transaction = daoFactory.getTransactionDao();
 
     @Override
     public Review findReviewById(int id) throws ServiceException {
         ReviewDao reviewDao = daoFactory.getReviewDao();
-        TransactionDao transactionDao = daoFactory.getTransactionDao();
-        transactionDao.initTransaction((AbstractDao) reviewDao);
         try {
+            transaction.initTransaction((AbstractDao) reviewDao);
             return reviewDao.findEntityById(id);
-        } catch (DaoException e) {
-            transactionDao.rollback();
+        } catch (DaoException | DatabaseConnectionException e) {
+            transaction.rollback();
             throw new ServiceException(e.getMessage());
         } finally {
-            transactionDao.endTransaction();
+            transaction.endTransaction();
         }
     }
 
@@ -48,30 +39,28 @@ public class ReviewServiceImpl implements ReviewService {
         LocalDateTime dateTime = LocalDateTime.now();
         review.setCommentData(Timestamp.valueOf(dateTime));
         ReviewDao reviewDao = daoFactory.getReviewDao();
-        TransactionDao transactionDao = daoFactory.getTransactionDao();
-        transactionDao.initTransaction((AbstractDao) reviewDao);
         try {
+            transaction.initTransaction((AbstractDao) reviewDao);
             reviewDao.create(review);
-        } catch (DaoException | SQLException e) {
-            transactionDao.rollback();
+        } catch (DaoException | SQLException | DatabaseConnectionException e) {
+            transaction.rollback();
             throw new ServiceException(e.getMessage());
         } finally {
-            transactionDao.endTransaction();
+            transaction.endTransaction();
         }
     }
 
     @Override
     public boolean removeReview(int reviewId) throws ServiceException {
         ReviewDao reviewDao = daoFactory.getReviewDao();
-        TransactionDao transactionDao = daoFactory.getTransactionDao();
-        transactionDao.initTransaction((AbstractDao) reviewDao);
         try {
+            transaction.initTransaction((AbstractDao) reviewDao);
             return reviewDao.delete(reviewId);
-        } catch (DaoException e) {
-            transactionDao.rollback();
+        } catch (DaoException | DatabaseConnectionException e) {
+            transaction.rollback();
             throw new ServiceException(e.getMessage());
         } finally {
-            transactionDao.endTransaction();
+            transaction.endTransaction();
         }
     }
 
@@ -80,17 +69,16 @@ public class ReviewServiceImpl implements ReviewService {
         LocalDateTime dateTime = LocalDateTime.now();
         review.setCommentData(Timestamp.valueOf(dateTime));
         ReviewDao reviewDao = daoFactory.getReviewDao();
-        TransactionDao transactionDao = daoFactory.getTransactionDao();
-        transactionDao.initTransaction((AbstractDao) reviewDao);
         try {
+            transaction.initTransaction((AbstractDao) reviewDao);
             reviewDao.update(review);
-            transactionDao.commit();
+            transaction.commit();
             return true;
-        } catch (DaoException e) {
-            transactionDao.rollback();
+        } catch (DaoException | DatabaseConnectionException e) {
+            transaction.rollback();
             throw new ServiceException(e.getMessage());
         } finally {
-            transactionDao.endTransaction();
+            transaction.endTransaction();
         }
     }
 
@@ -100,13 +88,12 @@ public class ReviewServiceImpl implements ReviewService {
         BarberDao barberDao = daoFactory.getBarberDao();
         UserDao userDao = daoFactory.getUserDao();
         UserInfoDao userInfoDao = daoFactory.getUserInfoDao();
-        TransactionDao transactionDao = daoFactory.getTransactionDao();
-        transactionDao.initTransaction(
-                (AbstractDao) reviewDao,
-                (AbstractDao) barberDao,
-                (AbstractDao) userDao,
-                (AbstractDao) userInfoDao);
         try {
+            transaction.initTransaction(
+                    (AbstractDao) reviewDao,
+                    (AbstractDao) barberDao,
+                    (AbstractDao) userDao,
+                    (AbstractDao) userInfoDao);
             List<Review> reviews = reviewDao.findReviewByBarberId(barberId);
             for (var review : reviews) {
                 review.setBarber(barberDao.findEntityById(review.getBarber().getId()));
@@ -115,13 +102,13 @@ public class ReviewServiceImpl implements ReviewService {
                 user.setUserInfo(userInfo);
                 review.setUser(user);
             }
-            transactionDao.commit();
+            transaction.commit();
             return reviews;
-        } catch (DaoException e) {
-            transactionDao.rollback();
+        } catch (DaoException | DatabaseConnectionException e) {
+            transaction.rollback();
             throw new ServiceException(e.getMessage());
         } finally {
-            transactionDao.endTransaction();
+            transaction.endTransaction();
         }
     }
 }

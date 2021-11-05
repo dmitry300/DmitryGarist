@@ -8,6 +8,10 @@ import java.util.List;
 public interface UserService {
     User findRegisteredUser(String login, String password) throws ServiceException;
 
+    List<User> findUsersByPage(int pageNumber) throws ServiceException;
+
+    int calcPagesCountForUsers(int usersCount);
+
     boolean addNewUser(User user) throws ServiceException;
 
     User findUserById(int id) throws ServiceException;

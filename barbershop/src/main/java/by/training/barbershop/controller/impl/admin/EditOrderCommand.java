@@ -1,7 +1,5 @@
 package by.training.barbershop.controller.impl.admin;
 
-import by.training.barbershop.bean.Barber;
-import by.training.barbershop.bean.Haircut;
 import by.training.barbershop.bean.Order;
 import by.training.barbershop.controller.*;
 import by.training.barbershop.service.ServiceFactory;
@@ -24,13 +22,13 @@ public class EditOrderCommand implements Command {
         String haircutIdParameter = request.getParameter("haircut");
         String barberIdParameter = request.getParameter("barber");
         String dataTimeParameter = request.getParameter("data-time");
-        String userIdParameter = request.getParameter("userId");
+        String toActiveParameter = request.getParameter("toActive");
         String orderIdParameter = request.getParameter("orderId");
         HttpSession session = request.getSession();
 
         try {
+            int userId = 0;
             int orderId = Integer.parseInt(orderIdParameter);
-            int userId = Integer.parseInt(userIdParameter);
             Order order = serviceFactory.getOrderService().findOrderById(orderId);
             if (order != null) {
                 if (!haircutIdParameter.isEmpty()) {
@@ -42,7 +40,7 @@ public class EditOrderCommand implements Command {
                     order.getBarber().setId(barberId);
                 }
                 if (!dataTimeParameter.isEmpty()) {
-                    LocalDateTime localDateTime = LocalDateTime.parse(dataTimeParameter);
+                    LocalDateTime localDateTime = LocalDateTime.parse(dataTimeParameter.replaceAll("\\s", "T"));
 
                     if (!DateTimeValidator.isValidDateTime(localDateTime)) {
                         session.setAttribute(SessionAttribute.IS_NOT_DATA_TIME_VALID, true);
@@ -52,6 +50,10 @@ public class EditOrderCommand implements Command {
                     order.setDateTimePlane(Timestamp.valueOf(localDateTime));
                 }
                 serviceFactory.getOrderService().updateOrder(order);
+                if (toActiveParameter != null) {
+                    return new Router(PagePath.ACTIVE_ORDERS_PAGE_REDIRECT, Router.RouterType.REDIRECT);
+                }
+                userId = order.getUser().getId();
             }
             return new Router(PagePath.CLIENT_ORDERS_MANAGE_REDIRECT + userId, Router.RouterType.REDIRECT);
         } catch (ServiceException e) {

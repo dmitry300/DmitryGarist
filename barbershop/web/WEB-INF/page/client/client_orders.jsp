@@ -1,6 +1,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="ctg" uri="customtag" %>
 
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="content" var="rb"/>
@@ -67,7 +68,8 @@
                                             <form action="controller" method="post">
                                                 <input type="hidden" name="command" value="client_remove_order">
                                                 <input type="hidden" name="orderId" value="${order.id}">
-                                                <button type="submit" name="remove"><fmt:message
+                                                <button type="submit" name="remove"
+                                                        class="btn-outline-danger rounded-1"><fmt:message
                                                         key="client.remove.td"
                                                         bundle="${ rb }"/></button>
                                             </form>
@@ -75,8 +77,11 @@
                                     </TR>
                                 </c:forEach>
                             </TABLE>
-                            <p>If you have any questions or you want change your order about time -
-                                <a href=""></a>
+                            <ctg:pagestag pagesCountAttribute="${requestScope.pages_count}"
+                                          command="${requestScope.command}"/>
+                            <p><fmt:message key="barbershop.email"
+                                            bundle="${ rb }"/>
+                                <a href="mailto:magnifique@gmail.com"> magnifique@gmail.com</a>
                             </p>
                         </div>
                     </div>

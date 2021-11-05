@@ -59,49 +59,44 @@
         <filter-name>SessionAttributeFilter</filter-name>
         <servlet-name>controller</servlet-name>
     </filter-mapping>
-    <!--    <filter>-->
-    <!--        <filter-name>PageRedirectFilter</filter-name>-->
-    <!--        <filter-class>by.training.barbershop.controller.filter.PageRedirectFilter</filter-class>-->
-    <!--        <init-param>-->
-    <!--            <param-name>INDEX_PATH</param-name>-->
-    <!--            <param-value>/index.jsp</param-value>-->
-    <!--        </init-param>-->
-    <!--    </filter>-->
-    <!--    <filter-mapping>-->
-    <!--        <filter-name>PageRedirectFilter</filter-name>-->
-    <!--        <url-pattern>/jsp/*</url-pattern>-->
-    <!--    </filter-mapping>-->
-    <!--    <filter>-->
-    <!--        <filter-name>AdminForwardSecurity</filter-name>-->
-    <!--        <filter-class>by.training.barbershop.controller.filter.AdminForwardFilter</filter-class>-->
 
-    <!--    </filter>-->
-    <!--    <filter-mapping>-->
-    <!--        <filter-name>AdminForwardSecurity</filter-name>-->
-    <!--        <url-pattern>/page/admin/*</url-pattern>-->
+    <filter>
+        <filter-name>ServletSecurityFilter</filter-name>
+        <filter-class>by.training.barbershop.controller.filter.ServletSecurityFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ServletSecurityFilter</filter-name>
+        <servlet-name>controller</servlet-name>
+    </filter-mapping>
 
-    <!--    </filter-mapping>-->
-    <!--    <filter>-->
-    <!--        <filter-name>ServletSecurityFilter</filter-name>-->
-    <!--        <filter-class>by.training.barbershop.controller.filter.ServletSecurityFilter</filter-class>-->
-    <!--    </filter>-->
-    <!--    <filter-mapping>-->
-    <!--        <filter-name>ServletSecurityFilter</filter-name>-->
-    <!--        <url-pattern>/controller</url-pattern>-->
-    <!--    </filter-mapping>-->
     <listener>
-        <listener-class>by.training.barbershop.controller.listener.SessionAttributeListener</listener-class>
+        <listener-class>by.training.barbershop.controller.listener.SessionListener</listener-class>
     </listener>
+
+    <listener>
+        <listener-class>by.training.barbershop.controller.listener.RequestListener</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>by.training.barbershop.controller.listener.ServletContext</listener-class>
+    </listener>
+
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
-    <!--    <error-page>-->
-    <!--        <error-code>404</error-code>-->
-    <!--        <location>/WEB-INF/page/error404.jsp</location>-->
-    <!--    </error-page>-->
+    <jsp-config>
+        <taglib>
+            <taglib-uri>customtag</taglib-uri>
+            <taglib-location>/WEB-INF/tld/custom.tld</taglib-location>
+        </taglib>
+    </jsp-config>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/page/error.jsp</location>
+    </error-page>
 
-    <!--    <error-page>-->
-    <!--        <exception-type>java.lang.Throwable</exception-type>-->
-    <!--        <location>/WEB-INF/page/error500.jsp</location>-->
-    <!--    </error-page>-->
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/WEB-INF/page/error500.jsp</location>
+    </error-page>
 </web-app>

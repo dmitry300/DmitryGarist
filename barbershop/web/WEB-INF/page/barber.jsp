@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="content" var="rb"/>
@@ -21,28 +22,35 @@
 <jsp:include page="header.jsp" flush="true"/>
 <c:choose>
     <c:when test="${not empty requestScope.barbers}">
-        <c:forEach items="${requestScope.barbers}" var="barber" >
-            <div class="align-middle d-flex w-100 flex-column">
-                <div class="row">
-                    <div class="col-md-6 card-body ps-lg-5 align-content-end">
-                        <h5 class="card-title display-4">${barber.surname} ${barber.name} ${barber.patronymic}</h5>
-                        <p class="card-text fs-5">
-                                ${barber.age} <fmt:message key="barber.birthday" bundle="${ rb }"/><br>
-                            <fmt:message key="barber.phone" bundle="${ rb }"/>: +${barber.phone}<br>
-                            <a href="${barber.tiktokLink}" class="card-link m-1"><fmt:message key="barber.tiktok"
-                                                                                          bundle="${ rb }"/></a><br>
+        <c:forEach items="${requestScope.barbers}" var="user">
+            <div class="container-fluid d-flex justify-content-between w-50 my-5 ">
+                <div class="mb-5 pe-5 ps-0 d-flex flex-column">
+                    <div class="card my-auto w-auto">
+                        <div class="card-body">
+                            <h5 class="card-title fs-5">${user.surname} ${user.name} ${user.patronymic}</h5>
+                        </div>
+
+                        <ul class="list-group list-group-flush ">
+                            <li class="list-group-item">${user.age} <fmt:message key="barber.birthday"
+                                                                                 bundle="${ rb }"/></li>
+                            <li class="list-group-item"><fmt:message key="barber.phone" bundle="${ rb }"/>:
+                                +${user.phone}</li>
+                        </ul>
+                        <div class="card-body container-fluid d-flex justify-content-between">
+                            <a href="${user.tiktokLink}" class="card-link my-auto"><fmt:message key="barber.tiktok"
+                                                                                                bundle="${ rb }"/></a>
                             <c:if test="${not empty sessionScope.user}">
-                                <a class="btn btn-primary m-1"
-                                   href="${pageContext.request.contextPath}/controller?command=go_to_review&barberId=${barber.id}"><fmt:message
+                                <a class="btn btn-primary m-1 w-75"
+                                   href="${pageContext.request.contextPath}/controller?command=go_to_review&barberId=${user.id}"><fmt:message
                                         key="review.button"
                                         bundle="${ rb }"/></a>
                             </c:if>
-                        </p>
+                        </div>
                     </div>
-                    <div class="col-md-6 card-body">
-                        <img src="${pageContext.request.contextPath}/img?path=${barber.photo}"
-                             class="card-img-top" alt="barber">
-                    </div>
+                </div>
+                <div class="mb-5 ps-5">
+                    <img src="${pageContext.request.contextPath}/img?path=${user.photo}"
+                         class="card-img-top" alt="...">
                 </div>
             </div>
         </c:forEach>

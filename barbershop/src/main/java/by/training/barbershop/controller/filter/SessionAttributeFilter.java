@@ -22,6 +22,7 @@ public class SessionAttributeFilter implements Filter {
         attributesToRemove.put(GO_TO_LOGIN, List.of(IS_LOGIN_OR_PASSWORD_ERROR,ACCOUNT_IS_BLOCKED));
         attributesToRemove.put(CommandType.GO_TO_REGISTRATION, List.of(IS_SIGNUP_ERROR));
         attributesToRemove.put(CommandType.GO_TO_EDIT_ORDER, List.of(IS_NOT_DATA_TIME_VALID));
+        attributesToRemove.put(CommandType.CLIENT_EDIT_PERSONAL_DATA, List.of(IS_SIGNUP_ERROR));
     }
 
     @Override

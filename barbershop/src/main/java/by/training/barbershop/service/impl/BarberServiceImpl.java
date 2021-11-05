@@ -2,8 +2,9 @@ package by.training.barbershop.service.impl;
 
 import by.training.barbershop.bean.Barber;
 import by.training.barbershop.dao.BarberDao;
-import by.training.barbershop.dao.TransactionDao;
+import by.training.barbershop.dao.Transaction;
 import by.training.barbershop.dao.exception.DaoException;
+import by.training.barbershop.dao.exception.DatabaseConnectionException;
 import by.training.barbershop.dao.impl.AbstractDao;
 import by.training.barbershop.dao.impl.DaoFactory;
 import by.training.barbershop.service.BarberService;
@@ -16,15 +17,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 import java.util.Properties;
 
 public class BarberServiceImpl implements BarberService {
-    private static final DaoFactory daoFactory = DaoFactory.getInstance();
     private static final Logger log = LogManager.getLogger(BarberServiceImpl.class);
+    private static final DaoFactory daoFactory = DaoFactory.getInstance();
+    Transaction transaction = daoFactory.getTransactionDao();
     private String basePicturePath;
     private String barberFolderPath;
 
@@ -43,9 +44,8 @@ public class BarberServiceImpl implements BarberService {
     @Override
     public List<Barber> findActiveBarbers() throws ServiceException {
         BarberDao barberDao = daoFactory.getBarberDao();
-        TransactionDao transactionDao = daoFactory.getTransactionDao();
-        transactionDao.initTransaction((AbstractDao) barberDao);
         try {
+            transaction.initTransaction((AbstractDao) barberDao);
             List<Barber> barbers = barberDao.findAll();
             barbers = barbers.stream()
                     .filter(barber -> barber.getEndJob() == null
@@ -56,21 +56,20 @@ public class BarberServiceImpl implements BarberService {
                 int age = Period.between(barber.getBirthday().toLocalDate(), LocalDate.now()).getYears();
                 barber.setAge(age);
             }
-            transactionDao.commit();
+            transaction.commit();
             return barbers;
-        } catch (DaoException e) {
+        } catch (DaoException | DatabaseConnectionException e) {
             throw new ServiceException(e);
         } finally {
-            transactionDao.endTransaction();
+            transaction.endTransaction();
         }
     }
 
     @Override
     public List<Barber> findDismissedBarbers() throws ServiceException {
         BarberDao barberDao = daoFactory.getBarberDao();
-        TransactionDao transactionDao = daoFactory.getTransactionDao();
-        transactionDao.initTransaction((AbstractDao) barberDao);
         try {
+            transaction.initTransaction((AbstractDao) barberDao);
             List<Barber> barbers = barberDao.findAll();
             barbers.removeIf(barber -> barber.getEndJob() == null);
             barbers.removeIf(barber -> barber.getEndJob().after(Date.valueOf(LocalDate.now())));
@@ -78,99 +77,94 @@ public class BarberServiceImpl implements BarberService {
                 int age = Period.between(barber.getBirthday().toLocalDate(), LocalDate.now()).getYears();
                 barber.setAge(age);
             }
-            transactionDao.commit();
+            transaction.commit();
             return barbers;
-        } catch (DaoException e) {
+        } catch (DaoException | DatabaseConnectionException e) {
             throw new ServiceException(e);
         } finally {
-            transactionDao.endTransaction();
+            transaction.endTransaction();
         }
     }
 
     @Override
     public Barber findBarberById(int id) throws ServiceException {
         BarberDao barberDao = daoFactory.getBarberDao();
-        TransactionDao transactionDao = daoFactory.getTransactionDao();
-        transactionDao.initTransaction((AbstractDao) barberDao);
         try {
+            transaction.initTransaction((AbstractDao) barberDao);
             Barber barber = barberDao.findEntityById(id);
             int age = Period.between(barber.getBirthday().toLocalDate(), LocalDate.now()).getYears();
             barber.setAge(age);
             return barber;
-        } catch (DaoException e) {
+        } catch (DaoException | DatabaseConnectionException e) {
             throw new ServiceException(e);
         } finally {
-            transactionDao.endTransaction();
+            transaction.endTransaction();
         }
     }
 
     @Override
     public boolean addNewBarber(Barber barber, List<Part> imageParts) throws ServiceException {
         BarberDao barberDao = daoFactory.getBarberDao();
-        TransactionDao transactionDao = daoFactory.getTransactionDao();
-        transactionDao.initTransaction((AbstractDao) barberDao);
         String relativeImagePath = barberFolderPath + barber.getSurname() + ".jpeg";
         barber.setPhoto(relativeImagePath);
         savePicture(relativeImagePath, imageParts);
         try {
+            transaction.initTransaction((AbstractDao) barberDao);
             barberDao.create(barber);
-            transactionDao.commit();
+            transaction.commit();
             return true;
-        } catch (DaoException | SQLException e) {
+        } catch (DaoException | SQLException | DatabaseConnectionException e) {
             throw new ServiceException(e);
         } finally {
-            transactionDao.endTransaction();
+            transaction.endTransaction();
         }
     }
 
     @Override
     public boolean removeBarber(int id) throws ServiceException {
         BarberDao barberDao = daoFactory.getBarberDao();
-        TransactionDao transactionDao = daoFactory.getTransactionDao();
-        transactionDao.initTransaction((AbstractDao) barberDao);
         try {
+            transaction.initTransaction((AbstractDao) barberDao);
             barberDao.delete(id);
-            transactionDao.commit();
+            transaction.commit();
             return true;
-        } catch (DaoException e) {
+        } catch (DaoException | DatabaseConnectionException e) {
             throw new ServiceException(e);
         } finally {
-            transactionDao.endTransaction();
+            transaction.endTransaction();
         }
     }
 
     @Override
     public boolean updateBarberWithImg(Barber barber, List<Part> imageParts) throws ServiceException {
         BarberDao barberDao = daoFactory.getBarberDao();
-        TransactionDao transactionDao = daoFactory.getTransactionDao();
-        transactionDao.initTransaction((AbstractDao) barberDao);
         String relativeImagePath = barberFolderPath + barber.getSurname() + ".jpeg";
         barber.setPhoto(relativeImagePath);
         savePicture(relativeImagePath, imageParts);
         try {
+            transaction.initTransaction((AbstractDao) barberDao);
             barberDao.update(barber);
-            transactionDao.commit();
+            transaction.commit();
             return true;
-        } catch (DaoException e) {
+        } catch (DaoException | DatabaseConnectionException e) {
             throw new ServiceException(e);
         } finally {
-            transactionDao.endTransaction();
+            transaction.endTransaction();
         }
     }
 
     @Override
     public boolean updateBarber(Barber barber) throws ServiceException {
         BarberDao barberDao = daoFactory.getBarberDao();
-        TransactionDao transactionDao = daoFactory.getTransactionDao();
-        transactionDao.initTransaction((AbstractDao) barberDao);
         try {
+            transaction.initTransaction((AbstractDao) barberDao);
             barberDao.update(barber);
-            transactionDao.commit();
+            transaction.commit();
             return true;
-        } catch (DaoException e) {
+        } catch (DaoException | DatabaseConnectionException e) {
             throw new ServiceException(e);
         } finally {
-            transactionDao.endTransaction();
+            transaction.endTransaction();
         }
     }
 

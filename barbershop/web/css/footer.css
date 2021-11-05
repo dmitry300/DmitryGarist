@@ -1,8 +1,7 @@
 .copyright {
     color: rgba(0, 0, 0, 0.8);
 }
-/*.navbar{*/
-/*    position:relative;*/
-/*    bottom: 0;*/
-/*    width: 100%;*/
-/*}*/
+.footer{
+    position: relative;
+    bottom: 0;
+}

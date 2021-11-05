@@ -64,7 +64,7 @@
                 <div class="form-outline">
                     <label for="login" class="form-label"><fmt:message key="signup.login" bundle="${rb}"/></label>
                     <input type="text" class="form-control" id="login" pattern="[A-Za-z][0-9a-zA-Z]{3,20}"
-                           title="<fmt:message key="signup.hint.login" bundle="${rb}"/>" name="login" required>
+                           title="<fmt:message key="signup.hint.login" bundle="${rb}"/>" name="login" required autocomplete="off">
                     <div class="invalid-feedback"><fmt:message key="signup.hint.login" bundle="${rb}"/></div>
                 </div>
             </div>
@@ -73,7 +73,7 @@
                     <label for="password" class="form-label"><fmt:message key="signup.password" bundle="${rb}"/></label>
                     <input type="password" class="form-control" name="password" id="password"
                            pattern="[A-Za-z0-9]{8,20}"
-                           title="<fmt:message key="signup.hint.password" bundle="${rb}"/>" required/><br>
+                           title="<fmt:message key="signup.hint.password" bundle="${rb}"/>" required autocomplete="off"/><br>
                     <div class="invalid-feedback"><fmt:message key="signup.hint.password" bundle="${rb}"/></div>
                 </div>
             </div>
@@ -83,7 +83,7 @@
                                                                                 bundle="${rb}"/></label>
                     <input type="password" class="form-control" name="repeatPassword" id="repeatPassword"
                            pattern="[A-Za-z0-9]{8,20}"
-                           title="<fmt:message key="signup.hint.password" bundle="${rb}"/>" required/><br>
+                           title="<fmt:message key="signup.hint.password" bundle="${rb}"/>" required autocomplete="off"/><br>
                     <div class="invalid-feedback"><fmt:message key="signup.hint.password" bundle="${rb}"/></div>
                 </div>
             </div>

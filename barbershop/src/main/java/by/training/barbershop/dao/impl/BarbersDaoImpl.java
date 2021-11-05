@@ -46,7 +46,6 @@ public class BarbersDaoImpl extends AbstractDao implements BarberDao {
                 barber.setBirthday(resultSet.getDate("birthday"));
                 barber.setPhoto(resultSet.getString("photo"));
                 barber.setPhone(resultSet.getLong("phone"));
-                // SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 barber.setStartJob(resultSet.getDate("start_job"));
                 barber.setEndJob(resultSet.getDate("end_job"));
                 barber.setTiktokLink(resultSet.getString("tiktok_link"));

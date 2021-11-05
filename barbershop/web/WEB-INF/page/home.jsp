@@ -19,7 +19,7 @@
 </head>
 <body>
 <jsp:include page="header.jsp" flush="true"/>
-<div id="home_carousel" class="carousel slide" data-bs-ride="carousel">
+<div id="home_carousel" class="carousel slide mb-5" data-bs-ride="carousel">
     <div class="carousel-indicators">
         <button type="button" data-bs-target="#home_carousel " data-bs-slide-to="0" class="active"
                 aria-current="true" aria-label="Slide 1"></button>

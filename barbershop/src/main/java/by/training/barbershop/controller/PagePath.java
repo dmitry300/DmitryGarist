@@ -22,15 +22,15 @@ public class PagePath {
     public static final String ERROR_404_PAGE = "/WEB-INF/page/error404.jsp";
     public static final String ERROR_500_PAGE = "/WEB-INF/page/error500.jsp";
     public static final String CLIENT_ORDERS = "/WEB-INF/page/client/client_orders.jsp";
-    public static final String CLIENT_ORDERS_REDIRECT = "/controller?command=client_orders";
+    public static final String CLIENT_ORDERS_REDIRECT = "/controller?command=client_orders&page=1";
     public static final String CLIENT_ORDERS_MANAGE = "/WEB-INF/page/admin/client_orders_manage.jsp";
     public static final String CLIENT_ORDERS_MANAGE_REDIRECT = "/controller?command=view_orders&userId=";
     public static final String CLIENT_LIST_PAGE = "/WEB-INF/page/admin/clients_list.jsp";
-    public static final String CLIENT_LIST_PAGE_REDIRECT = "/controller?command=clients_list";
+    public static final String CLIENT_LIST_PAGE_REDIRECT = "/controller?command=clients_list&page=1";
     public static final String EDIT_ORDER_PAGE = "/WEB-INF/page/admin/edit_order.jsp";
     public static final String EDIT_ORDER_PAGE_REDIRECT = "/controller?command=go_to_edit_order&orderId=";
     public static final String ACTIVE_ORDERS_PAGE = "/WEB-INF/page/admin/active_orders.jsp";
-    public static final String ACTIVE_ORDERS_PAGE_REDIRECT = "/controller?command=active_orders";
+    public static final String ACTIVE_ORDERS_PAGE_REDIRECT = "/controller?command=active_orders&page=1";
     public static final String LIST_HAIRCUTS_PAGE = "/WEB-INF/page/admin/list_haircuts.jsp";
     public static final String LIST_HAIRCUTS_PAGE_REDIRECT = "/controller?command=list_haircuts";
     public static final String EDIT_HAIRCUT_PAGE = "/WEB-INF/page/admin/edit_haircut.jsp";
@@ -40,4 +40,5 @@ public class PagePath {
     public static final String REVIEW_BARBER_PAGE = "/WEB-INF/page/client/reviews.jsp";
     public static final String REVIEW_BARBER_PAGE_REDIRECT= "/controller?command=go_to_review&barberId=";
     public static final String EDIT_REVIEW_PAGE = "/WEB-INF/page/client/edit_review.jsp";
+    public static final String LIST_BOOKED_TIME_PAGE = "/WEB-INF/page/client/list_booked_time.jsp";
 }

@@ -20,12 +20,21 @@ public class AllInactiveOrdersCommand implements Command {
     public Router executeCommand(HttpServletRequest request) {
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         String orderStatusParameter = request.getParameter("orderStatus");
+        String pageNumberRequest = request.getParameter("page");
         List<Order> orders;
         try {
             if (orderStatusParameter != null) {
                 orders = serviceFactory.getOrderService().findActiveOrderByStatus(OrderStatus.valueOf(orderStatusParameter),false );
             } else {
-                orders = serviceFactory.getOrderService().findAllActiveOrder(false);
+                int pageNumber = Integer.parseInt(pageNumberRequest);
+                orders = serviceFactory.getOrderService().findAllOrder(false);
+                int pagesCount = serviceFactory.getOrderService().calcPagesCountForOrders(orders.size());
+                orders = serviceFactory.getOrderService().findOrderByPage(orders, pageNumber);
+
+                request.setAttribute("page_number", pageNumber);
+                request.setAttribute("pages_count", pagesCount);
+                request.setAttribute("orders", orders);
+                request.setAttribute("command", "inactive_orders");
             }
         } catch (ServiceException e) {
             logg.error(e.getMessage());

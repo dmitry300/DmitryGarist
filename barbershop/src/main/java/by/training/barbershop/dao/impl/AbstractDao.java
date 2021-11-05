@@ -10,6 +10,10 @@ import java.sql.Statement;
 public abstract class AbstractDao {
     protected Connection connection;
 
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+
     public void closeStatement(Statement statement) throws DaoException {
         try {
             if (statement != null) {
@@ -28,10 +32,5 @@ public abstract class AbstractDao {
         } catch (SQLException e) {
             throw new DaoException(e);
         }
-    }
-
-
-    public void setConnection(Connection connection) {
-        this.connection = connection;
     }
 }

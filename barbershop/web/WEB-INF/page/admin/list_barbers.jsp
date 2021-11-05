@@ -36,109 +36,103 @@
                                 <TH scope="col"><fmt:message key="signup.patronymic" bundle="${ rb }"/></TH>
                                 <TH scope="col"><fmt:message key="signup.birthday" bundle="${ rb }"/></TH>
                                 <TH scope="col"><fmt:message key="barber.phone" bundle="${ rb }"/></TH>
-                                <TH scope="col"><fmt:message key="barber.tiktok" bundle="${ rb }"/></TH>
                                 <TH scope="col"><fmt:message key="barber.start_job" bundle="${ rb }"/></TH>
                                 <TH scope="col"><fmt:message key="barber.photo.th" bundle="${ rb }"/></TH>
                                 <TH scope="col"><fmt:message key="admin.remove.barber.th" bundle="${ rb }"/></TH>
                                 <TH scope="col"><fmt:message key="admin.edit.barber.th" bundle="${ rb }"/></TH>
                             </TR>
-                            <TR>
-                                <form action="controller" class="d-flex flex-column needs-validation"
-                                      method="post" enctype="multipart/form-data">
-                                    <input type="hidden" name="command" value="add_barber">
-                                    <TD>
-                                        <div class="form-outline">
-                                            <input type="text" id="name" name="name" class="form-control" required
-                                                   placeholder="<fmt:message key="user.name" bundle="${ rb }"/>">
-                                            <div class="invalid-feedback"><fmt:message key="field.is_important"
-                                                                                       bundle="${rb}"/></div>
-                                        </div>
-                                    </TD>
-                                    <TD>
-                                        <div class="form-outline">
-                                            <input type="text" id="surname" name="surname" class="form-control"
-                                                   required
-                                                   placeholder="<fmt:message key="user.surname" bundle="${ rb }"/>">
-                                            <div class="invalid-feedback"><fmt:message key="field.is_important"
-                                                                                       bundle="${rb}"/></div>
-                                        </div>
-                                    </TD>
-                                    <TD>
-                                        <div class="form-outline">
-                                            <input type="text" id="patronymic" name="patronymic"
-                                                   class="form-control" required
-                                                   placeholder="<fmt:message key="signup.patronymic" bundle="${ rb }"/>">
-                                            <div class="invalid-feedback"><fmt:message key="field.is_important"
-                                                                                       bundle="${rb}"/></div>
-                                        </div>
-                                    </TD>
-                                    <TD class="text-center">
-                                        <div class="form-outline">
-                                            <input type="date" id="birthday" name="birthday" class="form-control"
-                                                   required
-                                                   placeholder="<fmt:message key="signup.birthday" bundle="${ rb }"/>">
-                                            <div class="invalid-feedback"><fmt:message key="field.is_important"
-                                                                                       bundle="${rb}"/></div>
-                                        </div>
-                                    </TD>
-                                    <TD>
-                                        <div class="form-outline">
-                                            <input type="tel" class="form-control" id="phone" name="phone"
-                                                   placeholder="+375(XX) XXX-XX-XX"
-                                                   pattern="\+375\s?[\(]{0,1}\d{2}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"
-                                                   title="<fmt:message key="signup.hint.phone" bundle="${rb}"/>"
-                                                   required/>
-                                            <div class="invalid-feedback"><fmt:message key="signup.hint.phone"
-                                                                                       bundle="${rb}"/></div>
-                                        </div>
-                                    </TD>
-                                    <TD>
-                                        <div class="form-outline">
-                                            <input type="text" class="form-control" name="tiktok"
-                                                   placeholder="not required"/>
-                                        </div>
-                                    </TD>
-                                    <TD class="text-center">
-                                        <div class="form-outline">
-                                            <input type="date" id="startJob" name="startJob" class="form-control"
-                                                   required
-                                                   placeholder="<fmt:message key="barber.start_job" bundle="${ rb }"/>">
-                                            <div class="invalid-feedback"><fmt:message key="field.is_important"
-                                                                                       bundle="${rb}"/></div>
-                                        </div>
-                                    </TD>
-                                    <TD>
-                                        <div class="form-outline">
-                                            <input type="file" id="fileInput" name="photo" class="form-control"
-                                                   required
-                                                   accept=".jpeg, .jpg">
-                                            <div class="invalid-feedback"><fmt:message key="field.is_important"
-                                                                                       bundle="${rb}"/></div>
-                                        </div>
-                                    </TD>
-                                    <TD class="text-center" colspan="2">
-                                        <button type="submit" id="submit" class="btn-outline-success rounded-1">
-                                            <fmt:message key="admin.barber.add" bundle="${ rb }"/></button>
-                                    </TD>
-                                </form>
-                            </TR>
-                            <c:forEach items="${requestScope.barbers}" var="barber">
+                            <c:if test="${not empty requestScope.active_barbers}">
                                 <TR>
-                                    <TD>${barber.name}</TD>
-                                    <TD>${barber.surname}</TD>
-                                    <TD>${barber.patronymic}</TD>
-                                    <TD>${barber.birthday}</TD>
-                                    <TD>+${barber.phone}</TD>
-                                    <TD>${barber.tiktokLink}</TD>
-                                    <TD>${barber.startJob}</TD>
+                                    <form action="controller" class="d-flex flex-column needs-validation"
+                                          method="post" enctype="multipart/form-data">
+                                        <input type="hidden" name="command" value="add_barber">
+                                        <TD>
+                                            <div class="form-outline">
+                                                <input type="text" id="name" name="name" class="form-control" required
+                                                       placeholder="<fmt:message key="user.name" bundle="${ rb }"/>">
+                                                <div class="invalid-feedback"><fmt:message key="field.is_important"
+                                                                                           bundle="${rb}"/></div>
+                                            </div>
+                                        </TD>
+                                        <TD>
+                                            <div class="form-outline">
+                                                <input type="text" id="surname" name="surname" class="form-control"
+                                                       required
+                                                       placeholder="<fmt:message key="user.surname" bundle="${ rb }"/>">
+                                                <div class="invalid-feedback"><fmt:message key="field.is_important"
+                                                                                           bundle="${rb}"/></div>
+                                            </div>
+                                        </TD>
+                                        <TD>
+                                            <div class="form-outline">
+                                                <input type="text" id="patronymic" name="patronymic"
+                                                       class="form-control" required
+                                                       placeholder="<fmt:message key="signup.patronymic" bundle="${ rb }"/>">
+                                                <div class="invalid-feedback"><fmt:message key="field.is_important"
+                                                                                           bundle="${rb}"/></div>
+                                            </div>
+                                        </TD>
+                                        <TD class="text-center">
+                                            <div class="form-outline">
+                                                <input type="date" id="birthday" name="birthday" class="form-control"
+                                                       required
+                                                       placeholder="<fmt:message key="signup.birthday" bundle="${ rb }"/>">
+                                                <div class="invalid-feedback"><fmt:message key="field.is_important"
+                                                                                           bundle="${rb}"/></div>
+                                            </div>
+                                        </TD>
+                                        <TD>
+                                            <div class="form-outline">
+                                                <input type="tel" class="form-control" id="phone" name="phone"
+                                                       placeholder="+375(XX) XXX-XX-XX"
+                                                       pattern="\+375\s?[\(]{0,1}\d{2}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"
+                                                       title="<fmt:message key="signup.hint.phone" bundle="${rb}"/>"
+                                                       required/>
+                                                <div class="invalid-feedback"><fmt:message key="signup.hint.phone"
+                                                                                           bundle="${rb}"/></div>
+                                            </div>
+                                        </TD>
+                                        <TD class="text-center">
+                                            <div class="form-outline">
+                                                <input type="date" id="startJob" name="startJob" class="form-control"
+                                                       required
+                                                       placeholder="<fmt:message key="barber.start_job" bundle="${ rb }"/>">
+                                                <div class="invalid-feedback"><fmt:message key="field.is_important"
+                                                                                           bundle="${rb}"/></div>
+                                            </div>
+                                        </TD>
+                                        <TD>
+                                            <div class="form-outline">
+                                                <input type="file" id="fileInput" name="photo" class="form-control"
+                                                       required
+                                                       accept=".jpeg, .jpg">
+                                                <div class="invalid-feedback"><fmt:message key="field.is_important"
+                                                                                           bundle="${rb}"/></div>
+                                            </div>
+                                        </TD>
+                                        <TD class="text-center" colspan="2">
+                                            <button type="submit" id="submit" class="btn-outline-success rounded-1">
+                                                <fmt:message key="admin.barber.add" bundle="${ rb }"/></button>
+                                        </TD>
+                                    </form>
+                                </TR>
+                            </c:if>
+                            <c:forEach items="${requestScope.barbers}" var="user">
+                                <TR>
+                                    <TD>${user.name}</TD>
+                                    <TD>${user.surname}</TD>
+                                    <TD>${user.patronymic}</TD>
+                                    <TD>${user.birthday}</TD>
+                                    <TD>+${user.phone}</TD>
+                                    <TD>${user.startJob}</TD>
                                     <TD>
-                                        <img src="${pageContext.request.contextPath}/img?path=${barber.photo}"
+                                        <img src="${pageContext.request.contextPath}/img?path=${user.photo}"
                                              height="70px" width="60px" alt="barber">
                                     </TD>
                                     <TD class="text-center">
                                         <form action="controller" method="post">
                                             <input type="hidden" name="command" value="remove_barber">
-                                            <input type="hidden" name="barberId" value="${barber.id}">
+                                            <input type="hidden" name="barberId" value="${user.id}">
                                             <button class="btn-outline-danger rounded-1" type="submit" name="view">
                                                 <fmt:message
                                                         key="admin.remove.barber.td"
@@ -148,7 +142,7 @@
                                     <TD class="text-center">
                                         <form action="controller" method="post">
                                             <input type="hidden" name="command" value="go_to_edit_barber">
-                                            <input type="hidden" name="barberId" value="${barber.id}">
+                                            <input type="hidden" name="barberId" value="${user.id}">
                                             <button class="btn-outline-primary rounded-1" type="submit"
                                                     name="change">
                                                 <fmt:message

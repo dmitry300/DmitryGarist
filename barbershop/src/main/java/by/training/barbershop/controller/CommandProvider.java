@@ -59,6 +59,7 @@ public class CommandProvider {
         commands.put(CommandType.REMOVE_REVIEW, new RemoveReviewCommand());
         commands.put(CommandType.EDIT_REVIEW, new EditReviewCommand());
         commands.put(CommandType.GO_TO_EDIT_REVIEW, new GoToEditReviewCommand());
+        commands.put(CommandType.GO_TO_BOOKED_SLOT, new GoToBookedSlotCommand());
         commands.put(CommandType.ERROR, new Error404Command());
     }
 

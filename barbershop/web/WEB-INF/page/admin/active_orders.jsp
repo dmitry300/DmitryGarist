@@ -1,6 +1,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="ctg" uri="customtag" %>
 
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="content" var="rb"/>
@@ -31,49 +32,11 @@
                                 <CAPTION class="display-6 text-center mt-4 mb-4 w-75"><fmt:message
                                         key="client.orders.caption"
                                         bundle="${ rb }"/></CAPTION>
-
-                                <form action="controller" method="post">
-                                    <c:if test="${sessionScope.previous_query == '/controller?command=active_orders'}">
-                                    <input type="hidden" name="command" value="active_orders"></c:if>
-                                    <c:if test="${sessionScope.previous_query != '/controller?command=active_orders'}">
-                                        <input type="hidden" name="command" value="inactive_orders"></c:if>
-                                    <input type="hidden" name="orderStatus" value="APPROVED">
-                                    <button type="submit" class="btn-success" name="remove"><fmt:message
-                                            key="admin.list.approved_orders"
-                                            bundle="${ rb }"/></button>
-                                </form>
-                                <form action="controller" method="post">
-                                    <c:if test="${sessionScope.previous_query == '/controller?command=active_orders'}">
-                                        <input type="hidden" name="command" value="active_orders"></c:if>
-                                    <c:if test="${sessionScope.previous_query != '/controller?command=active_orders'}">
-                                        <input type="hidden" name="command" value="inactive_orders"></c:if>
-                                    <input type="hidden" name="orderStatus" value="WAITING">
-                                    <button type="submit" class="btn-success" name="remove"><fmt:message
-                                            key="admin.list.waiting_orders"
-                                            bundle="${ rb }"/></button>
-                                </form>
-                                <form action="controller" method="post">
-                                    <c:if test="${sessionScope.previous_query == '/controller?command=active_orders'}">
-                                        <input type="hidden" name="command" value="active_orders"></c:if>
-                                    <c:if test="${sessionScope.previous_query != '/controller?command=active_orders'}">
-                                        <input type="hidden" name="command" value="inactive_orders"></c:if>
-                                    <input type="hidden" name="orderStatus" value="REJECTED">
-                                    <button type="submit" class="btn-success" name="remove"><fmt:message
-                                            key="admin.list.rejected_orders"
-                                            bundle="${ rb }"/></button>
-                                </form>
-                                <form action="controller" method="post">
-                                    <c:if test="${sessionScope.previous_query == '/controller?command=active_orders'}">
-                                        <input type="hidden" name="command" value="active_orders"></c:if>
-                                    <c:if test="${sessionScope.previous_query != '/controller?command=active_orders'}">
-                                        <input type="hidden" name="command" value="inactive_orders"></c:if>
-                                    <button type="submit" class="btn-success" name="remove"><fmt:message
-                                            key="admin.list.all_orders"
-                                            bundle="${ rb }"/></button>
-                                </form>
                                 <TR>
-                                    <TH scope="col"></TH>
-                                    <TH scope="col"></TH>
+                                    <c:if test="${requestScope.command.equals('active_orders')}">
+                                        <TH scope="col"></TH>
+                                        <TH scope="col"></TH>
+                                    </c:if>
                                     <TH scope="col"><fmt:message key="client.order.status" bundle="${ rb }"/></TH>
                                     <TH scope="col"><fmt:message key="client.fio" bundle="${ rb }"/></TH>
                                     <TH scope="col"><fmt:message key="client.order.data_time" bundle="${ rb }"/></TH>
@@ -82,30 +45,36 @@
                                     <TH scope="col"><fmt:message key="client.order.service" bundle="${ rb }"/></TH>
                                     <TH scope="col"><fmt:message key="client.order.barber" bundle="${ rb }"/></TH>
                                     <TH scope="col"><fmt:message key="client.remove.order" bundle="${ rb }"/></TH>
-                                    <TH scope="col"><fmt:message key="client.edit.order" bundle="${ rb }"/></TH>
+                                    <c:if test="${requestScope.command.equals('active_orders')}">
+                                        <TH scope="col"><fmt:message key="client.edit.order" bundle="${ rb }"/></TH>
+                                    </c:if>
                                 </TR>
                                 <c:forEach items="${requestScope.orders}" var="order">
                                     <TR>
-                                        <TD>
-                                            <form action="controller" method="post">
-                                                <input type="hidden" name="command" value="change_order_status">
-                                                <input type="hidden" name="orderId" value="${order.id}">
-                                                <input type="hidden" name="status_order" value="approved">
-                                                <button type="submit" name="change"><fmt:message
-                                                        key="order.status.approve" bundle="${ rb }"/>
-                                                </button>
-                                            </form>
-                                        </TD>
-                                        <TD>
-                                            <form action="controller" method="post">
-                                                <input type="hidden" name="command" value="change_order_status">
-                                                <input type="hidden" name="orderId" value="${order.id}">
-                                                <input type="hidden" name="status_order" value="rejected">
-                                                <button type="submit" name="change"><fmt:message
-                                                        key="order.status.reject" bundle="${ rb }"/>
-                                                </button>
-                                            </form>
-                                        </TD>
+                                        <c:if test="${requestScope.command.equals('active_orders')}">
+                                            <TD>
+                                                <form action="controller" method="post">
+                                                    <input type="hidden" name="command" value="change_order_status">
+                                                    <input type="hidden" name="orderId" value="${order.id}">
+                                                    <input type="hidden" name="status_order" value="approved">
+                                                    <button type="submit" name="change"
+                                                            class="btn-outline-success rounded-1"><fmt:message
+                                                            key="order.status.approve" bundle="${ rb }"/>
+                                                    </button>
+                                                </form>
+                                            </TD>
+                                            <TD>
+                                                <form action="controller" method="post">
+                                                    <input type="hidden" name="command" value="change_order_status">
+                                                    <input type="hidden" name="orderId" value="${order.id}">
+                                                    <input type="hidden" name="status_order" value="rejected">
+                                                    <button type="submit" name="change"
+                                                            class="btn-outline-danger rounded-1"><fmt:message
+                                                            key="order.status.reject" bundle="${ rb }"/>
+                                                    </button>
+                                                </form>
+                                            </TD>
+                                        </c:if>
                                         <c:if test="${order.status.name()=='APPROVED'}">
                                             <TD class="table-success">
                                                     ${order.status.name()}
@@ -132,27 +101,29 @@
                                             <form action="controller" method="post">
                                                 <input type="hidden" name="command" value="remove_order">
                                                 <input type="hidden" name="orderId" value="${order.id}">
-                                                <button type="submit" name="remove"><fmt:message
+                                                <button type="submit"
+                                                        class="btn-outline-danger rounded-1"><fmt:message
                                                         key="client.remove.td"
                                                         bundle="${ rb }"/></button>
                                             </form>
                                         </TD>
-                                        <TD>
-                                            <form action="controller" method="post">
-                                                <input type="hidden" name="command" value="go_to_edit_order">
-                                                <input type="hidden" name="orderId" value="${order.id}">
-                                                <button type="submit" name="remove"><fmt:message
-                                                        key="client.edit.td"
-                                                        bundle="${ rb }"/></button>
-                                            </form>
-                                        </TD>
-
+                                        <c:if test="${requestScope.command.equals('active_orders')}">
+                                            <TD>
+                                                <form action="controller" method="get">
+                                                    <input type="hidden" name="command" value="go_to_edit_order">
+                                                    <input type="hidden" name="orderId" value="${order.id}">
+                                                    <button type="submit" name="toActivePage" value="1"
+                                                            class="btn-outline-primary rounded-1"><fmt:message
+                                                            key="client.edit.td"
+                                                            bundle="${ rb }"/></button>
+                                                </form>
+                                            </TD>
+                                        </c:if>
                                     </TR>
                                 </c:forEach>
                             </TABLE>
-                            <p>If you have any questions or you want change your order about time -
-                                <a href=""></a>
-                            </p>
+                            <ctg:pagestag pagesCountAttribute="${requestScope.pages_count}"
+                                          command="${requestScope.command}"/>
                         </div>
                     </div>
                 </c:if>

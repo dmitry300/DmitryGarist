@@ -20,12 +20,21 @@ public class ClientOrderCommand implements Command {
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(SessionAttribute.USER);
+        String pageNumberRequest = request.getParameter("page");
         if (user == null) {
             return new Router(PagePath.ERROR_404_PAGE, Router.RouterType.FORWARD);
         }
+        int pageNumber;
+        int pagesCount;
         try {
             List<Order> orders = serviceFactory.getOrderService().findOrderByUserId(user.getId());
-            request.setAttribute(RequestAttribute.ORDERS, orders);
+            pageNumber = Integer.parseInt(pageNumberRequest);
+            pagesCount = serviceFactory.getOrderService().calcPagesCountForOrders(orders.size());
+            orders = serviceFactory.getOrderService().findOrderByPage(orders, pageNumber);
+            request.setAttribute("page_number", pageNumber);
+            request.setAttribute("pages_count", pagesCount);
+            request.setAttribute("orders", orders);
+            request.setAttribute("command", "client_orders");
         } catch (ServiceException e) {
             logg.error(e.getMessage());
         }

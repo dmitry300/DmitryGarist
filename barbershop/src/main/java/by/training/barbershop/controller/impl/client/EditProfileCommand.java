@@ -1,10 +1,7 @@
 package by.training.barbershop.controller.impl.client;
 
 import by.training.barbershop.bean.User;
-import by.training.barbershop.controller.Command;
-import by.training.barbershop.controller.PagePath;
-import by.training.barbershop.controller.Router;
-import by.training.barbershop.controller.SessionAttribute;
+import by.training.barbershop.controller.*;
 import by.training.barbershop.service.ServiceFactory;
 import by.training.barbershop.service.exception.ServiceException;
 import org.apache.logging.log4j.LogManager;
@@ -22,6 +19,11 @@ public class EditProfileCommand implements Command {
         User user = serviceFactory.getUserRequestValidation().validate(request);
         HttpSession session = request.getSession();
         try {
+            if (user == null) {
+                session.setAttribute(SessionAttribute.IS_SIGNUP_ERROR, true);
+                session.setAttribute(SessionAttribute.ERROR_KEY, BundleKey.SIGNUP_INVALID_REQUEST);
+                return new Router(PagePath.CLIENT_PERSONAL_DATA_REDIRECT, Router.RouterType.REDIRECT);
+            }
             if (serviceFactory.getUserServiceImpl().updateUser(user)) {
                 session.setAttribute(SessionAttribute.USER, user);
                 return new Router(PagePath.CLIENT_PERSONAL_DATA_REDIRECT, Router.RouterType.REDIRECT);

@@ -6,17 +6,6 @@
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="content" var="rb"/>
 
-<!DOCTYPE html>
-<html lang="${sessionScope.locale}">
-<head>
-    <meta charset="UTF-8">
-    <title><fmt:message key="company.name" bundle="${rb}"/></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link href="${pageContext.request.contextPath}/css/profile_navbar.css" rel="stylesheet">
-</head>
-<body>
 <div class="col-auto col-md-1 col-lg-2 " id="navbar">
     <div class="d-flex flex-column align-items-center px-3 pt-2 text-white min-vh-100">
         <span class="fs-5 d-none d-sm-inline p-4"><fmt:message key="profile.menu" bundle="${ rb }"/></span>
@@ -33,27 +22,27 @@
                         <li class="dropdown-divider"></li>
                         <li class="nav-item rounded-1">
                             <a class="nav-link mx-4"
-                               href="${pageContext.request.contextPath}/controller?command=client_orders">
+                               href="${pageContext.request.contextPath}/controller?command=client_orders&page=1">
                                 <fmt:message key="order.list" bundle="${ rb }"/></a>
                         </li>
                     </c:when>
                     <c:when test="${sessionScope.user.role eq UserRole.ADMIN}">
                         <li class="nav-item rounded-1">
                             <a class="nav-link active mx-4" aria-current="page"
-                               href="${pageContext.request.contextPath}/controller?command=clients_list"><fmt:message
+                               href="${pageContext.request.contextPath}/controller?command=clients_list&page=1"><fmt:message
                                     key="admin.client.list"
                                     bundle="${ rb }"/></a>
                         </li>
                         <li class="dropdown-divider"></li>
                         <li class="nav-item rounded-1">
                             <a class="nav-link mx-4" aria-current="page"
-                               href="${pageContext.request.contextPath}/controller?command=active_orders">
+                               href="${pageContext.request.contextPath}/controller?command=active_orders&page=1">
                                 <fmt:message key="admin.order.active" bundle="${ rb }"/></a>
                         </li>
                         <li class="dropdown-divider"></li>
                         <li class="nav-item rounded-1">
                             <a class="nav-link mx-4" aria-current="page"
-                               href="${pageContext.request.contextPath}/controller?command=inactive_orders">
+                               href="${pageContext.request.contextPath}/controller?command=inactive_orders&page=1">
                                 <fmt:message key="admin.order.inactive" bundle="${ rb }"/></a>
                         </li>
                         <li class="dropdown-divider"></li>
@@ -80,8 +69,3 @@
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-</body>
-</html>

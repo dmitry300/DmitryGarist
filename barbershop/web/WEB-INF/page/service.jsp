@@ -23,7 +23,7 @@
 <jsp:include page="header.jsp" flush="true"/>
 <c:choose>
     <c:when test="${not empty requestScope.services}">
-        <div class="table-responsive">
+        <div class="table-responsive mb-5">
             <TABLE class="table align-middle caption-top table-hover d-flex w-100 align-items-center justify-content-center flex-column">
                 <CAPTION class="display-6 text-center mt-4 mb-4 w-75"><fmt:message key="service.caption"
                                                                                    bundle="${ rb }"/></CAPTION>

@@ -1,3 +1,14 @@
 .col{
     background-color: rgba(236, 246, 246, 0.81);
 }
+#navbar{
+    background: url("../img/profile_navbar.jpg");
+
+}
+.nav-link{
+    font-size: 15px;
+    color: #ffffff;
+}
+.nav-item{
+    background-color: rgba(194, 156, 80, 0.75);
+}

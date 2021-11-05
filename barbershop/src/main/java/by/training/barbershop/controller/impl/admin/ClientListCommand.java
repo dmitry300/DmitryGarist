@@ -1,6 +1,5 @@
 package by.training.barbershop.controller.impl.admin;
 
-import by.training.barbershop.bean.Barber;
 import by.training.barbershop.bean.User;
 import by.training.barbershop.controller.Command;
 import by.training.barbershop.controller.PagePath;
@@ -19,9 +18,17 @@ public class ClientListCommand implements Command {
     @Override
     public Router executeCommand(HttpServletRequest request) {
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
+        String pageNumberRequest = request.getParameter("page");
         try {
             List<User> users = serviceFactory.getUserServiceImpl().findAllUser();
+            int pagesCount = serviceFactory.getUserServiceImpl().calcPagesCountForUsers(users.size());
+            int pageNumber = Integer.parseInt(pageNumberRequest);
+            users = serviceFactory.getUserServiceImpl().findUsersByPage(pageNumber);
+
+            request.setAttribute("page_number", pageNumber);
+            request.setAttribute("pages_count", pagesCount);
             request.setAttribute("users", users);
+            request.setAttribute("command", "clients_list");
         } catch (ServiceException e) {
             logg.error("Service exception: {}", e.getMessage());
             return new Router(PagePath.ERROR_500_PAGE, Router.RouterType.REDIRECT);

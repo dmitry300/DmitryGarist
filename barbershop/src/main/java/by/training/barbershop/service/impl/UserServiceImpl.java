@@ -4,10 +4,11 @@ import by.training.barbershop.bean.User;
 import by.training.barbershop.bean.UserInfo;
 import by.training.barbershop.bean.UserRole;
 import by.training.barbershop.bean.UserStatus;
-import by.training.barbershop.dao.TransactionDao;
+import by.training.barbershop.dao.Transaction;
 import by.training.barbershop.dao.UserDao;
 import by.training.barbershop.dao.UserInfoDao;
 import by.training.barbershop.dao.exception.DaoException;
+import by.training.barbershop.dao.exception.DatabaseConnectionException;
 import by.training.barbershop.dao.impl.AbstractDao;
 import by.training.barbershop.dao.impl.DaoFactory;
 import by.training.barbershop.service.UserService;
@@ -20,63 +21,115 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 
 public class UserServiceImpl implements UserService {
+    private static final int ITEMS_ON_PAGE_COUNT = 4;
+    private static final int MIN_PAGE_COUNT = 1;
+
     private final DaoFactory daoFactory = DaoFactory.getInstance();
+    private final Transaction transaction = daoFactory.getTransactionDao();
 
     @Override
     public User findRegisteredUser(String login, String password) throws ServiceException {
         UserDao userDao = daoFactory.getUserDao();
         UserInfoDao userInfoDao = daoFactory.getUserInfoDao();
-        TransactionDao transactionDao = daoFactory.getTransactionDao();
-        transactionDao.initTransaction((AbstractDao) userDao, (AbstractDao) userInfoDao);
         if (login == null || password == null) {
             return null;
         }
         try {
+            transaction.initTransaction((AbstractDao) userDao, (AbstractDao) userInfoDao);
             User user = userDao.findUserByLogin(login);
             UserInfo userInfo = userInfoDao.findEntityById(user.getId());
             user.setUserInfo(userInfo);
-            transactionDao.commit();
+            transaction.commit();
             if (validatePassword(password, user.getPassword())) {
                 return user;
             } else {
                 return null;
             }
-        } catch (DaoException | NoSuchAlgorithmException | InvalidKeySpecException e) {
-            transactionDao.rollback();
+        } catch (DaoException | NoSuchAlgorithmException | InvalidKeySpecException | DatabaseConnectionException e) {
+            transaction.rollback();
             throw new ServiceException(e);
         } finally {
-            transactionDao.endTransaction();
+            transaction.endTransaction();
         }
+    }
+
+    @Override
+    public List<User> findUsersByPage(int pageNumber) throws ServiceException {
+        UserDao userDao = daoFactory.getUserDao();
+        UserInfoDao userInfoDao = daoFactory.getUserInfoDao();
+        try {
+            transaction.initTransaction((AbstractDao) userDao, (AbstractDao) userInfoDao);
+            List<User> users = userDao.findAll();
+            List<UserInfo> userInfos = userInfoDao.findAll();
+            transaction.commit();
+            users.removeIf(admin -> admin.getRole().equals(UserRole.ADMIN));
+            for (var user : users) {
+                for (var userInfo : userInfos) {
+                    if (user.getId() == userInfo.getId()) {
+                        user.setUserInfo(userInfo);
+                    }
+                }
+            }
+            int fromIndex = (pageNumber - 1) * ITEMS_ON_PAGE_COUNT;
+            int toIndex = fromIndex + ITEMS_ON_PAGE_COUNT;
+            while (toIndex > users.size()) {
+                toIndex = checkToIndex(toIndex, users);
+            }
+            if (fromIndex == toIndex) {
+                users.subList(0, toIndex).clear();
+            } else {
+                users = users.subList(fromIndex, toIndex);
+            }
+            return users;
+        } catch (DaoException | DatabaseConnectionException e) {
+            transaction.rollback();
+            throw new ServiceException(e);
+        } finally {
+            transaction.endTransaction();
+        }
+    }
+
+    @Override
+    public int calcPagesCountForUsers(int usersCount) {
+        int result = (int) Math.ceil((double) usersCount / ITEMS_ON_PAGE_COUNT);
+        return result != 0 ? result : MIN_PAGE_COUNT;
+    }
+
+    private int checkToIndex(int toIndex, List<User> users) {
+        if (toIndex > users.size()) {
+            return --toIndex;
+        }
+        return 0;
     }
 
     @Override
     public boolean addNewUser(User user) throws ServiceException {
         UserDao userDao = daoFactory.getUserDao();
         UserInfoDao userInfoDao = daoFactory.getUserInfoDao();
-        TransactionDao transactionDao = daoFactory.getTransactionDao();
-        transactionDao.initTransaction((AbstractDao) userDao, (AbstractDao) userInfoDao);
         try {
+            transaction.initTransaction((AbstractDao) userDao, (AbstractDao) userInfoDao);
             if (user != null) {
                 String password = user.getPassword();
                 user.setPassword(generateStrongPasswordHash(password));
-                transactionDao.commit();
+                transaction.commit();
                 UserInfo userInfo = user.getUserInfo();
                 int idUser = userDao.create(user);
                 userInfo.setId(idUser);
                 userInfoDao.create(userInfo);
 
-                transactionDao.commit();
+                transaction.commit();
                 return true;
             }
-        } catch (DaoException | NoSuchAlgorithmException | InvalidKeySpecException | SQLException e) {
-            transactionDao.rollback();
+        } catch (DaoException | NoSuchAlgorithmException | InvalidKeySpecException | SQLException | DatabaseConnectionException e) {
+            transaction.rollback();
             throw new ServiceException(e);
         } finally {
-            transactionDao.endTransaction();
+            transaction.endTransaction();
         }
         return false;
     }
@@ -84,14 +137,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserById(int id) throws ServiceException {
         UserDao userDao = daoFactory.getUserDao();
-        TransactionDao transactionDao = daoFactory.getTransactionDao();
-        transactionDao.initTransaction((AbstractDao) userDao);
         try {
-            return userDao.findEntityById(id);
-        } catch (DaoException e) {
+            transaction.initTransaction((AbstractDao) userDao);
+            User user = userDao.findEntityById(id);
+            transaction.commit();
+            return user;
+        } catch (DaoException | DatabaseConnectionException e) {
+
             throw new ServiceException(e);
         } finally {
-            transactionDao.endTransaction();
+            transaction.endTransaction();
         }
     }
 
@@ -99,9 +154,8 @@ public class UserServiceImpl implements UserService {
     public boolean updateUser(User user) throws ServiceException {
         UserDao userDao = daoFactory.getUserDao();
         UserInfoDao userInfoDao = daoFactory.getUserInfoDao();
-        TransactionDao transactionDao = daoFactory.getTransactionDao();
-        transactionDao.initTransaction((AbstractDao) userDao, (AbstractDao) userInfoDao);
         try {
+            transaction.initTransaction((AbstractDao) userDao, (AbstractDao) userInfoDao);
             if (user != null) {
                 String password = user.getPassword();
                 String passwordFromDb = userDao.findEntityById(user.getId()).getPassword();
@@ -110,14 +164,14 @@ public class UserServiceImpl implements UserService {
                 }
                 userInfoDao.update(user.getUserInfo());
                 userDao.update(user);
-                transactionDao.commit();
+                transaction.commit();
                 return true;
             }
-        } catch (DaoException | NoSuchAlgorithmException | InvalidKeySpecException e) {
-            transactionDao.rollback();
+        } catch (DaoException | NoSuchAlgorithmException | InvalidKeySpecException | DatabaseConnectionException e) {
+            transaction.rollback();
             throw new ServiceException(e);
         } finally {
-            transactionDao.endTransaction();
+            transaction.endTransaction();
         }
         return false;
     }
@@ -125,15 +179,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isLoginFreeForNewUser(String login) throws ServiceException {
         UserDao userDao = daoFactory.getUserDao();
-        TransactionDao transactionDao = daoFactory.getTransactionDao();
-        transactionDao.initTransaction((AbstractDao) userDao);
         try {
+            transaction.initTransaction((AbstractDao) userDao);
             return userDao.findUserByLogin(login) != null;
-        } catch (DaoException e) {
-            transactionDao.rollback();
+        } catch (DaoException | DatabaseConnectionException e) {
+            transaction.rollback();
             throw new ServiceException(e.getMessage());
         } finally {
-            transactionDao.endTransaction();
+            transaction.endTransaction();
         }
     }
 
@@ -141,9 +194,8 @@ public class UserServiceImpl implements UserService {
     public List<User> findAllUser() throws ServiceException {
         UserDao userDao = daoFactory.getUserDao();
         UserInfoDao userInfoDao = daoFactory.getUserInfoDao();
-        TransactionDao transactionDao = daoFactory.getTransactionDao();
-        transactionDao.initTransaction((AbstractDao) userDao, (AbstractDao) userInfoDao);
         try {
+            transaction.initTransaction((AbstractDao) userDao, (AbstractDao) userInfoDao);
             List<User> users = userDao.findAll();
             List<UserInfo> userInfos = userInfoDao.findAll();
             users.removeIf(admin -> admin.getRole().equals(UserRole.ADMIN));
@@ -154,21 +206,21 @@ public class UserServiceImpl implements UserService {
                     }
                 }
             }
+            transaction.commit();
             return users;
-        } catch (DaoException e) {
-            transactionDao.rollback();
+        } catch (DaoException | DatabaseConnectionException e) {
+            transaction.rollback();
             throw new ServiceException(e.getMessage());
         } finally {
-            transactionDao.end();
+            transaction.endTransaction();
         }
     }
 
     @Override
     public boolean changeStatusUser(int id) throws ServiceException {
         UserDao userDao = daoFactory.getUserDao();
-        TransactionDao transactionDao = daoFactory.getTransactionDao();
-        transactionDao.initTransaction((AbstractDao) userDao);
         try {
+            transaction.initTransaction((AbstractDao) userDao);
             User user = userDao.findEntityById(id);
             if (user.getUserStatus().equals(UserStatus.BLOCKED)) {
                 user.setUserStatus(UserStatus.PERMITTED);
@@ -176,13 +228,13 @@ public class UserServiceImpl implements UserService {
                 user.setUserStatus(UserStatus.BLOCKED);
             }
             userDao.update(user);
-            transactionDao.commit();
+            transaction.commit();
             return true;
-        } catch (DaoException e) {
-            transactionDao.rollback();
+        } catch (DaoException | DatabaseConnectionException e) {
+            transaction.rollback();
             throw new ServiceException(e.getMessage());
         } finally {
-            transactionDao.endTransaction();
+            transaction.endTransaction();
         }
     }
 
@@ -223,7 +275,7 @@ public class UserServiceImpl implements UserService {
         SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
         byte[] salt = new byte[16];
         sr.nextBytes(salt);
-        return salt.toString();
+        return Arrays.toString(salt);
     }
 
     private static String toHex(byte[] array) {

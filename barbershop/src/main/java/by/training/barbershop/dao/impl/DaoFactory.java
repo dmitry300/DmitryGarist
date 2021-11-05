@@ -10,7 +10,7 @@ public class DaoFactory {
     private final ReviewDao reviewDao = new ReviewDaoImpl();
     private final HaircutDao haircutDao = new HaircutDaoImpl();
     private final OrderDao orderDao = new OrdersDaoImpl();
-    private final TransactionDao transactionDao = new TransactionDaoImpl();
+    private final Transaction transaction = new TransactionImpl();
 
     private DaoFactory() {
 
@@ -36,8 +36,8 @@ public class DaoFactory {
         return haircutDao;
     }
 
-    public TransactionDao getTransactionDao() {
-        return transactionDao;
+    public Transaction getTransactionDao() {
+        return transaction;
     }
 
     public ReviewDao getReviewDao() {

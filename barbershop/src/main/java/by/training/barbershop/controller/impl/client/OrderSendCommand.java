@@ -14,6 +14,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 public class OrderSendCommand implements Command {
     private static final Logger logg = LogManager.getLogger(OrderSendCommand.class);
@@ -21,16 +22,16 @@ public class OrderSendCommand implements Command {
     @Override
     public Router executeCommand(HttpServletRequest request) {
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
-        String idHaircut = request.getParameter("haircut");
-        String idBarber = request.getParameter("barber");
-        String data = request.getParameter("data");
-        String time = request.getParameter("time");
+        String idHaircutParameter = request.getParameter("haircut");
+        String idBarberParameter = request.getParameter("barber");
+        String dataParameter = request.getParameter("data");
+        String timeParameter = request.getParameter("time");
 
-        if (!DateTimeValidator.isValidDate(data) || !DateTimeValidator.isValidTime(time)) {
+        if (!DateTimeValidator.isValidDate(dataParameter) || !DateTimeValidator.isValidTime(timeParameter)) {
             return new Router(PagePath.ERROR_404_PAGE, Router.RouterType.FORWARD);
         }
-        LocalDate localDate = LocalDate.parse(data);
-        LocalTime localTime = LocalTime.parse(time);
+        LocalDate localDate = LocalDate.parse(dataParameter);
+        LocalTime localTime = LocalTime.parse(timeParameter);
         LocalDateTime localDateTime = LocalDateTime.of(localDate, localTime);
         HttpSession session = request.getSession();
         if (!DateTimeValidator.isValidDateTime(localDateTime)) {
@@ -38,11 +39,11 @@ public class OrderSendCommand implements Command {
             session.setAttribute(SessionAttribute.ERROR_KEY, BundleKey.ORDER_INVALID_DATE);
             return new Router(PagePath.ORDER_PAGE_REDIRECT, Router.RouterType.REDIRECT);
         }
-
         Barber barber = new Barber();
-        barber.setId(Integer.parseInt(idBarber));
+        int idBarber = Integer.parseInt(idBarberParameter);
+        barber.setId(idBarber);
         Haircut haircut = new Haircut();
-        haircut.setId(Integer.parseInt(idHaircut));
+        haircut.setId(Integer.parseInt(idHaircutParameter));
 
         User user = (User) session.getAttribute("user");
         Order order = new Order();
@@ -54,6 +55,16 @@ public class OrderSendCommand implements Command {
         order.setUser(user);
 
         try {
+            List<Order> bookedTimesOrder = serviceFactory.getOrderService().findBookedTimePoints(localDate);
+            if (!bookedTimesOrder.isEmpty()) {
+                for (var booked : bookedTimesOrder) {
+                    if (booked.getBarber().getId() == idBarber && booked.getDateTimePlane().equals(Timestamp.valueOf(localDateTime))) {
+                        session.setAttribute(SessionAttribute.IS_NOT_DATA_TIME_VALID, true);
+                        session.setAttribute(SessionAttribute.ERROR_KEY, BundleKey.ORDER_INVALID_DATE);
+                        return new Router(PagePath.ORDER_PAGE_REDIRECT, Router.RouterType.REDIRECT);
+                    }
+                }
+            }
             if (!serviceFactory.getOrderService().addOrder(order)) {
                 return new Router(PagePath.ERROR_404_PAGE, Router.RouterType.FORWARD);
             }

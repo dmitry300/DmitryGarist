@@ -17,7 +17,7 @@
                    href="${pageContext.request.contextPath}/controller?command=home"><fmt:message key="header.home"
                                                                                                   bundle="${ rb }"/></a>
                 <a class="nav-link " aria-current="page"
-                   href="${pageContext.request.contextPath}/controller?command=go_to_about_us"><fmt:message
+                   href="${pageContext.request.contextPath}/st_page/about_us.jsp"><fmt:message
                         key="header.about_us"
                         bundle="${ rb }"/></a>
                 <a class="nav-link " aria-current="page"

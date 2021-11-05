@@ -6,7 +6,7 @@ import by.training.barbershop.service.exception.ServiceException;
 import java.util.List;
 
 public interface ReviewService {
-    List<Review> findAllReviews() throws ServiceException;
+//    List<Review> findAllReviews() throws ServiceException;
 
     Review findReviewById(int id) throws ServiceException;
 

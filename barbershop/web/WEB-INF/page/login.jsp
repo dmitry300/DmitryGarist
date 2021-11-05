@@ -64,7 +64,7 @@
             </div>
             <button id="login_btn" type="submit" class="btn btn-success mt-2"><fmt:message key="login_page.login_button"
                                                                                            bundle='${rb}'/></button>
-            <a href="${pageContext.request.contextPath}/controller?command=go_to_sign_up_page" type="button"
+            <a href="${pageContext.request.contextPath}/controller?command=go_to_registration" type="button"
                class="btn btn-outline-secondary mt-3"><fmt:message key="login_page.signup_button"
                                                                    bundle='${rb}'/></a>
         </form>

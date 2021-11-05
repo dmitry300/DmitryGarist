@@ -1,6 +1,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%--<%@ taglib prefix = "display" uri="http://displaytag.sf.net" %>--%>
 
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="content" var="rb"/>
@@ -25,7 +26,7 @@
         <c:choose>
             <c:when test="${not empty sessionScope.user}">
                 <c:if test="${not empty requestScope.haircuts}">
-                    <div class="col py-3">
+                    <div class="col py-3 mb-5">
                         <div class="table-responsive">
                             <TABLE class="table align-middle caption-top table-hover d-flex w-100 align-items-center justify-content-center flex-column table-sm">
                                 <CAPTION class="display-6 text-center mt-4 mb-4 w-75"><fmt:message

@@ -5,6 +5,8 @@ import by.training.barbershop.bean.OrderStatus;
 import by.training.barbershop.dao.exception.DaoException;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface OrderDao extends Dao<Order> {
@@ -13,6 +15,8 @@ public interface OrderDao extends Dao<Order> {
     Order findEntityById(Integer id) throws DaoException;
 
     List<Order> findEntityByUserId(Integer userId) throws DaoException;
+
+    List<Order> findEntityByDatePlane(LocalDate date) throws DaoException;
 
     List<Order> findEntityByStatus(OrderStatus status) throws DaoException;
 

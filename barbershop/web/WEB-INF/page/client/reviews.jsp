@@ -23,32 +23,32 @@
 <c:choose>
     <c:when test="${not empty sessionScope.user
      and not empty requestScope.barber}">
-        <c:set var="barber" value="${requestScope.barber}"/>
+        <c:set var="user" value="${requestScope.barber}"/>
         <div class="align-middle d-flex w-100 align-items-center justify-content-center flex-column">
             <div class="row">
                 <div class="col-md-6 card-body">
-                    <h5 class="card-title display-4">${barber.surname} ${barber.name} ${barber.patronymic}</h5>
+                    <h5 class="card-title display-4">${user.surname} ${user.name} ${user.patronymic}</h5>
                     <p class="card-text fs-5">
-                            ${barber.birthday} <fmt:message key="barber.birthday" bundle="${ rb }"/><br>
-                        <fmt:message key="barber.phone" bundle="${ rb }"/>: +${barber.phone}<br>
-                        <a href="${barber.tiktokLink}" class="card-link"><fmt:message key="barber.tiktok"
-                                                                                      bundle="${ rb }"/></a>
+                            ${user.birthday} <fmt:message key="barber.birthday" bundle="${ rb }"/><br>
+                        <fmt:message key="barber.phone" bundle="${ rb }"/>: +${user.phone}<br>
+                        <a href="${user.tiktokLink}" class="card-link"><fmt:message key="barber.tiktok"
+                                                                                    bundle="${ rb }"/></a>
                     </p>
                 </div>
                 <div class="col-md-6 card-body">
-                    <img src="${pageContext.request.contextPath}/img?path=${barber.photo}"
+                    <img src="${pageContext.request.contextPath}/img?path=${user.photo}"
                          class="card-img-top" alt="barber">
                 </div>
 
             </div>
         </div>
-        <div class="d-flex flex-column justify-content-center align-items-center">
+        <div class="d-flex flex-column justify-content-center align-items-center mb-5">
             <c:if test="${empty requestScope.reviews}">
                 <p><fmt:message key="review.barber_id" bundle="${ rb }"/></p>
             </c:if>
             <form action="controller" method="post" class="w-75 mb-4 mt-4">
                 <input type="hidden" name="command" value="add_review">
-                <input type="hidden" name="barberId" value="${barber.id}">
+                <input type="hidden" name="barberId" value="${user.id}">
                 <div class="mb-3">
                     <label>
                             <textarea placeholder="Enter your comment" class="form-control" name="content"
@@ -90,6 +90,12 @@
                                     <input type="hidden" name="reviewId" value="${review.id}">
                                     <button class="btn  btn-outline-danger">
                                         <fmt:message key="admin.review.remove" bundle="${ rb }"/></button>
+                                </form>
+                                <form action="controller" method="post">
+                                    <input type="hidden" name="command" value="go_to_edit_review">
+                                    <input type="hidden" name="reviewId" value="${review.id}">
+                                    <button class="btn  btn-outline-success">
+                                        <fmt:message key="admin.review.edit" bundle="${ rb }"/></button>
                                 </form>
                             </c:if>
                         </div>

@@ -26,7 +26,7 @@
             <c:when test="${not empty sessionScope.user}">
                 <div class="col py-3">
                     <div class="align-middle d-flex w-100 align-items-center justify-content-center flex-column">
-                        <form class="d-flex flex-column needs-validation w-50" novalidate name="registrationForm"
+                        <form class="d-flex flex-column needs-validation w-50 mb-5" novalidate name="registrationForm"
                               action="controller" method="post">
                             <input type="hidden" name="command" value="client_edit_personal_data">
                             <div class="mb-3">

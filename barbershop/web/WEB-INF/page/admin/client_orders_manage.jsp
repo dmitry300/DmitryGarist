@@ -52,7 +52,7 @@
                                                 <input type="hidden" name="orderId" value="${order.id}">
                                                 <input type="hidden" name="userId" value="${order.user.id}">
                                                 <input type="hidden" name="status_order" value="approved">
-                                                <button type="submit" name="change"><fmt:message
+                                                <button type="submit" name="change" class="btn-outline-success rounded-1"><fmt:message
                                                         key="order.status.approve" bundle="${ rb }"/>
                                                 </button>
                                             </form>
@@ -63,7 +63,7 @@
                                                 <input type="hidden" name="orderId" value="${order.id}">
                                                 <input type="hidden" name="userId" value="${order.user.id}">
                                                 <input type="hidden" name="status_order" value="rejected">
-                                                <button type="submit" name="change"><fmt:message
+                                                <button type="submit" name="change" class="btn-outline-danger rounded-1"><fmt:message
                                                         key="order.status.reject" bundle="${ rb }"/>
                                                 </button>
                                             </form>
@@ -94,16 +94,16 @@
                                                 <input type="hidden" name="command" value="remove_order">
                                                 <input type="hidden" name="orderId" value="${order.id}">
                                                 <input type="hidden" name="userId" value="${order.user.id}">
-                                                <button type="submit" name="remove"><fmt:message
+                                                <button type="submit" class="btn-outline-danger rounded-1"><fmt:message
                                                         key="client.remove.td"
                                                         bundle="${ rb }"/></button>
                                             </form>
                                         </TD>
                                         <TD>
-                                            <form action="controller" method="post">
+                                            <form action="controller" method="get">
                                                 <input type="hidden" name="command" value="go_to_edit_order">
                                                 <input type="hidden" name="orderId" value="${order.id}">
-                                                <button type="submit" name="remove"><fmt:message
+                                                <button type="submit" class="btn-outline-primary rounded-1"><fmt:message
                                                         key="client.edit.td"
                                                         bundle="${ rb }"/></button>
                                             </form>
@@ -112,9 +112,6 @@
                                     </TR>
                                 </c:forEach>
                             </TABLE>
-                            <p>If you have any questions or you want change your order about time -
-                                <a href=""></a>
-                            </p>
                         </div>
                     </div>
                 </c:if>

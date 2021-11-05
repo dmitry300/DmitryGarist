@@ -1,89 +1,187 @@
 package by.training.barbershop.dao.pool;
 
+import by.training.barbershop.dao.exception.DatabaseConnectionException;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayDeque;
-import java.util.Queue;
-import java.util.concurrent.BlockingDeque;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.Deque;
+import java.util.Properties;
+import java.util.Timer;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Database connection pool
+ */
 public class ConnectionPool {
-    private static final Logger log = LogManager.getLogger(ConnectionPool.class);
-    private static final int DEFAULT_POOL_SIZE = 32;
-    private static boolean isCreated;
+    private static final Logger logger = LogManager.getLogger();
+    private static final int DEFAULT_POOL_SIZE = 8;
+    private static final int DEFAULT_MILLISECONDS_DELAY = 1000;
+    private static final int DEFAULT_MILLISECONDS_INTERVAL = 1000;
+    private static final boolean DEFAULT_IS_VALIDATION_TASK_USED = false;
+    private static final String PROPERTY_FILE_PATH = "properties/pool.properties";
+    private static final String IS_VALIDATION_TASK_USED_PROPERTY = "is_connection_amount_validation_task_used";
+    private static final String TASK_DELAY_PROPERTY = "task_delay";
+    private static final String TASK_INTERVAL_PROPERTY = "task_interval";
+    private static final String POOL_SIZE_PROPERTY = "pool_size";
+    private static final AtomicBoolean isInitialised = new AtomicBoolean(false);
     private static ConnectionPool instance;
-    private static final ReentrantLock lock = new ReentrantLock(true);
-    private final BlockingDeque<Connection> freeConnection;
-    private final Queue<Connection> givenAwayConnection;
+    private final Deque<ProxyConnection> freeConnections;
+    private final Deque<ProxyConnection> givenAwayConnections;
+    private final Lock connectionLock;
+    private final Condition freeConnectionCondition;
 
-    public static ConnectionPool getInstance() {
-        if (!isCreated) {
-            lock.lock();
-            if (instance == null) {
-                instance = new ConnectionPool();
-                isCreated = true;
+    private Timer timer;
+    private int poolSize;
+    private int timerDelay;
+    private int timerInterval;
+    private boolean isValidationTaskUsed;
+
+    /**
+     * Initializes pool from properties file and creates connections
+     */
+    private ConnectionPool() {
+        try (InputStream inputStream = ConnectionPool.class.getClassLoader().getResourceAsStream(PROPERTY_FILE_PATH)) {
+            if (inputStream == null) {
+                logger.log(Level.WARN, "Pool properties file not found. Default values are used.");
+                assignDefaultValues();
+            } else {
+                Properties properties = new Properties();
+                properties.load(inputStream);
+                poolSize = Integer.parseInt(properties.getProperty(POOL_SIZE_PROPERTY));
+                timerDelay = Integer.parseInt(properties.getProperty(TASK_DELAY_PROPERTY));
+                timerInterval = Integer.parseInt(properties.getProperty(TASK_INTERVAL_PROPERTY));
+                isValidationTaskUsed = Boolean.parseBoolean(properties.getProperty(IS_VALIDATION_TASK_USED_PROPERTY));
             }
-            lock.unlock();
+        } catch (IOException e) {
+            logger.log(Level.WARN, "Error while closing properties file");
+            assignDefaultValues();
+        } catch (NumberFormatException e) {
+            logger.log(Level.WARN, "Error while converting pool properties. Default values are used.");
+            assignDefaultValues();
+        }
+
+        connectionLock = new ReentrantLock(true);
+        freeConnectionCondition = connectionLock.newCondition();
+        freeConnections = new ArrayDeque<>(poolSize);
+        givenAwayConnections = new ArrayDeque<>(poolSize);
+        for (int i = 0; i < poolSize; i++) {
+            try {
+                Connection connection = ConnectionFactory.createConnection();
+                ProxyConnection proxyConnection = new ProxyConnection(connection);
+                freeConnections.addLast(proxyConnection);
+            } catch (SQLException e) {
+                logger.log(Level.WARN, "Error while creating connection: {}", e.getMessage());
+            }
+        }
+
+        if (freeConnections.isEmpty()) {
+            logger.fatal("Unable to create connections");
+            throw new RuntimeException("Unable to create connections");
+        }
+
+        logger.debug("{} connections created", freeConnections.size());
+
+        if (isValidationTaskUsed) {
+            setConnectionAmountValidationTask();
+        }
+    }
+
+
+    /**
+     * Returns instance of connection pool
+     *
+     * @return instance of connection pool
+     */
+    public static ConnectionPool getInstance() {
+        while (instance == null) {
+            if (isInitialised.compareAndSet(false, true)) {
+                instance = new ConnectionPool();
+            }
         }
         return instance;
     }
 
-    private ConnectionPool() {
-        freeConnection = new LinkedBlockingDeque<>(DEFAULT_POOL_SIZE);
-        givenAwayConnection = new ArrayDeque<>();
-        for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
-            try {
-                Connection connection = ConnectionFactory.getConnection();
-                boolean isAdded = freeConnection.add(connection);
-                log.info("Connection added to freeConnection: {}", isAdded);
-            } catch (SQLException e) {
-                log.error("Connection not received: {}", e.getMessage());
-            }
-        }
-    }
-
-    public Connection getConnection() {
-        Connection connection = null;
+    /**
+     * Acquires connection
+     *
+     * @return database connection
+     * @throws DatabaseConnectionException is thrown if thread is interrupted
+     */
+    public Connection getConnection() throws DatabaseConnectionException {
+        connectionLock.lock();
+        ProxyConnection connection;
         try {
-            connection = freeConnection.take();
-            givenAwayConnection.offer(connection);
+            while (freeConnections.isEmpty()) {
+                freeConnectionCondition.await();
+            }
+            connection = freeConnections.pollFirst();
+            givenAwayConnections.addLast(connection);
         } catch (InterruptedException e) {
-            log.error("InterruptedException in getConnection: {}", e.getMessage());
             Thread.currentThread().interrupt();
+            throw new DatabaseConnectionException("Thread is interrupted" + e.getMessage());
+        } finally {
+            connectionLock.unlock();
         }
         return connection;
     }
 
-    public void releaseConnection(Connection connection) {
-        if (givenAwayConnection.remove(connection)) {
-            try {
-                freeConnection.put(connection);
-            } catch (InterruptedException e) {
-                log.error("InterruptedException in releaseConnection: {}", e.getMessage());
-                Thread.currentThread().interrupt();
-            }
+    /**
+     * Returns connection back to connection pool
+     *
+     * @param connection connection to be returned
+     * @return true if connection returned successfully
+     */
+    public boolean releaseConnection(Connection connection) {
+        if (!(connection instanceof ProxyConnection)) {
+            logger.log(Level.ERROR, "Illegal connection type");
+            return false;
         }
+        connectionLock.lock();
+        try {
+            givenAwayConnections.remove(connection);
+            freeConnections.addLast((ProxyConnection) connection);
+            freeConnectionCondition.signal();
+        } finally {
+            connectionLock.unlock();
+        }
+        return true;
     }
 
     /**
      * Destroys pool. Closes all connections. Stops timer task if specified
      */
     public void destroyPool() {
-        for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
-            try {
-                freeConnection.take().close();
-            } catch (SQLException e) {
-                log.error("SQLException in destroyPool: {}", e.getMessage());
-            } catch (InterruptedException e) {
-                log.error("InterruptedException in destroyPool: {}", e.getMessage());
-                Thread.currentThread().interrupt();
+        connectionLock.lock();
+        try {
+            if (isValidationTaskUsed) {
+                timer.cancel();
             }
+            freeConnections.forEach(ProxyConnection::reallyClose);
+            givenAwayConnections.forEach(ProxyConnection::reallyClose);
+            freeConnections.clear();
+            givenAwayConnections.clear();
+            deregisterDrivers();
+        } finally {
+            connectionLock.unlock();
         }
+    }
+
+
+    private void assignDefaultValues() {
+        poolSize = DEFAULT_POOL_SIZE;
+        timerDelay = DEFAULT_MILLISECONDS_DELAY;
+        timerInterval = DEFAULT_MILLISECONDS_INTERVAL;
+        isValidationTaskUsed = DEFAULT_IS_VALIDATION_TASK_USED;
     }
 
     private void deregisterDrivers() {
@@ -91,8 +189,15 @@ public class ConnectionPool {
             try {
                 DriverManager.deregisterDriver(driver);
             } catch (SQLException e) {
-                log.error("Error while driver deregistration: {}", e.getMessage());
+                logger.log(Level.ERROR, "Error while driver deregistration: {}", e.getMessage());
             }
         });
+    }
+
+    private void setConnectionAmountValidationTask() {
+        timer = new Timer();
+        ConnectionAmountValidationTask validationTask =
+                new ConnectionAmountValidationTask(connectionLock, freeConnections, givenAwayConnections, poolSize);
+        timer.schedule(validationTask, timerDelay, timerInterval);
     }
 }

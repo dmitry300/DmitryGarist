@@ -6,10 +6,8 @@ import by.training.barbershop.dao.exception.DaoException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +17,8 @@ public class OrdersDaoImpl extends AbstractDao implements OrderDao {
             " barber_id, haircut_id FROM orders ORDER BY date_time_plane";
     private static final String SQL_SELECT_ORDER_BY_ID = "SELECT user_id,status,date_time," +
             "date_time_plane,barber_id,haircut_id FROM orders WHERE id = ?";
+    private static final String SQL_SELECT_ORDER_BY_DATE_PLANE = "SELECT user_id, status, date_time," +
+            "id, date_time_plane, barber_id, haircut_id FROM orders WHERE date_time_plane LIKE CONCAT('%',?,'%')";
     private static final String SQL_SELECT_ORDER_BY_STATUS = "SELECT id, user_id, date_time, " +
             "date_time_plane, barber_id, haircut_id FROM orders WHERE status = ? ORDER BY date_time_plane";
     private static final String SQL_SELECT_ORDER_BY_USER_ID = "SELECT id,status,date_time," +
@@ -80,6 +80,41 @@ public class OrdersDaoImpl extends AbstractDao implements OrderDao {
                 order.setDateTimePlane(resultSet.getTimestamp("date_time_plane"));
                 User user = new User();
                 user.setId(userId);
+                order.setUser(user);
+                Barber barber = new Barber();
+                barber.setId(resultSet.getInt("barber_id"));
+                order.setBarber(barber);
+                Haircut haircut = new Haircut();
+                haircut.setId(resultSet.getInt("haircut_id"));
+                order.setHaircut(haircut);
+                orders.add(order);
+            }
+            return orders;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            closeStatement(statement);
+            closeResultSet(resultSet);
+        }
+    }
+
+    @Override
+    public List<Order> findEntityByDatePlane(LocalDate date) throws DaoException {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            statement = connection.prepareStatement(SQL_SELECT_ORDER_BY_DATE_PLANE);
+            statement.setDate(1, Date.valueOf(date));
+            resultSet = statement.executeQuery();
+            List<Order> orders = new ArrayList<>();
+            while (resultSet.next()) {
+                Order order = new Order();
+                order.setId(resultSet.getInt("id"));
+                order.setStatus(OrderStatus.getById(resultSet.getInt("status")));
+                order.setDateTime(resultSet.getTimestamp("date_time"));
+                order.setDateTimePlane(resultSet.getTimestamp("date_time_plane"));
+                User user = new User();
+                user.setId(resultSet.getInt("user_id"));
                 order.setUser(user);
                 Barber barber = new Barber();
                 barber.setId(resultSet.getInt("barber_id"));

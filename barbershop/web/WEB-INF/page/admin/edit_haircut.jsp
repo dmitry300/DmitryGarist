@@ -25,8 +25,8 @@
         <c:choose>
             <c:when test="${not empty sessionScope.user}">
                 <c:if test="${not empty requestScope.haircut}">
-                    <div class="col py-3">
-                        <form action="controller" method="post" class="d-flex flex-column needs-validation">
+                    <div class="col py-3 d-flex flex-column align-items-center">
+                        <form action="controller" method="post" class="w-50">
                             <input type="hidden" name="command" value="edit_haircut">
                             <input type="hidden" name="haircutId" value="${requestScope.haircut.id}">
                             <div class="mb-3">
@@ -57,10 +57,12 @@
 
                                 </div>
                             </div>
-                            <button id="order_button"
-                                    type="submit" class="btn btn-success mt-2 mb-3" value="Order">
-                                <fmt:message key="order.button" bundle="${rb}"/>
-                            </button>
+                            <div class="container-fluid d-flex flex-column align-items-center">
+                                <button id="order_button"
+                                        type="submit" class="btn btn-success mt-2 mb-3" value="Order">
+                                    <fmt:message key="order.button" bundle="${rb}"/>
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </c:if>
